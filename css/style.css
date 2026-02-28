@@ -645,18 +645,85 @@ a    { color: inherit; text-decoration: none; }
 /* Bottom padding on overlay page */
 .overlay-bottom-pad { height: clamp(40px, 6vh, 80px); }
 
-/* Responsive overlay */
-@media (max-width: 700px) {
-  .overlay-bar {
-    grid-template-columns: 32px 1fr auto;
-  }
-  .overlay-bar-year { display: none; }
-  .overlay-brief { grid-template-columns: 1fr; gap: 20px; }
-  .overlay-row { grid-template-columns: 1fr; gap: 8px; }
-  .overlay-row-label { color: #666; }
-  .overlay-credits-grid { grid-template-columns: repeat(2, 1fr); }
+/* ── Global touch ─────────────────────────────────────── */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ── Tablet (≤900px) ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .filter-btn { font-size: 0.6rem; }
 }
 
+/* ── Mobile (≤700px) ──────────────────────────────────── */
+@media (max-width: 700px) {
+  /* Filter bar wraps */
+  .filter-bar { flex-wrap: wrap; gap: 14px 28px; }
+  .filter-btn  { padding: 6px 0; min-height: 44px; }
+
+  /* Work section */
+  .work-section { padding: 32px var(--gutter) 60px; }
+
+  /* About section */
+  .about-section { grid-template-columns: 1fr; }
+  .about-bio-col  { grid-column: unset; }
+
+  /* Footer stack */
+  .site-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+  /* Overlay — title bar */
+  .overlay-bar {
+    grid-template-columns: 32px 1fr;
+    padding: 16px var(--gutter);
+  }
+  .overlay-bar-year  { display: none; }
+  .overlay-bar-title { font-size: 0.68rem; }
+
+  /* Overlay — close button larger tap target */
+  .overlay-close {
+    top: 8px;
+    right: clamp(12px, 3vw, 24px);
+    font-size: 1.6rem;
+    padding: 14px;
+  }
+
+  /* Overlay — rows stack vertically */
+  .overlay-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 20px var(--gutter);
+  }
+  .overlay-row-label {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .overlay-row-content { font-size: 0.78rem; }
+
+  /* Credits 2-col on tablet */
+  .overlay-credits-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* iOS smooth scroll inside overlay */
+  .overlay { -webkit-overflow-scrolling: touch; }
+}
+
+/* ── Small mobile (≤480px) ────────────────────────────── */
 @media (max-width: 480px) {
+  :root { --gutter: 18px; }
+
+  /* Hero */
+  .hero-name { letter-spacing: 0.22em; }
+
+  /* Cards — 2 col stays, just tighter */
+  .project-grid { gap: 8px; }
+  .card-title   { font-size: 0.7rem; }
+
+  /* Credits 1-col */
   .overlay-credits-grid { grid-template-columns: 1fr; }
+
+  /* About */
+  .about-bio { font-size: 0.88rem; }
+
+  /* Nav tap targets */
+  .nav-logo,
+  .nav-about-link { min-height: 44px; display: flex; align-items: center; }
 }
