@@ -51,6 +51,14 @@
       });
     }
 
+    const filmsLink = $('#nav-films-link');
+    if (filmsLink) {
+      filmsLink.addEventListener('click', e => {
+        e.preventDefault();
+        $('#work')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
     /* Scroll arrow → work section */
     const scrollBtn = $('#hero-scroll');
     if (scrollBtn) {
@@ -149,8 +157,9 @@
       /* Video */
       const id = d.vimeo;
       if (id) {
+        const hashParam = d.vimeoHash ? `&h=${d.vimeoHash}` : '';
         videoWrap.innerHTML = `<iframe
-          src="https://player.vimeo.com/video/${id}?autoplay=1&color=ffffff&title=0&byline=0&portrait=0"
+          src="https://player.vimeo.com/video/${id}?autoplay=1${hashParam}&color=ffffff&title=0&byline=0&portrait=0"
           allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
           title="${d.title || ''}"></iframe>`;
       }
@@ -189,6 +198,11 @@
     function buildDetails(d) {
       let html = '';
 
+      if (d.about) {
+        const paras = d.about.split('|').map(p => `<p>${p.trim()}</p>`).join('');
+        html += row('About', paras);
+      }
+
       if (d.synopsis) {
         html += row('Synopsis', `<p>${d.synopsis}</p>`);
       }
@@ -204,6 +218,16 @@
           .filter(Boolean)
           .map(f => `<p>${f.trim()}</p>`).join('');
         if (items) html += row('Festivals', items);
+      }
+
+      if (d.awards) {
+        const items = d.awards.split('|').filter(Boolean).map(a => `<p>${a.trim()}</p>`).join('');
+        if (items) html += row('Awards', items);
+      }
+
+      if (d.press) {
+        const items = d.press.split('|').filter(Boolean).map(p => `<p>${p.trim()}</p>`).join('');
+        if (items) html += row('Press', items);
       }
 
       let credits = [];
@@ -275,10 +299,11 @@
         clearTimeout(leaveTimer);
         if (videoEl) return;
 
+        const hash = card.dataset.vimeoHash ? `&h=${card.dataset.vimeoHash}` : '';
         videoEl = document.createElement('div');
         videoEl.className = 'card-video';
         videoEl.innerHTML = `<iframe
-          src="https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1&autopause=0"
+          src="https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1&autopause=0${hash}"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen title="" frameborder="0"></iframe>`;
         card.querySelector('.card-media').appendChild(videoEl);

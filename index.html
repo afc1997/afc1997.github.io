@@ -20,8 +20,14 @@
 
   <!-- NAV -->
   <nav class="site-nav" id="site-nav">
-    <a class="nav-logo" href="#">AFC</a>
-    <a class="nav-about-link" href="#about">About</a>
+    <a class="nav-name" href="#">Alex Fischman Cárdenas</a>
+    <a class="nav-logo" href="#">
+      <img src="assets/logo-nav.svg" alt="Alex Fischman Cárdenas" class="nav-logo-img" />
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" id="nav-films-link" href="#work">Films</a>
+      <a class="nav-link nav-about-link" href="#about">About</a>
+    </div>
   </nav>
 
   <!-- HERO: full-viewport background video -->
@@ -31,17 +37,13 @@
     <!-- ?background=1 requires Vimeo Pro or higher -->
     <div class="hero-bg">
       <iframe
-        src="https://player.vimeo.com/video/1072634041?background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
+        src="https://player.vimeo.com/video/1169118938?h=5cb3db916b&background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
         frameborder="0"
         allow="autoplay; fullscreen"
         aria-hidden="true">
       </iframe>
     </div>
     <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-      <h1 class="hero-name">Alex Fischman Cardenas</h1>
-    </div>
 
     <button class="hero-scroll" id="hero-scroll" aria-label="Scroll to work">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,11 +94,13 @@
       <article class="project-card" data-category="commercial"
         data-vimeo="1072634041" data-num="02" data-title="Ad Council"
         data-year="2025" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-about="Sound It Out's latest initiative, Listening is a Form of Love, highlights the power of listening as a way for parents and caregivers to support young people's mental health.|Originally launched as an Interactive Video, the campaign features real teens sharing what they wish their parents could hear."
+        data-awards="1.4 Awards, On The Cusp — Longlist, 2025|Young Director Award — Winner, 2025"
+        data-press="Little Black Book — &quot;The Ad Council Reminds Parents That Listening Is a Form of Love&quot;|Shots — &quot;Listening is a Form of Love&quot;"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Mika Altskan"},{"role":"Line Producer","name":"Amalia Bradstreet"},{"role":"Production Design by","name":"Katie Fleming"},{"role":"Production Company","name":"Greenpoint Pictures"},{"role":"Agency","name":"McCann"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/adcouncil-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/adcouncil-b.jpg')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/adcouncil-a.png');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/adcouncil-a.png');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">02</span>
@@ -110,8 +114,10 @@
       <article class="project-card" data-category="narrative"
         data-vimeo="1101244533" data-vimeo-hover="914931520" data-num="03" data-title="Ovejas y Lobos"
         data-year="2024" data-category-label="Narrative Short Film"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-synopsis="A Mother's world shatters after her Son vanishes without a trace. Set in the height of the Peruvian armed conflict, &quot;Ovejas y Lobos&quot; follows a Mother's suspenseful search through the perilous, vast, and unforgiving landscape that mirrors her seemingly insurmountable mission."
+        data-statement="My connection to Sheep and Wolves (Ovejas y Lobos) has evolved a lot since I wrote the first draft five years ago. I originally thought the film was about the Peruvian internal conflict or the pain of leaving home—both important themes. But in the edit room, something more personal began to surface. I realized the story echoed my own experience. As a child, I was surrounded by love and affection from my mother, but I didn't always feel heard.|When Felix disappears, it felt painfully familiar. Rosa's refusal to listen sets off a series of consequences that push her to the edge. As she fights to bring her son back, I saw myself in both of them—the lonely son and the desperate parent. I realized I was making this film in the hope that my mother might finally understand what I couldn't express. In the final moments between Rosa and Felix, something shifted in me. I was finally able to forgive my own mother, because she loved me the best way she could."
+        data-festivals="Vimeo Staff Pick|Official Selection, Clermont-Ferrand International Short Film Festival|Official Selection, Raindance Film Festival|Official Selection, Palm Springs International Short Film Festival|Official Selection, DokuFest, Int'l Documentary &amp; Short Film Festival|Official Selection, AFI Fest|Winner, Best Director &amp; Best Short Film, NYU First Run Film Festival|Winner, Student Grant, Norman T. Strauss Award, National Board of Review|Winner, Audience Award &amp; Special Jury Award, Lima International Film Festival|Nominee, Best Peruvian Short Film, APRECI 2025|Winner, Best Short Film, Shorts Mexico, Int'l Short Film Festival|Winner, Best Short Film, FCZ, Zaragoza Film Festival"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Written by","name":"Alex Fischman Cárdenas, Taki Carranza"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Production Design by","name":"Renzo Basan"},{"role":"Edit by","name":"Alex Fischman Cárdenas, Antolín Prieto"},{"role":"Music by","name":"Paulo Gallo"},{"role":"Color by","name":"Alex Jimenez"},{"role":"Produced by","name":"Carmen Calderón"},{"role":"Production Company","name":"Pescado Pictures"}]'>
         <div class="card-media">
           <div class="card-img primary" style="background-image:url('assets/images/ovejas-a.jpg')"></div>
           <div class="card-img hover"   style="background-image:url('assets/images/ovejas-b.jpg')"></div>
@@ -126,13 +132,15 @@
       </article>
 
       <article class="project-card" data-category="documentary"
-        data-vimeo="" data-num="04" data-title="Starr"
+        data-vimeo="664925900" data-num="04" data-title="Starr"
         data-year="2022" data-category-label="Documentary Short"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-about="A single mother in the Bronx grapples with her passion for bike-life, a dangerous lifestyle that's nearly killed her, but also gives her a sense of freedom, identity, and escape that nothing else can.|Formed from intimate audio interviews, this project blends documentary and narrative filmmaking to create a layered portrait of Starr. Through her own words, we explore the tension between personal ambition, community, and the responsibilities of motherhood."
+        data-awards="Vimeo Staff Pick|Young Director Award — Finalist|Berlin Commercial — Shortlist"
+        data-press="Directors Library|Film Shortage"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas, Bertram"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Editing by","name":"Gabriel Crawford Connelly"},{"role":"Line Producer","name":"Adrian Sobrado"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Music by","name":"Gavin Brivik"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/starr-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/starr-b.jpg')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/starr-a.png');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/starr-a.png');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">04</span>
@@ -144,10 +152,9 @@
       </article>
 
       <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="05" data-title="Levis"
+        data-vimeo="1107521488" data-num="05" data-title="Levis"
         data-year="2025" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-credits='[{"role":"Directed by","name":"Fisherman &amp; Trout"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Sound Design","name":"Nico Svetliza"},{"role":"VFX","name":"Alfredo Benavides"}]'>
         <div class="card-media">
           <div class="card-img primary" style="background-image:url('assets/images/levis-a.jpg')"></div>
           <div class="card-img hover"   style="background-image:url('assets/images/levis-b.jpg')"></div>
@@ -162,13 +169,13 @@
       </article>
 
       <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="06" data-title="JP Morgan Chase"
+        data-vimeo="831584007" data-num="06" data-title="JP Morgan Chase"
         data-year="2023" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-about="Make Happen is an epic cross-country collaboration between Alex Fischman Cárdenas and The Hudson Dusters, spotlighting the virtuous cycle of investment—in businesses both big and small.|Aired during the 2023 NBA Finals."
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas, The Hudson Dusters"},{"role":"Cinematography by","name":"Jesse Bronstein, Anthony Carella"},{"role":"Editing by","name":"Jim Helton, Jasmine McCullough"},{"role":"Production Company","name":"Greenpoint Pictures"},{"role":"Agency","name":"Droga5"}]'>
         <div class="card-media">
           <div class="card-img primary" style="background-image:url('assets/images/chase-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/chase-b.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/chase-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">06</span>
@@ -180,13 +187,15 @@
       </article>
 
       <article class="project-card" data-category="documentary"
-        data-vimeo="" data-num="07" data-title="Teeth"
+        data-vimeo="542652790" data-num="07" data-title="Teeth"
         data-year="2021" data-category-label="Documentary Short"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-about="A year after COVID ravaged New York, Ikeem &quot;Teeth&quot; Jones reflects on his legacy as the city's best subway dancer.|Teeth was a labor of love. We started the project just as the pandemic hit NYC. I discovered Teeth through his Instagram and quickly arranged a series of interviews. But finding a story that could be told in just two minutes proved to be a massive challenge. We spent months combing through transcripts and listening to hours of interviews before finally uncovering the story we wanted to tell.|Once we found it, we hit the ground running. With my DP, Gabe, we developed a visual language that aimed to capture Teeth's story in the most honest way possible."
+        data-awards="Vimeo Staff Pick|Young Director Award — Finalist|1.4 Awards|Berlin Commercial Award — Shortlist"
+        data-press="Beyond the Short|Kino Short Film London|Booooooom.tv|Wasted Talent"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Editing by","name":"Gabriel Crawford Connelly"},{"role":"Line Producer","name":"Adrian Sobrado"},{"role":"Music by","name":"Gavin Brivik"},{"role":"Production Company","name":"Brickhead"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/teeth-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/teeth-b.jpg')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/teeth-a.png');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/teeth-a.png');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">07</span>
@@ -198,13 +207,15 @@
       </article>
 
       <article class="project-card" data-category="narrative"
-        data-vimeo="" data-num="08" data-title="La Vieja Quinta"
+        data-vimeo="129575936" data-num="08" data-title="La Vieja Quinta"
         data-year="2015" data-category-label="Narrative Short Film"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-synopsis="Memo's life is simple, he wakes up, eats cereal, listens to music, reads, and plays the crossword puzzle; all of that changes when a new pain-in-the-ass neighbor moves in next door."
+        data-festivals="Official Selection, HollyShorts Film Festival|Official Selection, Moscow International Film Festival|Official Selection, Starz Denver Film Festival|Official Selection, 30 Under 30 Tribeca|Official Selection, Festival de Cine de Lima"
+        data-press="No Film School — &quot;This 17 Year Old Made One of The Best Short Films You'll See This Year&quot;|Leonardo — &quot;El Universo de Ribeyro Según Alex Fischman&quot;"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Rodolfo Herrera"},{"role":"Screenplay by","name":"Alex Fischman Cárdenas"},{"role":"Production Design by","name":"Renzo Basan"},{"role":"Edit by","name":"Alex Fischman Cárdenas"},{"role":"Sound Design &amp; Music by","name":"Christian Acuña"},{"role":"Produced by","name":"Andrea Caceda"},{"role":"Based on","name":"Julio Ramón Ribeyro, Tristes Querellas en una Vieja Quinta"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/lavieja-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/lavieja-b.jpg')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/lavieja-a.webp')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/lavieja-a.webp')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">08</span>
@@ -216,142 +227,18 @@
       </article>
 
       <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="09" data-title="Neptune Dreams"
-        data-year="2021" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-vimeo="800341334" data-num="09" data-title="Adidas"
+        data-year="2023" data-category-label="Commercial"
+        data-about="A portrait of Peruvian long-distance runner Sofia Mamani and the unique way she trains—side by side with her family, across the Andean highlands.|This project was a return to my filmmaking roots. Just me, a DP, and a taxi driver-turned-fixer, spending three days with Sofia and her loved ones. We documented what it means to run together—not just as training, but as a shared rhythm of life."
+        data-awards="Young Director Award Finalist|1.4 Awards|Berlin Commercial Award – Shortlist"
+        data-press="Beyond the Short|Directors Library|Film Shortage"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Color by","name":"Cameron Marygold"},{"role":"Music by","name":"Gavin Brivik"},{"role":"Sound Design","name":"Romain Sturma"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/neptune-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/neptune-b.jpg')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/adidas-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/adidas-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">09</span>
-          <div class="card-meta">
-            <h3 class="card-title">Neptune Dreams</h3>
-            <span class="card-sub">Commercial &middot; 2021</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="10" data-title="Cheniere"
-        data-year="2024" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/cheniere-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/cheniere-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">10</span>
-          <div class="card-meta">
-            <h3 class="card-title">Cheniere</h3>
-            <span class="card-sub">Commercial &middot; 2024</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="11" data-title="FEMA"
-        data-year="2024" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/fema-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/fema-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">11</span>
-          <div class="card-meta">
-            <h3 class="card-title">FEMA</h3>
-            <span class="card-sub">Commercial &middot; 2024</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="narrative"
-        data-vimeo="" data-num="12" data-title="Alienación"
-        data-year="2019" data-category-label="Narrative Short Film"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/alienacion-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/alienacion-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">12</span>
-          <div class="card-meta">
-            <h3 class="card-title">Alienación</h3>
-            <span class="card-sub">Narrative Short Film &middot; 2019</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="13" data-title="Justpoint"
-        data-year="2022" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/justpoint-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/justpoint-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">13</span>
-          <div class="card-meta">
-            <h3 class="card-title">Justpoint</h3>
-            <span class="card-sub">Commercial &middot; 2022</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="documentary"
-        data-vimeo="" data-num="14" data-title="Chiaraje"
-        data-year="2026" data-category-label="Documentary Short Film"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/chiaraje-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/chiaraje-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">14</span>
-          <div class="card-meta">
-            <h3 class="card-title">Chiaraje</h3>
-            <span class="card-sub">Documentary Short Film &middot; 2026</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="15" data-title="T-Mobile"
-        data-year="2022" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/tmobile-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/tmobile-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">15</span>
-          <div class="card-meta">
-            <h3 class="card-title">T-Mobile</h3>
-            <span class="card-sub">Commercial &middot; 2022</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="16" data-title="Adidas"
-        data-year="2023" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
-        <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/adidas-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/adidas-b.jpg')"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-num">16</span>
           <div class="card-meta">
             <h3 class="card-title">Adidas</h3>
             <span class="card-sub">Commercial &middot; 2023</span>
@@ -360,13 +247,139 @@
       </article>
 
       <article class="project-card" data-category="commercial"
-        data-vimeo="" data-num="17" data-title="Georgia's Own Credit Union"
+        data-vimeo="656167638" data-num="10" data-title="Neptune Dreams"
+        data-year="2021" data-category-label="Dance Film"
+        data-synopsis="Part of the films.dance series by Jacob Jonas The Company, a global collaboration where filmmakers and dancers come together to create original dance films.|Shot in Neptune Township, NJ, Neptune Wakes Up From a Dream captures the quiet, surreal moment between sleep and movement."
+        data-press="Directors Notes|Nowness|Harris Theatre"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Edit by","name":"Duke Nova"},{"role":"Choreography &amp; Staging","name":"Jonah Bokaer"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Music by","name":"Gavin Brivik, Philip Daniel, Luanne Homzy"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/neptune-a.png')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/neptune-a.png')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">10</span>
+          <div class="card-meta">
+            <h3 class="card-title">Neptune Dreams</h3>
+            <span class="card-sub">Dance Film &middot; 2021</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="1013237740" data-num="11" data-title="Doing Our Part"
+        data-year="2024" data-category-label="Commercial"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Mika Aberra"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Music by","name":"Paulo Gallo"},{"role":"Production Company","name":"Greenpoint Pictures"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/cheniere-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/cheniere-a.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">11</span>
+          <div class="card-meta">
+            <h3 class="card-title">Doing Our Part</h3>
+            <span class="card-sub">Cheniere &middot; Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="1013237109" data-vimeo-hash="61d53f7996" data-num="12" data-title="FEMA"
+        data-year="2024" data-category-label="Commercial"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/fema-a.webp')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/fema-b.webp')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">12</span>
+          <div class="card-meta">
+            <h3 class="card-title">FEMA</h3>
+            <span class="card-sub">Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="452392162" data-num="13" data-title="Alienación"
+        data-year="2019" data-category-label="Narrative Short Film"
+        data-synopsis="After being rejected by the girl of his dreams because of the color of his skin, Roberto Lopez will transform himself from a brown-skinned Peruvian into a blonde American. Based on Julio Ramón Ribeyro's Alienación."
+        data-festivals="Official Selection, Aesthetica Short Film Festival|Official Selection, Rhode Island International Film Festival|Winner, Diversity in the Arts Award, Los Angeles Diversity Film Festival"
+        data-press="La Republica — Alienación, corto peruano inspirado en obra de Julio Ramón Ribeyro, gana premio en EE. UU.|El Comercio — Julio Ramón Ribeyro: corto de Alex Fischman muestra vigencia del relato &quot;Alienación&quot; en el Perú|Leonardo — El Universo de Ribeyro Segun Alex Fischman|Boooooooooom.tv|Film Shortage Featured Short"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Screenplay by","name":"Alex Fischman Cárdenas"},{"role":"Production Design by","name":"Renzo Basan"},{"role":"Based on","name":"Julio Ramón Ribeyro\u2019s Alienación"},{"role":"Editing by","name":"Elliot Farinaro"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/alienacion-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/alienacion-a.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">13</span>
+          <div class="card-meta">
+            <h3 class="card-title">Alienación</h3>
+            <span class="card-sub">Narrative Short Film &middot; 2019</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="831700060" data-num="14" data-title="Justpoint"
+        data-year="2022" data-category-label="Commercial"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Line Producer","name":"Amalia Bradstreet"},{"role":"Production Design by","name":"Katie Balun"},{"role":"Production Company","name":"Greenpoint Pictures"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/justpoint-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/justpoint-a.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">14</span>
+          <div class="card-meta">
+            <h3 class="card-title">Justpoint</h3>
+            <span class="card-sub">Commercial &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="" data-num="15" data-title="Chiaraje"
+        data-year="2026" data-category-label="Documentary Short Film"
+        data-about="High in the Peruvian Andes, more than 4,500 meters above sea level, the Battle of Chiaraje unfolds each year, a violent ritual where two neighboring towns clash in a full-scale recreation of an ancient war. Armed with slingshots, whips, and rocks, over a thousand participants gather for a recreation that's totally real. Injuries are expected. Deaths occur. And yet, the fighters return year after year."
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Julio Gonzales"},{"role":"Editing by","name":"Dominik Braz Bittrich"},{"role":"Starring","name":"Elard Velasco"},{"role":"Produced by","name":"Alex Fischman Cárdenas, Anibal Lozano Herrera"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/chiaraje-a.webp')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/chiaraje-a.webp')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">15</span>
+          <div class="card-meta">
+            <h3 class="card-title">Chiaraje</h3>
+            <span class="card-sub">Documentary Short Film &middot; 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="769262046" data-num="16" data-title="T-Mobile"
+        data-year="2022" data-category-label="Commercial"
+        data-about="BIPOC entrepreneurs across Kansas City, Los Angeles, Seattle, and New York reflect on what it means to run a small business in America. Through candid conversations and intimate visuals, the series captures both the challenges they face and the pride they carry. It's a portrait of resilience, resourcefulness, and the communities that rally behind them."
+        data-awards="AICP Awards, Nomination, Best New Director of the Year|Shots Awards, Nomination, Best New Director of the Year"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Line Producer","name":"Amalia Bradstreet"},{"role":"Production Company","name":"Greenpoint Pictures"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/tmobile-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/tmobile-a.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">16</span>
+          <div class="card-meta">
+            <h3 class="card-title">T-Mobile</h3>
+            <span class="card-sub">Commercial &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="831592600" data-num="17" data-title="Georgia's Own Credit Union"
         data-year="2023" data-category-label="Commercial"
-        data-desc=""
-        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Line Producer","name":"Chris Lettley"},{"role":"Music by","name":"Paulo Gallo"},{"role":"Production Company","name":"Greenpoint Pictures"}]'>
         <div class="card-media">
           <div class="card-img primary" style="background-image:url('assets/images/georgiasown-a.jpg')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/georgiasown-b.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/georgiasown-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">17</span>
