@@ -64,6 +64,7 @@ a    { color: inherit; text-decoration: none; }
   font-size: 0.7rem;
   font-weight: 300;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
   transition: color 0.2s, letter-spacing 0.45s cubic-bezier(0.16,1,0.3,1);
 }
@@ -121,6 +122,7 @@ a    { color: inherit; text-decoration: none; }
   font-weight: 300;
   font-size: clamp(0.7rem, 1vw, 0.85rem);
   letter-spacing: 0.3em;
+  text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -332,6 +334,28 @@ a    { color: inherit; text-decoration: none; }
   transition: color 0.2s, border-color 0.2s;
 }
 .about-email:hover { color: var(--fg); border-color: var(--fg); }
+
+.about-management {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.about-mgmt-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about-mgmt-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: #aaa;
+}
 
 .about-col-heading {
   font-family: 'Space Mono', monospace;
