@@ -14,49 +14,11 @@
   function init() {
     if (typeof gsap === 'undefined') { setTimeout(init, 50); return; }
     gsap.registerPlugin(ScrollTrigger);
-    initCursor();
     initNav();
     initFilter();
     initOverlay();
     initEntrance();
     initScrollReveal();
-  }
-
-  /* ── Cursor ──────────────────────────────────────────── */
-  function initCursor() {
-    const dot  = $('#cursor-dot');
-    const ring = $('#cursor-ring');
-    if (!dot || !ring) return;
-
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let rx = mx, ry = my;
-
-    const setDotX = gsap.quickSetter(dot,  'x', 'px');
-    const setDotY = gsap.quickSetter(dot,  'y', 'px');
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      setDotX(mx); setDotY(my);
-    });
-
-    gsap.ticker.add(() => {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      gsap.set(ring, { x: rx, y: ry });
-    });
-
-    const interactives = $$('.project-card, a, button');
-    interactives.forEach(el => {
-      el.addEventListener('mouseenter', () =>
-        gsap.to(ring, { width: 52, height: 52, borderColor: 'rgba(255,255,255,0.7)', duration: 0.35, ease: 'power3.out' })
-      );
-      el.addEventListener('mouseleave', () =>
-        gsap.to(ring, { width: 28, height: 28, borderColor: 'rgba(255,255,255,0.45)', duration: 0.35, ease: 'power3.out' })
-      );
-    });
-
-    document.addEventListener('mouseleave', () => gsap.to([dot, ring], { opacity: 0, duration: 0.2 }));
-    document.addEventListener('mouseenter', () => gsap.to([dot, ring], { opacity: 1, duration: 0.2 }));
   }
 
   /* ── Page entrance ───────────────────────────────────── */
@@ -160,8 +122,6 @@
     const barNum    = $('#overlay-bar-num');
     const barTitle  = $('#overlay-bar-title');
     const barYear   = $('#overlay-bar-year');
-    const briefDesc = $('#overlay-brief-desc');
-    const briefMeta = $('#overlay-brief-meta');
     const detailsEl = $('#overlay-details');
 
     if (!overlay) return;
@@ -179,10 +139,6 @@
       barNum.textContent   = d.num   || '';
       barTitle.textContent = (d.title || '').toUpperCase();
       barYear.textContent  = d.year  || '';
-
-      /* Brief row */
-      briefDesc.textContent = d.desc || '';
-      briefMeta.innerHTML   = buildMeta(d);
 
       /* Detailed sections — always visible */
       detailsEl.innerHTML = buildDetails(d);

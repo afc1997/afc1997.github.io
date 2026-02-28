@@ -23,35 +23,11 @@ html {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
+  overscroll-behavior: none;
 }
 
 body { background: var(--bg); overflow-x: hidden; }
 a    { color: inherit; text-decoration: none; }
-
-/* ── Custom cursor ────────────────────────────────────── */
-body, a, button, [role="button"], input, select, textarea, summary, label {
-  cursor: none;
-}
-
-.cursor-dot {
-  position: fixed;
-  width: 5px; height: 5px;
-  background: #fff;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-}
-
-.cursor-ring {
-  position: fixed;
-  width: 28px; height: 28px;
-  border: 1px solid rgba(255,255,255,0.45);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-}
 
 /* ── Nav ──────────────────────────────────────────────── */
 .site-nav {
@@ -142,7 +118,6 @@ body, a, button, [role="button"], input, select, textarea, summary, label {
   font-weight: 300;
   font-size: clamp(0.7rem, 1vw, 0.85rem);
   letter-spacing: 0.3em;
-  text-transform: lowercase;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -245,7 +220,7 @@ body, a, button, [role="button"], input, select, textarea, summary, label {
 
 .card-media {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #0d0d0d;
 }
