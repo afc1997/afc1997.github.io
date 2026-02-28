@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AFC — Animation Sandbox</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ── OPTION A: Custom cursor ─────────────────────────── */
+    body { cursor: none; }
+
+    .cursor-dot {
+      position: fixed;
+      width: 5px; height: 5px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.35s cubic-bezier(0.16,1,0.3,1),
+                  height 0.35s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.35s;
+    }
+
+    /* Ring expands over clickable things */
+    a:hover ~ .cursor-ring,
+    button:hover ~ .cursor-ring { width: 48px; height: 48px; }
+
+    /* ── OPTION B: Film grain on hero ────────────────────── */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 3; /* above overlay */
+      pointer-events: none;
+      opacity: 0.055;
+    }
+    .hero-grain svg { width: 100%; height: 100%; }
+
+    /* ── OPTION C: Clip-path card reveals ────────────────── */
+    /* Cards start clipped — JS handles the animation */
+    .project-card.clip-init {
+      clip-path: inset(0 0 100% 0);
+    }
+
+    /* ── OPTION D: Nav letter-spacing hover ──────────────── */
+    .nav-logo,
+    .nav-about-link {
+      transition: color 0.2s, letter-spacing 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .nav-logo:hover       { letter-spacing: 0.28em; }
+    .nav-about-link:hover { letter-spacing: 0.2em; }
+
+    /* ── OPTION E: Overlay line sweep ────────────────────── */
+    .overlay-sweep {
+      position: fixed;
+      top: 0; left: 0;
+      width: 1px; height: 100vh;
+      background: rgba(255,255,255,0.6);
+      z-index: 201;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* ── Dev label ────────────────────────────────────────── */
+    .dev-badge {
+      position: fixed;
+      bottom: 18px; right: 18px;
+      z-index: 9000;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OPTION A: cursor elements -->
+  <div class="cursor-dot"  id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- OPTION E: overlay sweep line -->
+  <div class="overlay-sweep" id="overlay-sweep"></div>
+
+  <div class="dev-badge">animation sandbox</div>
+
+  <!-- NAV -->
+  <nav class="site-nav" id="site-nav">
+    <a class="nav-logo" href="#">AFC</a>
+    <a class="nav-about-link" href="#about">About</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <iframe
+        src="https://player.vimeo.com/video/1072634041?background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        aria-hidden="true">
+      </iframe>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <!-- OPTION B: film grain -->
+    <div class="hero-grain" id="hero-grain">
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <filter id="grain-f" x="0" y="0" width="100%" height="100%">
+          <feTurbulence
+            id="grain-turb"
+            type="fractalNoise"
+            baseFrequency="0.68"
+            numOctaves="4"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix type="saturate" values="0"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain-f)"/>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <!-- OPTION C: scramble target -->
+      <h1 class="hero-name" id="hero-name" data-final="alex fischman cárdenas">&nbsp;</h1>
+    </div>
+
+    <button class="hero-scroll" id="hero-scroll" aria-label="Scroll to work">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </section>
+
+  <!-- WORK -->
+  <main class="work-section" id="work">
+    <div class="filter-bar" role="group" aria-label="Filter projects">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="narrative">Narrative</button>
+      <button class="filter-btn" data-filter="documentary">Documentary</button>
+    </div>
+
+    <div class="project-grid">
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="76979871" data-num="01" data-title="Brand Film — Nike"
+        data-year="2024" data-category-label="Commercial"
+        data-desc="30-second spot for the Spring 2024 collection.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/commercial-01-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/commercial-01-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">01</span>
+          <div class="card-meta">
+            <h3 class="card-title">Brand Film — Nike</h3>
+            <span class="card-sub">Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="76979871" data-num="02" data-title="Short Film Title"
+        data-year="2024" data-category-label="Narrative"
+        data-desc="A 12-minute short exploring memory and place.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/narrative-01-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/narrative-01-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">02</span>
+          <div class="card-meta">
+            <h3 class="card-title">Short Film Title</h3>
+            <span class="card-sub">Narrative &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="76979871" data-num="03" data-title="Documentary Title"
+        data-year="2024" data-category-label="Documentary"
+        data-desc="Feature-length documentary. Currently in post-production.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/doc-01-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/doc-01-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">03</span>
+          <div class="card-meta">
+            <h3 class="card-title">Documentary Title</h3>
+            <span class="card-sub">Documentary &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="76979871" data-num="04" data-title="Product Spot — Warby Parker"
+        data-year="2024" data-category-label="Commercial"
+        data-desc="Visual identity campaign for the Autumn Classics eyewear line.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/commercial-02-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/commercial-02-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">04</span>
+          <div class="card-meta">
+            <h3 class="card-title">Product Spot — Warby Parker</h3>
+            <span class="card-sub">Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="76979871" data-num="05" data-title="Another Short"
+        data-year="2023" data-category-label="Narrative"
+        data-desc="Written and directed. Shot over five days in upstate New York.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/narrative-02-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/narrative-02-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">05</span>
+          <div class="card-meta">
+            <h3 class="card-title">Another Short</h3>
+            <span class="card-sub">Narrative &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="76979871" data-num="06" data-title="Campaign — Patagonia"
+        data-year="2023" data-category-label="Commercial"
+        data-desc="Environmental campaign shot across Patagonia, Chile.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/commercial-03-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/commercial-03-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">06</span>
+          <div class="card-meta">
+            <h3 class="card-title">Campaign — Patagonia</h3>
+            <span class="card-sub">Commercial &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="76979871" data-num="07" data-title="Short Documentary"
+        data-year="2023" data-category-label="Documentary"
+        data-desc="18-minute observational documentary. New York City.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/doc-02-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/doc-02-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">07</span>
+          <div class="card-meta">
+            <h3 class="card-title">Short Documentary</h3>
+            <span class="card-sub">Documentary &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="76979871" data-num="08" data-title="Thesis Film"
+        data-year="2022" data-category-label="Narrative"
+        data-desc="NYU Tisch MFA thesis film. 35mm, black &amp; white.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/narrative-03-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/narrative-03-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">08</span>
+          <div class="card-meta">
+            <h3 class="card-title">Thesis Film</h3>
+            <span class="card-sub">Narrative &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="76979871" data-num="09" data-title="Music Video — Artist Name"
+        data-year="2023" data-category-label="Commercial"
+        data-desc="Official music video. Shot on 16mm, processed in Los Angeles.">
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/commercial-04-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/commercial-04-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">09</span>
+          <div class="card-meta">
+            <h3 class="card-title">Music Video — Artist Name</h3>
+            <span class="card-sub">Commercial &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="about-bio-col">
+      <p class="about-bio">
+        Alex Fischman Cárdenas is a New York-based filmmaker working across
+        commercial, narrative, and documentary forms.
+      </p>
+      <a class="about-email" href="mailto:alex@alexfischman.com">alex@alexfischman.com</a>
+    </div>
+    <div class="about-awards-col">
+      <h2 class="about-col-heading">Recognition</h2>
+      <ul class="about-list">
+        <li><span class="award-title">SXSW Film Festival</span><span class="award-detail">Official Selection, Narrative Shorts — 2024</span></li>
+        <li><span class="award-title">Tribeca Film Festival</span><span class="award-detail">Official Selection — 2023</span></li>
+        <li><span class="award-title">Student Academy Awards</span><span class="award-detail">Gold Medal, Narrative — 2022</span></li>
+      </ul>
+    </div>
+    <div class="about-press-col">
+      <h2 class="about-col-heading">Press</h2>
+      <ul class="about-list">
+        <li><span class="award-title">Filmmaker Magazine</span><span class="award-detail">"25 New Faces of Independent Film" — 2024</span></li>
+        <li><span class="award-title">Vimeo Staff Pick</span><span class="award-detail">Short Film Title — 2024</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="footer-year"></span> Alex Fischman Cárdenas</span>
+    <div class="footer-links">
+      <a href="https://vimeo.com/alexfischman" target="_blank" rel="noopener">Vimeo</a>
+      <a href="https://instagram.com/alexfischman" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </footer>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="project-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="overlay-close" id="overlay-close" aria-label="Close">&times;</button>
+    <div class="overlay-video" id="overlay-video"></div>
+    <div class="overlay-bar">
+      <span class="overlay-bar-num"   id="overlay-bar-num"></span>
+      <h2   class="overlay-bar-title" id="overlay-bar-title"></h2>
+      <button class="overlay-more-btn" id="overlay-more-btn">More Info</button>
+      <span class="overlay-bar-year"  id="overlay-bar-year"></span>
+    </div>
+    <div class="overlay-brief">
+      <span class="overlay-brief-label">Credits</span>
+      <p    class="overlay-brief-desc" id="overlay-brief-desc"></p>
+      <div  class="overlay-brief-meta" id="overlay-brief-meta"></div>
+    </div>
+    <div class="overlay-details" id="overlay-details"></div>
+    <div class="overlay-bottom-pad"></div>
+  </div>
+
+  <script src="js/main-alt.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Fischman Cárdenas</title>
+  <meta name="description" content="Alex Fischman Cárdenas — filmmaker." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="cursor-dot"  id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav class="site-nav" id="site-nav">
+    <a class="nav-logo" href="#">AFC</a>
+    <a class="nav-about-link" href="#about">About</a>
+  </nav>
+
+  <!-- HERO: full-viewport background video -->
+  <section class="hero" id="hero">
+
+    <!-- Replace 76979871 with your hero Vimeo ID -->
+    <!-- ?background=1 requires Vimeo Pro or higher -->
+    <div class="hero-bg">
+      <iframe
+        src="https://player.vimeo.com/video/1072634041?background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        aria-hidden="true">
+      </iframe>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-name">alex fischman cárdenas</h1>
+    </div>
+
+    <button class="hero-scroll" id="hero-scroll" aria-label="Scroll to work">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+  </section>
+
+  <!-- WORK: filter + grid -->
+  <main class="work-section" id="work">
+
+    <div class="filter-bar" role="group" aria-label="Filter projects">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="narrative">Narrative</button>
+      <button class="filter-btn" data-filter="documentary">Documentary</button>
+      <button class="filter-btn" data-filter="dance">Dance Film</button>
+    </div>
+
+    <div class="project-grid">
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="1102513024" data-num="01" data-title="¡PIKA! (The Itch)"
+        data-year="2025" data-category-label="Narrative Short Film"
+        data-desc="A desperate man wakes up with an unbearable itch, anxious to find a cure, he embarks on a nightmarish odyssey in search of relief. Screener available upon request."
+        data-synopsis="A desperate man wakes up with an unbearable itch, anxious to find a cure, he embarks on a nightmarish odyssey in search of relief. Screener available upon request."
+        data-statement="With ¡PIKA! (The Itch), I wanted to make a movie that would make the audience uncomfortable; to immerse the viewer in a place that feels like another world. To make an epic, unpredictable journey that would make viewers feel just as devastated as our main character.|My biggest inspiration for the film was how anxiety feels in my body, and the moment where that intense fear can lead to paralysis. I'm making fun of myself with this movie. It's exposing some of my most absurd and cowardly traits and putting them into a nightmarish journey.|Originally, Trout (Trout Cohen, Writer/Producer) wrote a script about a man with an itch on his chest. His script stuck with me and years later, as I slipped into a depressive hole, I realized it was the perfect metaphor to describe what I was going through.|Inspired by films like The Trial, Good Time, Fight Club, and Beau Is Afraid, we wanted to craft a nightmarish world — in ours, even the smallest errand becomes an impossible hurdle. Together with our department heads we designed spaces for the viewer to feel gross, dirty, and surreal.|This is an epic story contained in a short form film."
+        data-festivals="2026 Sundance Film Festival|2025 Sitges International Fantastic Film Festival Of Catalonia"
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Written by","name":"Trout Cohen"},{"role":"Produced by","name":"Morella Moret, Etienne Talbot, Alex Fischman Cárdenas, Trout Cohen"},{"role":"Cinematography by","name":"Mika Altskan"},{"role":"Production Design by","name":"Renzo Bazan"},{"role":"Edit by","name":"Ben Schwaeber"},{"role":"Music by","name":"Daniel Brandt, Paulo Gallo"},{"role":"Sound Design","name":"Nikolay Antonov"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/pika-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/pika-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">01</span>
+          <div class="card-meta">
+            <h3 class="card-title">¡PIKA! (The Itch)</h3>
+            <span class="card-sub">Narrative Short Film &middot; 2025</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="02" data-title="Ad Council"
+        data-year="2025" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/adcouncil-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/adcouncil-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">02</span>
+          <div class="card-meta">
+            <h3 class="card-title">Ad Council</h3>
+            <span class="card-sub">Commercial &middot; 2025</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="" data-num="03" data-title="Ovejas y Lobos"
+        data-year="2024" data-category-label="Narrative Short Film"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/ovejas-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/ovejas-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">03</span>
+          <div class="card-meta">
+            <h3 class="card-title">Ovejas y Lobos</h3>
+            <span class="card-sub">Narrative Short Film &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="" data-num="04" data-title="Starr"
+        data-year="2022" data-category-label="Documentary Short"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/starr-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/starr-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">04</span>
+          <div class="card-meta">
+            <h3 class="card-title">Starr</h3>
+            <span class="card-sub">Documentary Short &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="05" data-title="Levis"
+        data-year="2025" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/levis-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/levis-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">05</span>
+          <div class="card-meta">
+            <h3 class="card-title">Levis</h3>
+            <span class="card-sub">Commercial &middot; 2025</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="06" data-title="JP Morgan Chase"
+        data-year="2023" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/chase-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/chase-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">06</span>
+          <div class="card-meta">
+            <h3 class="card-title">JP Morgan Chase</h3>
+            <span class="card-sub">Commercial &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="" data-num="07" data-title="Teeth"
+        data-year="2021" data-category-label="Documentary Short"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/teeth-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/teeth-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">07</span>
+          <div class="card-meta">
+            <h3 class="card-title">Teeth</h3>
+            <span class="card-sub">Documentary Short &middot; 2021</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="" data-num="08" data-title="La Vieja Quinta"
+        data-year="2015" data-category-label="Narrative Short Film"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/lavieja-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/lavieja-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">08</span>
+          <div class="card-meta">
+            <h3 class="card-title">La Vieja Quinta</h3>
+            <span class="card-sub">Narrative Short Film &middot; 2015</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="dance"
+        data-vimeo="" data-num="09" data-title="Neptune Dreams"
+        data-year="2021" data-category-label="Dance Film"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/neptune-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/neptune-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">09</span>
+          <div class="card-meta">
+            <h3 class="card-title">Neptune Dreams</h3>
+            <span class="card-sub">Dance Film &middot; 2021</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="10" data-title="Cheniere"
+        data-year="2024" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/cheniere-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/cheniere-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">10</span>
+          <div class="card-meta">
+            <h3 class="card-title">Cheniere</h3>
+            <span class="card-sub">Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="11" data-title="FEMA"
+        data-year="2024" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/fema-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/fema-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">11</span>
+          <div class="card-meta">
+            <h3 class="card-title">FEMA</h3>
+            <span class="card-sub">Commercial &middot; 2024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="narrative"
+        data-vimeo="" data-num="12" data-title="Alienación"
+        data-year="2019" data-category-label="Narrative Short Film"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/alienacion-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/alienacion-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">12</span>
+          <div class="card-meta">
+            <h3 class="card-title">Alienación</h3>
+            <span class="card-sub">Narrative Short Film &middot; 2019</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="13" data-title="Justpoint"
+        data-year="2022" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/justpoint-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/justpoint-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">13</span>
+          <div class="card-meta">
+            <h3 class="card-title">Justpoint</h3>
+            <span class="card-sub">Commercial &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="documentary"
+        data-vimeo="" data-num="14" data-title="Chiaraje"
+        data-year="2026" data-category-label="Documentary Short Film"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/chiaraje-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/chiaraje-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">14</span>
+          <div class="card-meta">
+            <h3 class="card-title">Chiaraje</h3>
+            <span class="card-sub">Documentary Short Film &middot; 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="15" data-title="T-Mobile"
+        data-year="2022" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/tmobile-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/tmobile-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">15</span>
+          <div class="card-meta">
+            <h3 class="card-title">T-Mobile</h3>
+            <span class="card-sub">Commercial &middot; 2022</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="16" data-title="Adidas"
+        data-year="2023" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/adidas-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/adidas-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">16</span>
+          <div class="card-meta">
+            <h3 class="card-title">Adidas</h3>
+            <span class="card-sub">Commercial &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="commercial"
+        data-vimeo="" data-num="17" data-title="Georgia's Own Credit Union"
+        data-year="2023" data-category-label="Commercial"
+        data-desc=""
+        data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"}]'>
+        <div class="card-media">
+          <div class="card-img primary" style="background-image:url('assets/images/georgiasown-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/georgiasown-b.jpg')"></div>
+        </div>
+        <div class="card-info">
+          <span class="card-num">17</span>
+          <div class="card-meta">
+            <h3 class="card-title">Georgia's Own Credit Union</h3>
+            <span class="card-sub">Commercial &middot; 2023</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+
+    <div class="about-bio-col">
+      <p class="about-bio">
+        Alex Fischman Cárdenas is a Peruvian director and producer whose
+        award-winning short films have premiered at Sundance, Clermont-Ferrand,
+        and Sitges, and earned Vimeo Staff Pick recognition. His commercial work
+        has received nominations from the Cannes Young Director Award and
+        Young Guns 23.
+      </p>
+      <a class="about-email" href="mailto:alexfischmancardenas@gmail.com">alexfischmancardenas@gmail.com</a>
+    </div>
+
+    <div class="about-awards-col">
+      <h2 class="about-col-heading">Recognition</h2>
+      <ul class="about-list">
+        <li>
+          <span class="award-title">SXSW Film Festival</span>
+          <span class="award-detail">Official Selection, Narrative Shorts — 2024</span>
+        </li>
+        <li>
+          <span class="award-title">Tribeca Film Festival</span>
+          <span class="award-detail">Official Selection — 2023</span>
+        </li>
+        <li>
+          <span class="award-title">Student Academy Awards</span>
+          <span class="award-detail">Gold Medal, Narrative — 2022</span>
+        </li>
+        <li>
+          <span class="award-title">NYU Tisch</span>
+          <span class="award-detail">Dean's Award for Distinguished Achievement — 2022</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="about-press-col">
+      <h2 class="about-col-heading">Press</h2>
+      <ul class="about-list">
+        <li>
+          <span class="award-title">Filmmaker Magazine</span>
+          <span class="award-detail">"25 New Faces of Independent Film" — 2024</span>
+        </li>
+        <li>
+          <span class="award-title">No Film School</span>
+          <span class="award-detail">Interview: On Shooting Observational Documentary — 2023</span>
+        </li>
+        <li>
+          <span class="award-title">Vimeo Staff Pick</span>
+          <span class="award-detail">Short Film Title — 2024</span>
+        </li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span>&copy; <span id="footer-year"></span> Alex Fischman Cárdenas</span>
+    <div class="footer-links">
+      <a href="https://vimeo.com/alexfischman" target="_blank" rel="noopener">Vimeo</a>
+      <a href="https://instagram.com/alexfischman" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </footer>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="project-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="overlay-close" id="overlay-close" aria-label="Close">&times;</button>
+
+    <!-- Full-width video -->
+    <div class="overlay-video" id="overlay-video"></div>
+
+    <!-- Title bar -->
+    <div class="overlay-bar">
+      <span class="overlay-bar-num"   id="overlay-bar-num"></span>
+      <h2   class="overlay-bar-title" id="overlay-bar-title"></h2>
+      <span class="overlay-bar-year"  id="overlay-bar-year"></span>
+    </div>
+
+    <!-- Brief info row -->
+    <div class="overlay-brief">
+      <p    class="overlay-brief-desc" id="overlay-brief-desc"></p>
+      <div  class="overlay-brief-meta" id="overlay-brief-meta"></div>
+    </div>
+
+    <!-- Detailed sections — always visible -->
+    <div class="overlay-details" id="overlay-details"></div>
+
+    <div class="overlay-bottom-pad"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
