@@ -20,6 +20,8 @@
     initEntrance();
     initScrollReveal();
     initPressToggle();
+    initHoverVideo();
+    initSizeSlider();
   }
 
   /* ── Page entrance ───────────────────────────────────── */
@@ -256,6 +258,60 @@
   function initPressToggle() {
     makeToggle('press-more-btn',  'press-more-list');
     makeToggle('awards-more-btn', 'awards-more-list');
+  }
+
+  /* ── Hover video ─────────────────────────────────────── */
+  function initHoverVideo() {
+    if (window.matchMedia('(hover: none)').matches) return; // skip touch devices
+
+    $$('.project-card').forEach(card => {
+      const id = card.dataset.vimeoHover || card.dataset.vimeo;
+      if (!id) return;
+
+      let videoEl   = null;
+      let leaveTimer = null;
+
+      card.addEventListener('mouseenter', () => {
+        clearTimeout(leaveTimer);
+        if (videoEl) return;
+
+        videoEl = document.createElement('div');
+        videoEl.className = 'card-video';
+        videoEl.innerHTML = `<iframe
+          src="https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1"
+          allow="autoplay; fullscreen"
+          title="" frameborder="0"></iframe>`;
+        card.querySelector('.card-media').appendChild(videoEl);
+
+        // Fade in after iframe has had time to load
+        setTimeout(() => { if (videoEl) videoEl.classList.add('is-visible'); }, 700);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        if (!videoEl) return;
+        videoEl.classList.remove('is-visible');
+        const el = videoEl;
+        videoEl = null;
+        leaveTimer = setTimeout(() => el.remove(), 650);
+      });
+    });
+  }
+
+  /* ── Size slider ─────────────────────────────────────── */
+  function initSizeSlider() {
+    const slider = $('#size-slider');
+    if (!slider) return;
+
+    const grid = $('.project-grid');
+
+    function applySize(val) {
+      // val 0 → small cards (many cols, ~140px min), val 100 → big cards (few cols, ~700px min)
+      const minW = Math.round(140 + (val / 100) * (700 - 140));
+      grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minW}px, 1fr))`;
+    }
+
+    slider.addEventListener('input', () => applySize(+slider.value));
+    applySize(+slider.value);
   }
 
   if (document.readyState === 'loading') {
