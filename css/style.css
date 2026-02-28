@@ -672,7 +672,7 @@ a    { color: inherit; text-decoration: none; }
   -webkit-appearance: none;
   appearance: none;
   width: 110px;
-  height: 1px;
+  height: 20px;          /* proper hit area — track styled via pseudo */
   background: transparent;
   outline: none;
   cursor: pointer;
@@ -697,7 +697,7 @@ a    { color: inherit; text-decoration: none; }
   width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--fg);
-  margin-top: -3px;
+  margin-top: -3px;       /* center 7px thumb on 1px track */
   cursor: pointer;
 }
 .size-slider::-moz-range-thumb {
