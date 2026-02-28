@@ -278,13 +278,13 @@
         videoEl = document.createElement('div');
         videoEl.className = 'card-video';
         videoEl.innerHTML = `<iframe
-          src="https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1"
-          allow="autoplay; fullscreen"
-          title="" frameborder="0"></iframe>`;
+          src="https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1&autopause=0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen title="" frameborder="0"></iframe>`;
         card.querySelector('.card-media').appendChild(videoEl);
 
         // Fade in after iframe has had time to load
-        setTimeout(() => { if (videoEl) videoEl.classList.add('is-visible'); }, 700);
+        setTimeout(() => { if (videoEl) videoEl.classList.add('is-visible'); }, 500);
       });
 
       card.addEventListener('mouseleave', () => {
