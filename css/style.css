@@ -790,6 +790,16 @@ a    { color: inherit; text-decoration: none; }
 
 }
 
+/* ── Mobile nav fix (≤640px) ─────────────────────────── */
+@media (max-width: 640px) {
+  .site-nav {
+    grid-template-columns: auto 1fr;
+  }
+  .nav-name { display: none; }
+  .nav-logo { justify-self: start; }
+  .nav-links { justify-content: flex-end; }
+}
+
 /* ── Small mobile (≤480px) ────────────────────────────── */
 @media (max-width: 480px) {
   :root { --gutter: 18px; }
@@ -809,11 +819,11 @@ a    { color: inherit; text-decoration: none; }
 
   /* Nav — hide name, switch to logo-left / links-right */
   .site-nav {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr !important;
   }
-  .nav-name { display: none; }
-  .nav-logo { justify-self: start; }
-  .nav-links { justify-content: flex-end; }
+  .nav-name { display: none !important; }
+  .nav-logo { justify-self: start !important; }
+  .nav-links { justify-content: flex-end !important; }
 
   /* Nav tap targets */
   .nav-logo,
