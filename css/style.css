@@ -807,6 +807,14 @@ a    { color: inherit; text-decoration: none; }
   /* About */
   .about-bio { font-size: 0.88rem; }
 
+  /* Nav — hide name, switch to logo-left / links-right */
+  .site-nav {
+    grid-template-columns: auto 1fr;
+  }
+  .nav-name { display: none; }
+  .nav-logo { justify-self: start; }
+  .nav-links { justify-content: flex-end; }
+
   /* Nav tap targets */
   .nav-logo,
   .nav-about-link { min-height: 44px; display: flex; align-items: center; }
