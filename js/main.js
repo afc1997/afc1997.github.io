@@ -226,10 +226,10 @@
     }
   }
 
-  /* ── Press toggle ────────────────────────────────────── */
-  function initPressToggle() {
-    const btn  = $('#press-more-btn');
-    const list = $('#press-more-list');
+  /* ── Press / Awards toggle ───────────────────────────── */
+  function makeToggle(btnId, listId) {
+    const btn  = $(`#${btnId}`);
+    const list = $(`#${listId}`);
     if (!btn || !list) return;
 
     let open = false;
@@ -247,12 +247,15 @@
         btn.textContent = '− View less';
       } else {
         list.style.overflow = 'hidden';
-        gsap.to(list, {
-          height: 0, marginTop: 0, duration: 0.4, ease: 'power3.inOut',
-        });
+        gsap.to(list, { height: 0, marginTop: 0, duration: 0.4, ease: 'power3.inOut' });
         btn.textContent = '+ View more';
       }
     });
+  }
+
+  function initPressToggle() {
+    makeToggle('press-more-btn',  'press-more-list');
+    makeToggle('awards-more-btn', 'awards-more-list');
   }
 
   if (document.readyState === 'loading') {
