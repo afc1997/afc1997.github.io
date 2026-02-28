@@ -19,6 +19,7 @@
     initOverlay();
     initEntrance();
     initScrollReveal();
+    initPressToggle();
   }
 
   /* ── Page entrance ───────────────────────────────────── */
@@ -223,6 +224,35 @@
         <div class="overlay-row-content">${contentHtml}</div>
       </div>`;
     }
+  }
+
+  /* ── Press toggle ────────────────────────────────────── */
+  function initPressToggle() {
+    const btn  = $('#press-more-btn');
+    const list = $('#press-more-list');
+    if (!btn || !list) return;
+
+    let open = false;
+
+    btn.addEventListener('click', () => {
+      open = !open;
+      if (open) {
+        list.style.overflow = 'hidden';
+        const h = list.scrollHeight;
+        gsap.fromTo(list,
+          { height: 0, marginTop: 0 },
+          { height: h, marginTop: 20, duration: 0.5, ease: 'power3.inOut',
+            onComplete: () => { list.style.height = 'auto'; list.style.overflow = 'visible'; } }
+        );
+        btn.textContent = '− View less';
+      } else {
+        list.style.overflow = 'hidden';
+        gsap.to(list, {
+          height: 0, marginTop: 0, duration: 0.4, ease: 'power3.inOut',
+        });
+        btn.textContent = '+ View more';
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
