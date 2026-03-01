@@ -4,12 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alex Fischman Cárdenas</title>
-  <meta name="description" content="Alex Fischman Cárdenas — filmmaker." />
+  <meta name="description" content="Peruvian director & producer. Sundance, Sitges, Clermont-Ferrand. Vimeo Staff Pick. Young Director Award." />
+
+  <link rel="icon" type="image/svg+xml" href="assets/logo-nav.svg" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://alexfischman.com" />
+  <meta property="og:title"       content="Alex Fischman Cárdenas — Director & Producer" />
+  <meta property="og:description" content="Peruvian director & producer. Sundance, Sitges, Clermont-Ferrand. Vimeo Staff Pick. Young Director Award." />
+  <meta property="og:image"       content="https://alexfischman.com/assets/images/pika-a.jpg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Alex Fischman Cárdenas — Director & Producer" />
+  <meta name="twitter:description" content="Peruvian director & producer. Sundance, Sitges, Clermont-Ferrand. Vimeo Staff Pick. Young Director Award." />
+  <meta name="twitter:image"       content="https://alexfischman.com/assets/images/pika-a.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet" />
 
+  <script src="https://player.vimeo.com/api/player.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -33,7 +46,9 @@
     <!-- Replace 76979871 with your hero Vimeo ID -->
     <!-- ?background=1 requires Vimeo Pro or higher -->
     <div class="hero-bg">
+      <img class="hero-poster" src="assets/images/hero-poster.jpg" alt="" aria-hidden="true" />
       <iframe
+        id="hero-iframe"
         src="https://player.vimeo.com/video/1169118938?h=5cb3db916b&background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
         frameborder="0"
         allow="autoplay; fullscreen"

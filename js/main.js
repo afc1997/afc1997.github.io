@@ -23,6 +23,7 @@
     initHoverVideo();
     initResponsiveImages();
     initSizeSlider();
+    initHeroPoster();
   }
 
   /* ── Page entrance ───────────────────────────────────── */
@@ -223,7 +224,13 @@
           allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
           title="${d.title || ''}"></iframe>`;
       } else {
-        videoWrap.innerHTML = '';
+        /* No video yet — show the card's primary thumbnail */
+        const primaryImg = card.querySelector('.card-img.primary');
+        const bg = primaryImg ? primaryImg.style.backgroundImage : '';
+        const src = bg.replace(/url\(['"]?(.+?)['"]?\)/i, '$1');
+        videoWrap.innerHTML = src
+          ? `<img src="${src}" alt="${d.title || ''}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+          : '';
       }
 
       overlay.classList.add('is-open');
@@ -445,6 +452,28 @@
 
     slider.addEventListener('input', () => applySize(+slider.value));
     applySize(+slider.value);
+  }
+
+  /* ── Hero poster ─────────────────────────────────────── */
+  function initHeroPoster() {
+    const poster = document.querySelector('.hero-poster');
+    const iframe = document.getElementById('hero-iframe');
+    if (!poster || !iframe) return;
+
+    function hidePoster() {
+      poster.style.opacity = '0';
+      setTimeout(() => { if (poster.parentNode) poster.remove(); }, 1600);
+    }
+
+    // Fallback: hide after 7 s no matter what
+    const fallback = setTimeout(hidePoster, 7000);
+
+    function tryVimeo() {
+      if (typeof Vimeo === 'undefined') { setTimeout(tryVimeo, 100); return; }
+      const player = new Vimeo.Player(iframe);
+      player.on('play', () => { clearTimeout(fallback); hidePoster(); });
+    }
+    tryVimeo();
   }
 
   if (document.readyState === 'loading') {
