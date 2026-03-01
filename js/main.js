@@ -187,12 +187,16 @@
     const detailsEl  = $('#overlay-details');
     const overlayNav = $('#overlay-nav');
     const overlayMain = $('#overlay-main');
+    const prevBtn    = $('#overlay-prev');
+    const nextBtn    = $('#overlay-next');
     const allCards   = $$('.project-card');
     let   currentIdx = 0;
 
     if (!overlay) return;
 
     $$('.project-card').forEach(card => card.addEventListener('click', () => openOverlay(card)));
+    if (prevBtn) prevBtn.addEventListener('click', () => { if (currentIdx > 0) openOverlay(allCards[currentIdx - 1]); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { if (currentIdx < allCards.length - 1) openOverlay(allCards[currentIdx + 1]); });
     document.addEventListener('keydown', e => {
       if (!overlay.classList.contains('is-open')) return;
       if (e.key === 'Escape') { closeOverlay(); return; }
@@ -237,6 +241,8 @@
       if (overlayMain) overlayMain.scrollTop = 0;
       overlay.scrollTop = 0;
       document.body.style.overflow = 'hidden';
+      if (prevBtn) prevBtn.classList.toggle('is-hidden', currentIdx === 0);
+      if (nextBtn) nextBtn.classList.toggle('is-hidden', currentIdx === allCards.length - 1);
 
       if (!alreadyOpen) {
         gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });

@@ -68,7 +68,7 @@
       <button class="filter-btn active" data-filter="selected">Selected</button>
       <button class="filter-btn" data-filter="commercial">Commercial</button>
       <button class="filter-btn" data-filter="narrative">Narrative</button>
-      <button class="filter-btn" data-filter="documentary">Documentary</button>
+      <button class="filter-btn" data-filter="documentary">doc</button>
       <input type="range" class="size-slider" id="size-slider"
         min="0" max="100" value="45" step="1" aria-label="Adjust grid size">
     </div>
@@ -631,8 +631,20 @@
     <nav class="overlay-nav" id="overlay-nav" aria-label="Projects"></nav>
 
     <div class="overlay-main" id="overlay-main">
-      <!-- Full-width video -->
-      <div class="overlay-video" id="overlay-video"></div>
+      <!-- Full-width video with prev/next arrows -->
+      <div class="overlay-video-wrap">
+        <button class="overlay-arrow overlay-prev" id="overlay-prev" aria-label="Previous project">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="overlay-video" id="overlay-video"></div>
+        <button class="overlay-arrow overlay-next" id="overlay-next" aria-label="Next project">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
 
       <!-- Title bar -->
       <div class="overlay-bar">
