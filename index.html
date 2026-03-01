@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet" />
 
   <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
@@ -21,9 +21,6 @@
   <!-- NAV -->
   <nav class="site-nav" id="site-nav">
     <a class="nav-name" href="#">Alex Fischman Cárdenas</a>
-    <a class="nav-logo" href="#">
-      <img src="assets/logo-nav.svg" alt="Alex Fischman Cárdenas" class="nav-logo-img" />
-    </a>
     <div class="nav-links">
       <a class="nav-link" id="nav-films-link" href="#work">Films</a>
       <a class="nav-link nav-about-link" href="#about">About</a>
@@ -60,7 +57,8 @@
   <main class="work-section" id="work">
 
     <div class="filter-bar" role="group" aria-label="Filter projects">
-      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="all">All</button>
+      <button class="filter-btn active" data-filter="selected">Selected</button>
       <button class="filter-btn" data-filter="commercial">Commercial</button>
       <button class="filter-btn" data-filter="narrative">Narrative</button>
       <button class="filter-btn" data-filter="documentary">Documentary</button>
@@ -70,7 +68,7 @@
 
     <div class="project-grid">
 
-      <article class="project-card" data-category="narrative"
+      <article class="project-card" data-selected="true" data-category="narrative"
         data-vimeo="1102513024" data-num="01" data-title="¡PIKA! (The Itch)"
         data-year="2025" data-category-label="Narrative Short Film"
         data-desc="A desperate man wakes up with an unbearable itch, anxious to find a cure, he embarks on a nightmarish odyssey in search of relief. Screener available upon request."
@@ -91,7 +89,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="commercial"
+      <article class="project-card" data-selected="true" data-category="commercial"
         data-vimeo="1072634041" data-num="02" data-title="Ad Council"
         data-year="2025" data-category-label="Commercial"
         data-about="Sound It Out's latest initiative, Listening is a Form of Love, highlights the power of listening as a way for parents and caregivers to support young people's mental health.|Originally launched as an Interactive Video, the campaign features real teens sharing what they wish their parents could hear."
@@ -99,8 +97,8 @@
         data-press="Little Black Book — &quot;The Ad Council Reminds Parents That Listening Is a Form of Love&quot;|Shots — &quot;Listening is a Form of Love&quot;"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Mika Altskan"},{"role":"Line Producer","name":"Amalia Bradstreet"},{"role":"Production Design by","name":"Katie Fleming"},{"role":"Production Company","name":"Greenpoint Pictures"},{"role":"Agency","name":"McCann"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/adcouncil-a.png');background-position:top center"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/adcouncil-a.png');background-position:top center"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/adcouncil-a.jpg');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/adcouncil-a.jpg');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">02</span>
@@ -111,7 +109,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="narrative"
+      <article class="project-card" data-selected="true" data-category="narrative"
         data-vimeo="1101244533" data-vimeo-hover="914931520" data-num="03" data-title="Ovejas y Lobos"
         data-year="2024" data-category-label="Narrative Short Film"
         data-synopsis="A Mother's world shatters after her Son vanishes without a trace. Set in the height of the Peruvian armed conflict, &quot;Ovejas y Lobos&quot; follows a Mother's suspenseful search through the perilous, vast, and unforgiving landscape that mirrors her seemingly insurmountable mission."
@@ -131,7 +129,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="documentary"
+      <article class="project-card" data-selected="true" data-category="documentary"
         data-vimeo="664925900" data-num="04" data-title="Starr"
         data-year="2022" data-category-label="Documentary Short"
         data-about="A single mother in the Bronx grapples with her passion for bike-life, a dangerous lifestyle that's nearly killed her, but also gives her a sense of freedom, identity, and escape that nothing else can.|Formed from intimate audio interviews, this project blends documentary and narrative filmmaking to create a layered portrait of Starr. Through her own words, we explore the tension between personal ambition, community, and the responsibilities of motherhood."
@@ -139,8 +137,8 @@
         data-press="Directors Library|Film Shortage"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas, Bertram"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Editing by","name":"Gabriel Crawford Connelly"},{"role":"Line Producer","name":"Adrian Sobrado"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Music by","name":"Gavin Brivik"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/starr-a.png');background-position:top center"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/starr-a.png');background-position:top center"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/starr-a.jpg');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/starr-a.jpg');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">04</span>
@@ -151,7 +149,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="commercial"
+      <article class="project-card" data-selected="true" data-category="commercial"
         data-vimeo="1107521488" data-num="05" data-title="Levis"
         data-year="2025" data-category-label="Commercial"
         data-credits='[{"role":"Directed by","name":"Fisherman &amp; Trout"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Sound Design","name":"Nico Svetliza"},{"role":"VFX","name":"Alfredo Benavides"}]'>
@@ -168,7 +166,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="commercial"
+      <article class="project-card" data-selected="true" data-category="commercial"
         data-vimeo="831584007" data-num="06" data-title="JP Morgan Chase"
         data-year="2023" data-category-label="Commercial"
         data-about="Make Happen is an epic cross-country collaboration between Alex Fischman Cárdenas and The Hudson Dusters, spotlighting the virtuous cycle of investment—in businesses both big and small.|Aired during the 2023 NBA Finals."
@@ -186,7 +184,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="documentary"
+      <article class="project-card" data-selected="true" data-category="documentary"
         data-vimeo="542652790" data-num="07" data-title="Teeth"
         data-year="2021" data-category-label="Documentary Short"
         data-about="A year after COVID ravaged New York, Ikeem &quot;Teeth&quot; Jones reflects on his legacy as the city's best subway dancer.|Teeth was a labor of love. We started the project just as the pandemic hit NYC. I discovered Teeth through his Instagram and quickly arranged a series of interviews. But finding a story that could be told in just two minutes proved to be a massive challenge. We spent months combing through transcripts and listening to hours of interviews before finally uncovering the story we wanted to tell.|Once we found it, we hit the ground running. With my DP, Gabe, we developed a visual language that aimed to capture Teeth's story in the most honest way possible."
@@ -194,8 +192,8 @@
         data-press="Beyond the Short|Kino Short Film London|Booooooom.tv|Wasted Talent"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Editing by","name":"Gabriel Crawford Connelly"},{"role":"Line Producer","name":"Adrian Sobrado"},{"role":"Music by","name":"Gavin Brivik"},{"role":"Production Company","name":"Brickhead"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/teeth-a.png');background-position:top center"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/teeth-a.png');background-position:top center"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/teeth-a.jpg');background-position:top center"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/teeth-a.jpg');background-position:top center"></div>
         </div>
         <div class="card-info">
           <span class="card-num">07</span>
@@ -206,7 +204,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="narrative"
+      <article class="project-card" data-selected="true" data-category="narrative"
         data-vimeo="129575936" data-num="08" data-title="La Vieja Quinta"
         data-year="2015" data-category-label="Narrative Short Film"
         data-synopsis="Memo's life is simple, he wakes up, eats cereal, listens to music, reads, and plays the crossword puzzle; all of that changes when a new pain-in-the-ass neighbor moves in next door."
@@ -214,8 +212,8 @@
         data-press="No Film School — &quot;This 17 Year Old Made One of The Best Short Films You'll See This Year&quot;|Leonardo — &quot;El Universo de Ribeyro Según Alex Fischman&quot;"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Rodolfo Herrera"},{"role":"Screenplay by","name":"Alex Fischman Cárdenas"},{"role":"Production Design by","name":"Renzo Basan"},{"role":"Edit by","name":"Alex Fischman Cárdenas"},{"role":"Sound Design &amp; Music by","name":"Christian Acuña"},{"role":"Produced by","name":"Andrea Caceda"},{"role":"Based on","name":"Julio Ramón Ribeyro, Tristes Querellas en una Vieja Quinta"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/lavieja-a.webp')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/lavieja-a.webp')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/lavieja-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/lavieja-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">08</span>
@@ -226,7 +224,7 @@
         </div>
       </article>
 
-      <article class="project-card" data-category="commercial"
+      <article class="project-card" data-selected="true" data-category="commercial"
         data-vimeo="800341334" data-num="09" data-title="Adidas"
         data-year="2023" data-category-label="Commercial"
         data-about="A portrait of Peruvian long-distance runner Sofia Mamani and the unique way she trains—side by side with her family, across the Andean highlands.|This project was a return to my filmmaking roots. Just me, a DP, and a taxi driver-turned-fixer, spending three days with Sofia and her loved ones. We documented what it means to run together—not just as training, but as a shared rhythm of life."
@@ -253,8 +251,8 @@
         data-press="Directors Notes|Nowness|Harris Theatre"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Gabriel Crawford Connelly"},{"role":"Edit by","name":"Duke Nova"},{"role":"Choreography &amp; Staging","name":"Jonah Bokaer"},{"role":"Production Design by","name":"Sophia Uehara"},{"role":"Music by","name":"Gavin Brivik, Philip Daniel, Luanne Homzy"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/neptune-a.png')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/neptune-a.png')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/neptune-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/neptune-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">10</span>
@@ -287,8 +285,8 @@
         data-year="2024" data-category-label="Commercial"
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Jesse Bronstein"},{"role":"Editing by","name":"Ben Schwaeber"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/fema-a.webp')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/fema-b.webp')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/fema-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/fema-b.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">12</span>
@@ -342,8 +340,8 @@
         data-about="High in the Peruvian Andes, more than 4,500 meters above sea level, the Battle of Chiaraje unfolds each year, a violent ritual where two neighboring towns clash in a full-scale recreation of an ancient war. Armed with slingshots, whips, and rocks, over a thousand participants gather for a recreation that's totally real. Injuries are expected. Deaths occur. And yet, the fighters return year after year."
         data-credits='[{"role":"Directed by","name":"Alex Fischman Cárdenas"},{"role":"Cinematography by","name":"Julio Gonzales"},{"role":"Editing by","name":"Dominik Braz Bittrich"},{"role":"Starring","name":"Elard Velasco"},{"role":"Produced by","name":"Alex Fischman Cárdenas, Anibal Lozano Herrera"}]'>
         <div class="card-media">
-          <div class="card-img primary" style="background-image:url('assets/images/chiaraje-a.webp')"></div>
-          <div class="card-img hover"   style="background-image:url('assets/images/chiaraje-a.webp')"></div>
+          <div class="card-img primary" style="background-image:url('assets/images/chiaraje-a.jpg')"></div>
+          <div class="card-img hover"   style="background-image:url('assets/images/chiaraje-a.jpg')"></div>
         </div>
         <div class="card-info">
           <span class="card-num">15</span>
@@ -404,14 +402,19 @@
         has received nominations from the Cannes Young Director Award and
         Young Guns 23.
       </p>
+      <h2 class="about-col-heading" style="margin-top: 40px;">Contact</h2>
       <a class="about-email" href="mailto:alexfischmancardenas@gmail.com">alexfischmancardenas@gmail.com</a>
 
       <div class="about-management">
-        <span class="about-mgmt-label">Management</span>
-        <span class="about-mgmt-name">Industry Entertainment</span>
+        <span class="about-mgmt-label">Film &amp; TV Management</span>
+        <div class="about-mgmt-entry">
+          <span class="about-mgmt-name">Industry Entertainment</span>
+          <a class="about-email" href="mailto:rachel@industryentertainment.com">rachel@industryentertainment.com</a>
+        </div>
       </div>
     </div>
 
+    <div class="about-right-cols">
     <div class="about-awards-col">
       <h2 class="about-col-heading">Recognition</h2>
 
@@ -603,6 +606,7 @@
 
       <button class="press-more-btn" id="press-more-btn">+ View more</button>
     </div>
+    </div><!-- /.about-right-cols -->
 
   </section>
 
@@ -610,29 +614,31 @@
   <footer class="site-footer">
     <span>&copy; <span id="footer-year"></span> Alex Fischman Cárdenas</span>
     <div class="footer-links">
-      <a href="https://vimeo.com/alexfischman" target="_blank" rel="noopener">Vimeo</a>
-      <a href="https://instagram.com/alexfischman" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://vimeo.com/alexfischmanc" target="_blank" rel="noopener">Vimeo</a>
+      <a href="https://instagram.com/alexfischmanc" target="_blank" rel="noopener">Instagram</a>
     </div>
   </footer>
 
   <!-- OVERLAY -->
   <div class="overlay" id="project-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <button class="overlay-close" id="overlay-close" aria-label="Close">&times;</button>
+    <nav class="overlay-nav" id="overlay-nav" aria-label="Projects"></nav>
 
-    <!-- Full-width video -->
-    <div class="overlay-video" id="overlay-video"></div>
+    <div class="overlay-main" id="overlay-main">
+      <!-- Full-width video -->
+      <div class="overlay-video" id="overlay-video"></div>
 
-    <!-- Title bar -->
-    <div class="overlay-bar">
-      <span class="overlay-bar-num"   id="overlay-bar-num"></span>
-      <h2   class="overlay-bar-title" id="overlay-bar-title"></h2>
-      <span class="overlay-bar-year"  id="overlay-bar-year"></span>
+      <!-- Title bar -->
+      <div class="overlay-bar">
+        <span class="overlay-bar-num"   id="overlay-bar-num"></span>
+        <h2   class="overlay-bar-title" id="overlay-bar-title"></h2>
+        <span class="overlay-bar-year"  id="overlay-bar-year"></span>
+      </div>
+
+      <!-- Detailed sections — always visible -->
+      <div class="overlay-details" id="overlay-details"></div>
+
+      <div class="overlay-bottom-pad"></div>
     </div>
-
-    <!-- Detailed sections — always visible -->
-    <div class="overlay-details" id="overlay-details"></div>
-
-    <div class="overlay-bottom-pad"></div>
   </div>
 
 
