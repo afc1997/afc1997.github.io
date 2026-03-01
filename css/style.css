@@ -176,16 +176,6 @@ a    { color: inherit; text-decoration: none; }
   border: none;
 }
 
-.hero-poster {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  transition: opacity 1.5s ease;
-  pointer-events: none;
-}
-
 /* Darkening overlay — adjust opacity to taste */
 .hero-overlay {
   position: absolute;

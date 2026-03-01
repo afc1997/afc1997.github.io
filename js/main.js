@@ -23,7 +23,6 @@
     initHoverVideo();
     initResponsiveImages();
     initSizeSlider();
-    initHeroPoster();
   }
 
   /* ── Page entrance ───────────────────────────────────── */
@@ -452,28 +451,6 @@
 
     slider.addEventListener('input', () => applySize(+slider.value));
     applySize(+slider.value);
-  }
-
-  /* ── Hero poster ─────────────────────────────────────── */
-  function initHeroPoster() {
-    const poster = document.querySelector('.hero-poster');
-    const iframe = document.getElementById('hero-iframe');
-    if (!poster || !iframe) return;
-
-    function hidePoster() {
-      poster.style.opacity = '0';
-      setTimeout(() => { if (poster.parentNode) poster.remove(); }, 1600);
-    }
-
-    // Fallback: hide after 7 s no matter what
-    const fallback = setTimeout(hidePoster, 7000);
-
-    function tryVimeo() {
-      if (typeof Vimeo === 'undefined') { setTimeout(tryVimeo, 100); return; }
-      const player = new Vimeo.Player(iframe);
-      player.on('play', () => { clearTimeout(fallback); hidePoster(); });
-    }
-    tryVimeo();
   }
 
   if (document.readyState === 'loading') {
