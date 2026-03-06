@@ -272,28 +272,48 @@
       overlayNav.innerHTML = '';
       navItems = [];
 
-      // Compact filter bar
-      const filterBar = document.createElement('div');
-      filterBar.className = 'overlay-nav-filter';
-      [
+      // Custom dropdown filter
+      const filterOpts = [
         { key: 'all',         label: 'All' },
-        { key: 'selected',    label: 'Sel' },
-        { key: 'narrative',   label: 'Nar' },
-        { key: 'documentary', label: 'Doc' },
-        { key: 'commercial',  label: 'Ads' },
-      ].forEach(({ key, label }) => {
-        const fb = document.createElement('button');
-        fb.className = 'overlay-nav-filter-btn' + (key === currentFilter ? ' is-active' : '');
-        fb.textContent = label;
-        fb.addEventListener('click', () => {
+        { key: 'selected',    label: 'Selected' },
+        { key: 'narrative',   label: 'Narrative' },
+        { key: 'documentary', label: 'Documentary' },
+        { key: 'commercial',  label: 'Commercial' },
+      ];
+      const filterWrap = document.createElement('div');
+      filterWrap.className = 'overlay-nav-filter';
+
+      const trigger = document.createElement('button');
+      trigger.className = 'overlay-filter-trigger';
+      trigger.textContent = filterOpts.find(o => o.key === currentFilter)?.label || 'All';
+
+      const menu = document.createElement('div');
+      menu.className = 'overlay-filter-menu';
+
+      filterOpts.forEach(({ key, label }) => {
+        const opt = document.createElement('button');
+        opt.className = 'overlay-filter-option' + (key === currentFilter ? ' is-active' : '');
+        opt.textContent = label;
+        opt.addEventListener('click', () => {
           currentFilter = key;
-          filterBar.querySelectorAll('.overlay-nav-filter-btn').forEach(b => b.classList.remove('is-active'));
-          fb.classList.add('is-active');
+          trigger.textContent = label;
+          menu.classList.remove('is-open');
+          menu.querySelectorAll('.overlay-filter-option').forEach(o => o.classList.remove('is-active'));
+          opt.classList.add('is-active');
           applyFilter();
         });
-        filterBar.appendChild(fb);
+        menu.appendChild(opt);
       });
-      overlayNav.appendChild(filterBar);
+
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        menu.classList.toggle('is-open');
+      });
+      document.addEventListener('click', () => menu.classList.remove('is-open'));
+
+      filterWrap.appendChild(trigger);
+      filterWrap.appendChild(menu);
+      overlayNav.appendChild(filterWrap);
 
       // Flat numbered list
       allCards.forEach(card => {

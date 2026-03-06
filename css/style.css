@@ -563,7 +563,7 @@ a    { color: inherit; text-decoration: none; }
   border: none;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 0.58rem;
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -587,7 +587,7 @@ a    { color: inherit; text-decoration: none; }
 .overlay-nav-sub {
   display: block;
   padding-left: 2.2em;
-  font-size: 0.52rem;
+  font-size: 0.54rem;
   letter-spacing: 0.06em;
   color: var(--muted);
   opacity: 0.6;
@@ -598,28 +598,60 @@ a    { color: inherit; text-decoration: none; }
 .overlay-nav-item.is-active .overlay-nav-sub { opacity: 1; }
 
 .overlay-nav-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 10px;
+  position: relative;
   padding-bottom: 12px;
   margin-bottom: 6px;
   border-bottom: 1px solid var(--border);
 }
 
-.overlay-nav-filter-btn {
+.overlay-filter-trigger {
   background: none;
   border: none;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 0.5rem;
-  letter-spacing: 0.14em;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
   padding: 0;
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.overlay-nav-filter-btn:hover,
-.overlay-nav-filter-btn.is-active { color: var(--fg); }
+.overlay-filter-trigger::after { content: '▾'; }
+.overlay-filter-trigger:hover  { color: var(--fg); }
+
+.overlay-filter-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: #0c0b0a;
+  border: 1px solid var(--border);
+  z-index: 10;
+  min-width: 160px;
+  padding: 4px 0;
+}
+.overlay-filter-menu.is-open { display: block; }
+
+.overlay-filter-option {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 7px 14px;
+  transition: color 0.2s;
+}
+.overlay-filter-option:hover,
+.overlay-filter-option.is-active { color: var(--fg); }
 
 
 /* Overlay scrollable main panel */
