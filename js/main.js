@@ -191,6 +191,8 @@
     const nextBtn    = $('#overlay-next');
     const allCards   = $$('.project-card');
     let   currentIdx = 0;
+    let   navItems   = [];
+    let   currentFilter = 'all';
 
     if (!overlay) return;
 
@@ -204,6 +206,15 @@
       if (e.key === 'ArrowLeft'  && currentIdx > 0)                  openOverlay(allCards[currentIdx - 1]);
     });
 
+    function applyFilter() {
+      navItems.forEach(({ btn, card }) => {
+        let show = true;
+        if (currentFilter === 'selected') show = card.dataset.selected === 'true';
+        else if (currentFilter !== 'all') show = card.dataset.category === currentFilter;
+        btn.style.display = show ? '' : 'none';
+      });
+    }
+
     function openOverlay(card) {
       const alreadyOpen = overlay.classList.contains('is-open');
       currentIdx = allCards.indexOf(card);
@@ -216,7 +227,14 @@
 
       /* Detailed sections — always visible */
       detailsEl.innerHTML = buildDetails(d);
-      buildNav(card);
+
+      /* Nav: full build on first open, just update active class on navigation */
+      if (!alreadyOpen) {
+        currentFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+        buildNav(card);
+      } else {
+        updateNavActive(card);
+      }
 
       /* Video */
       const id = d.vimeo;
@@ -252,7 +270,32 @@
     function buildNav(activeCard) {
       if (!overlayNav) return;
       overlayNav.innerHTML = '';
-      let activeBtn = null;
+      navItems = [];
+
+      // Compact filter bar
+      const filterBar = document.createElement('div');
+      filterBar.className = 'overlay-nav-filter';
+      [
+        { key: 'all',         label: 'All' },
+        { key: 'selected',    label: 'Sel' },
+        { key: 'narrative',   label: 'Nar' },
+        { key: 'documentary', label: 'Doc' },
+        { key: 'commercial',  label: 'Ads' },
+      ].forEach(({ key, label }) => {
+        const fb = document.createElement('button');
+        fb.className = 'overlay-nav-filter-btn' + (key === currentFilter ? ' is-active' : '');
+        fb.textContent = label;
+        fb.addEventListener('click', () => {
+          currentFilter = key;
+          filterBar.querySelectorAll('.overlay-nav-filter-btn').forEach(b => b.classList.remove('is-active'));
+          fb.classList.add('is-active');
+          applyFilter();
+        });
+        filterBar.appendChild(fb);
+      });
+      overlayNav.appendChild(filterBar);
+
+      // Flat numbered list
       allCards.forEach(card => {
         const btn = document.createElement('button');
         btn.className = 'overlay-nav-item' + (card === activeCard ? ' is-active' : '');
@@ -260,8 +303,18 @@
         btn.innerHTML = `<span class="overlay-nav-num">${card.dataset.num || ''}</span>${card.dataset.title || ''}${sub ? `<span class="overlay-nav-sub">${sub}</span>` : ''}`;
         btn.addEventListener('click', () => openOverlay(card));
         overlayNav.appendChild(btn);
-        if (card === activeCard) activeBtn = btn;
+        navItems.push({ btn, card });
       });
+
+      applyFilter();
+      updateNavActive(activeCard);
+    }
+
+    function updateNavActive(activeCard) {
+      navItems.forEach(({ btn, card }) => {
+        btn.classList.toggle('is-active', card === activeCard);
+      });
+      const activeBtn = navItems.find(({ card }) => card === activeCard)?.btn;
       if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest' });
     }
 
