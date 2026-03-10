@@ -142,7 +142,7 @@ a    { color: inherit; text-decoration: none; }
   font-weight: 300;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #fff;
   transition: color 0.2s;
 }
 .nav-link:hover { color: var(--fg); }
@@ -393,9 +393,9 @@ a    { color: inherit; text-decoration: none; }
 }
 
 .about-email {
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  margin-right: -0.06em;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 300;
   color: var(--muted);
   border-bottom: 1px solid var(--dim);
   padding-bottom: 2px;
@@ -404,33 +404,31 @@ a    { color: inherit; text-decoration: none; }
 }
 .about-email:hover { color: var(--fg); border-color: var(--fg); }
 
-.about-management {
+.about-contact-lines {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  margin-top: 28px;
 }
 
-.about-mgmt-entry {
+.about-contact-line {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 3px;
 }
 
-.about-mgmt-label {
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.about-mgmt-name {
+.about-contact-org {
   font-family: var(--sans);
   font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--fg);
+}
+
+.about-contact-names {
+  font-family: var(--sans);
+  font-size: 0.7rem;
   font-weight: 300;
-  color: var(--body);
+  color: var(--muted);
 }
 
 .about-col-heading {
