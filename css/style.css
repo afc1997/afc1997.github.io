@@ -252,7 +252,7 @@ a    { color: inherit; text-decoration: none; }
 
 /* ── Work section ─────────────────────────────────────── */
 .work-section {
-  padding: clamp(40px, 6vh, 72px) var(--gutter) clamp(60px, 10vh, 120px);
+  padding: clamp(40px, 6vh, 72px) var(--gutter) clamp(60px, 9vh, 100px);
 }
 
 .work-section .filter-bar {
@@ -362,9 +362,14 @@ a    { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: clamp(40px, 6vw, 100px);
-  padding: clamp(64px, 10vh, 100px) var(--gutter);
+  padding: clamp(40px, 6vh, 72px) var(--gutter);
   border-top: 1px solid var(--border);
   align-items: start;
+}
+
+.about-bio-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .about-right-cols {
@@ -372,6 +377,12 @@ a    { color: inherit; text-decoration: none; }
   grid-template-columns: 1fr 1fr;
   gap: clamp(24px, 3vw, 48px);
   align-items: start;
+}
+
+.about-awards-col,
+.about-press-col {
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 900px) {
@@ -397,12 +408,10 @@ a    { color: inherit; text-decoration: none; }
   font-size: 0.7rem;
   font-weight: 300;
   color: var(--muted);
-  border-bottom: 1px solid var(--dim);
-  padding-bottom: 2px;
-  display: inline-block;
-  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+  transition: color 0.2s;
 }
-.about-email:hover { color: var(--fg); border-color: var(--fg); }
+.about-email:hover { color: var(--fg); }
 
 .about-contact-lines {
   display: flex;
@@ -484,6 +493,12 @@ a    { color: inherit; text-decoration: none; }
   margin-top: 0;
 }
 
+.about-list.mobile-fold { margin-top: 20px; }
+
+@media (max-width: 900px) {
+  .about-list.mobile-fold { display: none; }
+}
+
 .press-more-btn {
   font-size: 0.58rem;
   letter-spacing: 0.14em;
@@ -495,6 +510,8 @@ a    { color: inherit; text-decoration: none; }
   cursor: pointer;
   transition: color 0.2s;
   display: block;
+  margin-top: auto;
+  align-self: flex-start;
 }
 .press-more-btn:hover { color: var(--fg); }
 
@@ -921,12 +938,10 @@ a    { color: inherit; text-decoration: none; }
   /* Work section */
   .work-section { padding: 32px var(--gutter) 60px; }
 
-  /* About section */
-  .about-section { grid-template-columns: 1fr; }
-  .about-bio-col  { grid-column: unset; }
-
-  /* Footer stack */
-  .site-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+  /* About section — reorder: Recognition, Press, then Bio/Contact */
+  .about-section { grid-template-columns: 1fr; padding-top: 32px; }
+  .about-bio-col  { grid-column: unset; order: 2; }
+  .about-right-cols { order: 1; }
 
   /* Overlay — title bar */
   .overlay-bar {
