@@ -88,13 +88,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 3;
+    z-index: 10;
     background: none;
     border: none;
     color: rgba(255,255,255,0.5);
     font-size: 24px;
     cursor: pointer;
     transition: color 0.3s;
+    padding: 20px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .sound-hint:hover {
@@ -393,7 +395,7 @@
         <source src="trim.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="sound-hint" onclick="toggleSound('vid1', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid1', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title">General Thoughts</div>
@@ -408,7 +410,7 @@
         <source src="sound.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="sound-hint" onclick="toggleSound('vid2', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid2', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">When going back to the current day, I propose starting with the ticket to make that feel DISTINCT. Have our entire world of sound come back to life. Have the music kick in. Light shines brighter. It's also a powerful cut, going from an anxious face to the ticket that brings in this new reality.</p>
@@ -431,7 +433,7 @@
         <source src="general thoughts.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="sound-hint" onclick="toggleSound('vid4', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid4', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Have a second before they begin talking to the camera, to see them with his family going into the museum/natatorium. Connecting this is a big deal for them. Throughout the film since it's just one story, we need to feel the relationship between the family members, glances, smiles, moments where we realize just what a big change this is for the family.</p>
