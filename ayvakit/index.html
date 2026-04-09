@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayvakit — Treatment Writing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+
+  .slideshow {
+    display: flex;
+    height: 100vh;
+    transition: none;
+  }
+
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Full-bleed image background */
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .slide-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
+  }
+
+  /* Mirror-flipped image */
+  .slide-bg.flipped {
+    transform: scaleX(-1);
+  }
+
+  /* Video background slides */
+  .slide-video-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .slide-video-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slide-video-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+  }
+
+  /* Play/pause indicator */
+  .sound-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .sound-hint:hover {
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* Text overlay */
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 40px 72px;
+    max-width: 680px;
+  }
+
+  .slide-content.centered {
+    justify-content: flex-end;
+    max-width: 680px;
+    text-align: left;
+    padding: 0 40px 72px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: rgba(255,255,255,0.35);
+    position: absolute;
+    bottom: 28px;
+    left: 40px;
+    z-index: 3;
+  }
+
+  .slide-title {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .slide-text {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 10px;
+    text-wrap: pretty;
+  }
+
+  .slide-dialogue {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    text-wrap: pretty;
+  }
+
+  .slide-super {
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.45;
+    margin-top: 8px;
+    text-wrap: pretty;
+  }
+
+  .green-highlight {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    z-index: 100;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .nav button {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    padding: 0;
+  }
+
+  .nav button:hover {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .slide-counter {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+    min-width: 44px;
+    text-align: center;
+  }
+
+  /* Montage grid */
+  .slide-montage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .slide-montage .montage-img {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .slide-montage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+  }
+
+  /* Progress bar */
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.6);
+    z-index: 100;
+    transition: width 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Thumbnail viewer */
+  .thumb-toggle {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 100;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.3s;
+  }
+
+  .thumb-toggle:hover {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .thumb-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: #000;
+    display: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 60px 40px;
+  }
+
+  .thumb-overlay.active {
+    display: block;
+  }
+
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .thumb-item {
+    aspect-ratio: 16/9;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+
+  .thumb-item:hover {
+    opacity: 1;
+  }
+
+  .thumb-item.active {
+    opacity: 1;
+  }
+
+  .thumb-caption {
+    text-align: left;
+    padding: 8px 4px 20px;
+  }
+
+  .thumb-caption .thumb-num {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .thumb-caption .thumb-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+    display: block;
+  }
+
+  .thumb-close {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 160;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    display: none;
+  }
+
+  .thumb-overlay.active ~ .thumb-close {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- SLIDE 1: General Thoughts — Paragraph 1 -->
+  <div class="slide">
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid1">
+        <source src="trim.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="sound-hint" onclick="toggleSound('vid1', this)">&#9654;</div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <div class="slide-title">General Thoughts</div>
+      <p class="slide-text">I want to make the spaces in the flashbacks feel visually different from the main moments. I propose treating them with a bit lower light. Using tighter framing and sound to muffle the surroundings. Have a shallow depth of field so we isolate our protagonists. Maybe we could play with different lensing, something like Tilt-shift's that can create a sense of a warped perspective.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: General Thoughts — Paragraph 2 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">When going back to the current day, I propose starting with the ticket to make that feel DISTINCT. Have our entire world of sound come back to life. Light shines brighter. It's also a powerful cut, going from an anxious face to the ticket that brings in this new reality.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: General Thoughts — Paragraph 3 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter and the past a bit moodier.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: General Thoughts — Paragraph 4 -->
+  <div class="slide">
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid4">
+        <source src="general thoughts.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="sound-hint" onclick="toggleSound('vid4', this)">&#9654;</div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Have a second before they begin talking to the camera, to see them with his family going into the museum/natatorium. Connecting this is a big deal for them. Throughout the film since it's just one story, we need to feel the relationship between the family members, glances, smiles, moments where we realize just what a big change this is for the family.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Sean near bathroom — muffled world -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_jferb1jferb1jfer.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <div class="slide-title">Interactive Museum</div>
+      <p class="slide-text">We begin with the sound of the world muffled around. The image is sharp on Sean, who sits in a bench in front of the bathroom looking anxiously. The world around him is blurry, we see his family in the distance but Sean isn't looking at them.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Camera pushes into Sean's face -->
+  <div class="slide">
+    <div class="slide-bg flipped" style="background-image: url('Hazemann &amp; Monnin - Trailer.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">The camera pushes slowly into his face as we hear the V.O.</p>
+      <p class="slide-dialogue">SEAN (VO): "Even when I was here, my indolent systemic mastocytosis made it hard to be 'here.' Treatments that only managed my symptoms weren't enough."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: The Ticket — Bright transition -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Suddenly the image becomes brighter. The sun soaks the frame. The sound of the world regains its life. We hear a DING! As the ticket is scanned.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Sean enters museum with family -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Tetris - 2023.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sean gets the ticket back, and we see him entering the museum with his family. The light feels brighter. As they come in, the camera tracks with Sean as he turns towards the camera.</p>
+      <p class="slide-dialogue">SEAN: "But, AYVAKIT works different! It's my ticket to target the source of ISM, blocking the overproduction of mast cells."</p>
+      <p class="slide-super">Supers: TARGET THE CAUSE OF ISM. AYVAKIT&reg; (avapritinib) is a prescription treatment for adults with ISM and not for patients with low platelet counts (less than 50,000 per microliter).</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Family at exhibit — excited -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Under%20the%20Volcano%20-%202024.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">We cut to a push in where Sean is in the middle of the frame, his family around him, interacting with the exhibit playfully. Sean talks proudly to the camera. After he finishes his line, he returns to be in the moment with his family.</p>
+      <p class="slide-dialogue">SEAN: "And, it helps reduce my ISM symptoms like GI issues, skin spots, bone pain, and fatigue."</p>
+      <p class="slide-super">Supers: ADDING AYVAKIT TO CURRENT TREATMENTS SIGNIFICANTLY REDUCES UP TO 11 SYMPTOMS. Brain fog, Dizziness, Headache, Fatigue, Flushing, Bone pain, Itching, Spots on the skin, Abdominal pain, Diarrhea, Nausea.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: Museum montage — family moments -->
+  <div class="slide">
+    <div class="slide-montage">
+      <div class="montage-img" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
+      <div class="montage-img" style="background-image: url('Visit%20Music%20City%2034.jpeg')"></div>
+      <div class="montage-img" style="background-image: url('Hugo%20-%202011.png')"></div>
+      <div class="montage-img" style="background-image: url('YPF%20-%20Linea%20deCal.png')"></div>
+      <div class="montage-img" style="background-image: url('Supercell%20Iraq%20-%20Lamma%20w%20Dahkka.png')"></div>
+      <div class="montage-img" style="background-image: url('Publix%20-%20Thanks.png')"></div>
+    </div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Over the fair use section we see different moments of the kids and Sean and his wife interacting with the museum. Moments with smiles of surprise. Moments where their eyes connect. Enjoyment that contrasts the opening section.</p>
+      <p class="slide-super">Audio (VO/SUPER): AYVAKIT may cause serious side effects including cognitive changes and skin sensitivity to sunlight. Tell your doctor right away if you develop new or worsening forgetfulness, getting lost, drowsiness, trouble staying awake, word finding problems, seeing objects or hearing things not there or changes in mood or behavior. Do not drive or operate heavy machinery if you have confusion or trouble thinking. Avoid exposure to sunlight and ultraviolet radiation. AYVAKIT can cause harm to your unborn baby and may impact fertility. Do not use AYVAKIT when pregnant or breastfeeding. Use effective birth control while taking AYVAKIT.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Sean and his son — carousel -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('GGB%20-%20Father%27s%20Day.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">We see Sean and his son, close to each other. His son points at the exhibit.</p>
+      <p class="slide-dialogue">SON: "Dad, check this out!"</p>
+      <p class="slide-text">Sean looks at his son, gently petting him and feeling proud of being in the moment. He looks up at the lens.</p>
+      <p class="slide-dialogue">SEAN: "With AYVAKIT, when I am here, I am actually here."</p>
+      <p class="slide-super">Supers: AYVAKIT CAN BE A TICKET TO FEWER ISM SYMPTOMS.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Family outdoors — evening -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Janet Planet - 2024.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sean sits surrounded by his family. Sun fills the frame, looking right at us he says:</p>
+      <p class="slide-dialogue">SEAN: "Ask your doctor about adding a once-daily pill today."</p>
+      <p class="slide-super">Supers: AYVAKIT LOGO. GET YOUR TICKET. ASK YOUR DOCTOR ABOUT ONCE-DAILY AYVAKIT. As little as $0 copay for eligible patients.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Museum ending — wide patio -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Kinds of Kindness - 2024.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">The final logo comes up on a wide shot as we see Sean and his family in the outside patio of the museum.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Sienna anxious — exit door -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('AliveCor - Live Heart Healthy.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <div class="slide-title">Natatorium</div>
+      <p class="slide-text">We begin with the sound of the world muffled around. The image is sharp on Sienna, who sits looking at the exit door anxiously. The world around her is blurry, we see her daughter in swim gear in the distance but Sienna isn't looking at her.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Camera pushes into Sienna -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Fingernails - 2023.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">The camera pushes slowly into her face as we hear the V.O.</p>
+      <p class="slide-dialogue">SIENNA: "I was here, but my indolent systemic mastocytosis kept pulling me out of the moment. Treatments that only managed my symptoms weren't enough."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Sienna's ticket — bright transition -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Suddenly the image becomes brighter. The sun soaks the frame. The sound of the world regains its life. We hear a DING! As the ticket is scanned.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Sienna enters natatorium -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('The Plague - 2026.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna receives her ticket back and walks into the natatorium. She turns to the camera.</p>
+      <p class="slide-dialogue">SIENNA: "But, AYVAKIT works different! It's my ticket to targeting the source of ISM, blocking the overproduction of mast cells."</p>
+      <p class="slide-super">Supers: TARGET THE CAUSE OF ISM.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: Sienna seated — bleachers -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Special Olympics Canada - 50 Years.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna is now seated in the middle of the row. We see people in the bleachers behind her. She looks directly at the lens.</p>
+      <p class="slide-dialogue">SIENNA: "And, it helps reduce my ISM symptoms like GI issues, skin spots, bone pain, and fatigue."</p>
+      <p class="slide-super">Supers: SIGNIFICANTLY REDUCES UP TO 11 SYMPTOMS. Symptom list (Brain fog, fatigue, etc.).</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: Natatorium montage — swimming & cheering -->
+  <div class="slide">
+    <div class="slide-montage">
+      <div class="montage-img" style="background-image: url('Beautiful%20Boy%20-%202018.png')"></div>
+      <div class="montage-img" style="background-image: url('Campus%20Sursee%20-%20Untitled.png')"></div>
+      <div class="montage-img" style="background-image: url('VALLEY%20STRONG%20CREDIT%20UNION%20-%20ANTHEM%20(1).png')"></div>
+      <div class="montage-img" style="background-image: url('Mermaids%20-%201991.png')"></div>
+      <div class="montage-img" style="background-image: url('Vodafone%20-%20The%20child%20without%20team%20mate.png')"></div>
+      <div class="montage-img" style="background-image: url('Selah%20and%20the%20Spades%20-%202019.png')"></div>
+    </div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna finishes her line and turns to view to her daughter. We see her daughter looking up at Sienna, a smile.</p>
+      <p class="slide-text">Montage of swimming, cheering, taking photos plays over the fair use section.</p>
+      <p class="slide-super">Audio (VO/SUPER): (Safety warnings regarding cognitive changes, skin sensitivity, sunlight exposure, and pregnancy/fertility risks).</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: Sienna on pool deck -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('MCDONALDS - Swimmer.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna is on the pool deck after the race. She delivers her line to the camera and greets her daughter.</p>
+      <p class="slide-dialogue">SIENNA: "With AYVAKIT, when I'm here, I'm actually here."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: Daughter reunion -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('MCDONALDS%20-%20Swimmer%20(1).png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-dialogue">DAUGHTER: "Mom, did you see that?"</p>
+      <p class="slide-dialogue">SIENNA: "Yes! I am so glad I had a ticket."</p>
+      <p class="slide-super">Supers: AYVAKIT CAN BE A TICKET TO FEWER ISM SYMPTOMS.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: Pool b-roll + CTA -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('The Plague - 2026 (1).png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-dialogue">SIENNA: "Ask your doctor about adding a once-daily pill today."</p>
+      <p class="slide-text">Visual: B-roll of the pool inside the natatorium.</p>
+      <p class="slide-super">Supers: AYVAKIT LOGO. GET YOUR TICKET. ASK YOUR DOCTOR ABOUT ONCE-DAILY AYVAKIT. $0 copay info.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: Closing — mother and daughter -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Tena - Gemeinsam durch die Wechseljahre.png')"></div>
+    <div class="slide-content centered">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <div class="slide-title" style="font-size: 72px;">Thank You!</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="Previous slide">&larr;</button>
+  <div class="slide-counter" id="counter">01 / 22</div>
+  <button id="next" aria-label="Next slide">&rarr;</button>
+</div>
+
+<button class="thumb-toggle" id="thumbToggle">Overview</button>
+
+<div class="thumb-overlay" id="thumbOverlay"></div>
+<button class="thumb-close" id="thumbClose">Close</button>
+
+<script>
+  const slideshow = document.getElementById('slideshow');
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  const totalSlides = 23;
+  let current = 0;
+
+  function goTo(n) {
+    // Mute all videos and reset play icons on current slide
+    const slides = document.querySelectorAll('.slide');
+    if (slides[current]) {
+      slides[current].querySelectorAll('video').forEach(v => v.muted = true);
+      slides[current].querySelectorAll('.sound-hint').forEach(el => el.innerHTML = '\u25B6');
+    }
+    current = Math.max(0, Math.min(n, totalSlides - 1));
+    slideshow.style.transform = `translateX(-${current * 100}vw)`;
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + totalSlides;
+    progress.style.width = ((current + 1) / totalSlides * 100) + '%';
+    localStorage.setItem('ayvakit-slide', current);
+  }
+
+  function toggleSound(id, el) {
+    const v = document.getElementById(id);
+    v.muted = !v.muted;
+    el.innerHTML = v.muted ? '\u25B6' : '\u23F8';
+  }
+
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+    if (e.key === 'Escape') closeThumbs();
+  });
+
+  let touchStart = 0;
+  document.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? goTo(current + 1) : goTo(current - 1);
+    }
+  });
+
+  // Thumbnail viewer
+  const thumbOverlay = document.getElementById('thumbOverlay');
+  const thumbToggle = document.getElementById('thumbToggle');
+  const thumbClose = document.getElementById('thumbClose');
+
+  function buildThumbs() {
+    const slides = document.querySelectorAll('.slide');
+    const grid = document.createElement('div');
+    grid.className = 'thumb-grid';
+    slides.forEach((slide, i) => {
+      const item = document.createElement('div');
+      item.className = 'thumb-item' + (i === current ? ' active' : '');
+      const bg = slide.querySelector('.slide-bg');
+      const vidBg = slide.querySelector('.slide-video-bg video');
+      const montage = slide.querySelector('.slide-montage .montage-img');
+      if (bg) {
+        item.style.backgroundImage = bg.style.backgroundImage;
+      } else if (vidBg) {
+        const srcEl = vidBg.querySelector('source');
+        const vidSrc = srcEl ? srcEl.getAttribute('src') : vidBg.src;
+        const thumbVid = document.createElement('video');
+        thumbVid.setAttribute('src', vidSrc);
+        thumbVid.autoplay = true;
+        thumbVid.muted = true;
+        thumbVid.loop = true;
+        thumbVid.setAttribute('playsinline', '');
+        thumbVid.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;pointer-events:none;';
+        item.appendChild(thumbVid);
+        thumbVid.play().catch(() => {});
+      } else if (montage) {
+        item.style.backgroundImage = montage.style.backgroundImage;
+      } else {
+        item.style.background = '#1a1a1a';
+      }
+      const texts = slide.querySelectorAll('.slide-text, .slide-dialogue');
+      let label = '';
+      texts.forEach(t => { if (label.length < 120) label += (label ? ' ' : '') + t.textContent; });
+      if (label.length > 120) label = label.substring(0, 117) + '...';
+      item.addEventListener('click', () => {
+        goTo(i);
+        closeThumbs();
+      });
+      const wrapper = document.createElement('div');
+      wrapper.appendChild(item);
+      const caption = document.createElement('div');
+      caption.className = 'thumb-caption';
+      caption.innerHTML = '<span class="thumb-num">' + String(i + 1).padStart(2, '0') + '</span><span class="thumb-label">' + label + '</span>';
+      wrapper.appendChild(caption);
+      grid.appendChild(wrapper);
+    });
+    thumbOverlay.innerHTML = '';
+    thumbOverlay.appendChild(grid);
+  }
+
+  function openThumbs() {
+    buildThumbs();
+    thumbOverlay.classList.add('active');
+    thumbClose.style.display = 'block';
+  }
+
+  function closeThumbs() {
+    thumbOverlay.classList.remove('active');
+    thumbClose.style.display = 'none';
+  }
+
+  thumbToggle.addEventListener('click', openThumbs);
+  thumbClose.addEventListener('click', closeThumbs);
+
+  goTo(parseInt(localStorage.getItem('ayvakit-slide')) || 0);
+</script>
+
+</body>
+</html>
