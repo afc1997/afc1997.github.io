@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXPANSION — Playable Demo</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 30px; background: none; }
+    .topnav-title { font-family: Arial, sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+      text-decoration: none; transition: color 0.3s; }
+    .topnav-title:hover { color: #fff; }
+    .topnav-links { display: flex; align-items: center; gap: 20px; }
+    .tnav-btn { font-family: Arial, sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase; background: none; border: none;
+      color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.3s; padding: 0; }
+    .tnav-btn:hover { color: #fff; }
+    .tnav-btn.active { color: rgba(230,226,218,0.5); }
+
+    .demo-landing {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 50;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .demo-landing.hidden {
+      opacity: 0; visibility: hidden;
+    }
+    .demo-title {
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: 400;
+      font-size: 3.5rem;
+      color: #fff;
+      letter-spacing: 0.12em;
+      margin-bottom: 2.5rem;
+    }
+    .demo-launch-btn {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #fff;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.9rem 3rem;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .demo-launch-btn:hover {
+      border-color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+
+    #game-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block; outline: none;
+      z-index: 10;
+    }
+
+    .game-close-btn {
+      position: fixed;
+      top: 1.2rem; right: 1.5rem;
+      z-index: 200;
+      font-size: 2rem;
+      color: rgba(255,255,255,0.5);
+      background: none; border: none;
+      cursor: pointer; line-height: 1;
+      transition: color 0.2s;
+      display: none;
+    }
+    .game-close-btn:hover { color: #fff; }
+    .game-close-btn.visible { display: block; }
+
+    #game-status {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 60;
+      pointer-events: none;
+    }
+    #game-progress-track {
+      width: 260px; height: 1px;
+      background: rgba(255,255,255,0.15);
+      overflow: hidden; display: none;
+    }
+    #game-progress-fill {
+      height: 100%; width: 0%;
+      background: rgba(255,255,255,0.6);
+      transition: width 0.15s ease;
+    }
+    #game-notice {
+      font-family: 'Times New Roman', Times, serif;
+      font-style: italic; font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .topnav { padding: 12px 16px; }
+      .topnav-title { font-size: 8px; }
+      .tnav-btn { font-size: 7px; }
+      .demo-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="topnav-title" href="index.html">EXPANSION</a>
+    <div class="topnav-links">
+      <a class="tnav-btn" href="index.html">Project</a>
+      <a class="tnav-btn" href="index.html">Characters</a>
+      <a class="tnav-btn" href="index.html">Visual Treatment</a>
+      <a class="tnav-btn" href="index.html">About</a>
+      <a class="tnav-btn active" href="demo.html">Demo</a>
+      <a class="tnav-btn" href="archive.html">Archive</a>
+    </div>
+  </nav>
+
+  <div class="demo-landing" id="demo-landing">
+    <h1 class="demo-title">PLAYABLE DEMO</h1>
+    <button class="demo-launch-btn" id="demo-launch">ENTER</button>
+  </div>
+
+  <canvas id="game-canvas"></canvas>
+  <button class="game-close-btn" id="game-close">&times;</button>
+
+  <div id="game-status">
+    <div id="game-progress-track">
+      <div id="game-progress-fill"></div>
+    </div>
+    <p id="game-notice"></p>
+  </div>
+
+  <script src="demo/index.js"></script>
+  <script>
+  (function() {
+    var landing = document.getElementById('demo-landing');
+    var canvas = document.getElementById('game-canvas');
+    var closeBtn = document.getElementById('game-close');
+    var launchBtn = document.getElementById('demo-launch');
+    var progressTrack = document.getElementById('game-progress-track');
+    var progressFill = document.getElementById('game-progress-fill');
+    var notice = document.getElementById('game-notice');
+    var engine = null;
+
+    function startGame() {
+      landing.classList.add('hidden');
+      progressTrack.style.display = 'block';
+      progressFill.style.width = '0%';
+      notice.textContent = '';
+
+      var config = {
+        args: ['--skip-splash'],
+        canvasResizePolicy: 2,
+        emscriptenPoolSize: 8,
+        ensureCrossOriginIsolationHeaders: false,
+        executable: 'demo/index',
+        experimentalVK: false,
+        fileSizes: { 'demo/index.pck': 68162064, 'demo/index.wasm': 37685705 },
+        focusCanvas: true,
+        gdextensionLibs: [],
+        godotPoolSize: 4,
+        canvas: canvas
+      };
+
+      engine = new Engine(config);
+      engine.startGame({
+        onProgress: function(current, total) {
+          if (current > 0 && total > 0) {
+            progressFill.style.width = (current / total * 100) + '%';
+          }
+        }
+      }).then(function() {
+        progressTrack.style.display = 'none';
+        closeBtn.classList.add('visible');
+        canvas.focus();
+      }).catch(function(err) {
+        progressTrack.style.display = 'none';
+        notice.textContent = 'Failed to load: ' + (err.message || err);
+        console.error(err);
+      });
+    }
+
+    function exitGame() {
+      window.location.href = 'index.html';
+    }
+
+    launchBtn.addEventListener('click', startGame);
+    closeBtn.addEventListener('click', exitGame);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !document.pointerLockElement) {
+        exitGame();
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
