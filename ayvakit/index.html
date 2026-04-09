@@ -251,6 +251,27 @@
     pointer-events: none;
   }
 
+  /* Split screen */
+  .slide-split {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .slide-split .split-img {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .slide-split::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+  }
+
   /* Progress bar */
   .progress {
     position: fixed;
@@ -432,7 +453,10 @@
 
   <!-- SLIDE 3: General Thoughts — Paragraph 3 -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
+    <div class="slide-split">
+      <div class="split-img" style="background-image: url('Space%20Sweepers%20-%202021.png')"></div>
+      <div class="split-img" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
+    </div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter and the past a bit moodier. Let's use dolly, crane shots to move with them fluidly through the space as they turn to camera.</p>
