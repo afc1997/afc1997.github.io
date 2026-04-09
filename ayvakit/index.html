@@ -239,6 +239,10 @@
     background-position: center;
   }
 
+  #montage-museum::after {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.45) 100%);
+  }
+
   .slide-montage::after {
     content: '';
     position: absolute;
@@ -388,7 +392,7 @@
 
 <div class="slideshow" id="slideshow">
 
-  <!-- SLIDE 1: General Thoughts — Paragraph 1 -->
+  <!-- SLIDE 1: General Thoughts — Paragraph 1a -->
   <div class="slide">
     <div class="slide-video-bg">
       <video autoplay muted loop playsinline id="vid1">
@@ -399,7 +403,16 @@
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title">General Thoughts</div>
-      <p class="slide-text">I want to make the spaces in the flashbacks feel visually different from the main moments. I propose treating them with a bit lower light. Using tighter framing and sound to muffle the surroundings. Have a shallow depth of field so we isolate our protagonists. Maybe we could play with different lensing, something like Tilt-shift's that can create a sense of a warped perspective.</p>
+      <p class="slide-text">I want to make the spaces in the flashbacks feel visually different from the main moments. I propose treating them with a bit lower light. Using tighter framing and sound to muffle the surroundings. Have a shallow depth of field so we isolate our protagonists.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 1b: General Thoughts — Paragraph 1b (Lensing) -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_pxc2gvpxc2gvpxc2.png')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Maybe we could play with different lensing, something like Tilt-shift's that can create a sense of a warped perspective.</p>
     </div>
   </div>
 
@@ -422,7 +435,7 @@
     <div class="slide-bg" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter and the past a bit moodier.</p>
+      <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter and the past a bit moodier. Let's use dolly, crane shots to move with them fluidly through the space as they turn to camera.</p>
     </div>
   </div>
 
@@ -493,7 +506,7 @@
 
   <!-- SLIDE 11: Museum montage — family moments -->
   <div class="slide">
-    <div class="slide-montage">
+    <div class="slide-montage" id="montage-museum">
       <div class="montage-img" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
       <div class="montage-img" style="background-image: url('Visit%20Music%20City%2034.jpeg')"></div>
       <div class="montage-img" style="background-image: url('Hugo%20-%202011.png')"></div>
@@ -510,7 +523,7 @@
 
   <!-- SLIDE 12: Sean and his son — carousel -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('GGB%20-%20Father%27s%20Day.png')"></div>
+    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_uwfc5uwfc5uwfc5u.png')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">We see Sean and his son, close to each other. His son points at the exhibit.</p>
@@ -655,7 +668,7 @@
 
 <div class="nav">
   <button id="prev" aria-label="Previous slide">&larr;</button>
-  <div class="slide-counter" id="counter">01 / 22</div>
+  <div class="slide-counter" id="counter">01 / 24</div>
   <button id="next" aria-label="Next slide">&rarr;</button>
 </div>
 
@@ -668,7 +681,7 @@
   const slideshow = document.getElementById('slideshow');
   const counter = document.getElementById('counter');
   const progress = document.getElementById('progress');
-  const totalSlides = 23;
+  const totalSlides = 24;
   let current = 0;
 
   function goTo(n) {
