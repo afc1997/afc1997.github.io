@@ -109,57 +109,57 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 0 40px 72px;
-    max-width: 680px;
+    padding: 0 clamp(20px, 4vw, 40px) clamp(60px, 8vw, 72px);
+    max-width: min(680px, 85vw);
   }
 
   .slide-content.centered {
     justify-content: flex-end;
-    max-width: 680px;
+    max-width: min(680px, 85vw);
     text-align: left;
-    padding: 0 40px 72px;
+    padding: 0 clamp(20px, 4vw, 40px) clamp(60px, 8vw, 72px);
   }
 
   .section-label {
-    font-size: 10px;
-    letter-spacing: 3px;
+    font-size: clamp(7px, 1.2vw, 10px);
+    letter-spacing: clamp(2px, 0.4vw, 3px);
     text-transform: uppercase;
     font-weight: 400;
     color: rgba(255,255,255,0.35);
     position: absolute;
-    bottom: 28px;
-    left: 40px;
+    bottom: clamp(16px, 3vw, 28px);
+    left: clamp(20px, 4vw, 40px);
     z-index: 3;
   }
 
   .top-logo {
     position: fixed;
-    top: 28px;
-    left: 40px;
+    top: clamp(16px, 3vw, 28px);
+    left: clamp(20px, 4vw, 40px);
     z-index: 100;
-    height: 36px;
+    height: clamp(22px, 3.5vw, 36px);
     opacity: 0.5;
   }
 
   .slide-title {
-    font-size: 32px;
+    font-size: clamp(20px, 3.5vw, 32px);
     font-weight: 600;
     line-height: 1.25;
-    margin-bottom: 16px;
+    margin-bottom: clamp(8px, 1.5vw, 16px);
     letter-spacing: -0.5px;
   }
 
   .slide-text {
-    font-size: 16px;
+    font-size: clamp(12px, 1.6vw, 16px);
     font-weight: 300;
     line-height: 1.4;
     color: rgba(255,255,255,0.85);
-    margin-bottom: 10px;
+    margin-bottom: clamp(6px, 1vw, 10px);
     text-wrap: pretty;
   }
 
   .slide-dialogue {
-    font-size: 17px;
+    font-size: clamp(13px, 1.7vw, 17px);
     font-weight: 500;
     line-height: 1.4;
     margin-top: 6px;
@@ -168,7 +168,7 @@
   }
 
   .slide-super {
-    font-size: 13px;
+    font-size: clamp(10px, 1.3vw, 13px);
     font-weight: 300;
     font-style: italic;
     color: rgba(255,255,255,0.6);
@@ -185,8 +185,8 @@
   /* Navigation */
   .nav {
     position: fixed;
-    bottom: 24px;
-    right: 32px;
+    bottom: clamp(16px, 3vw, 24px);
+    right: clamp(20px, 4vw, 32px);
     z-index: 100;
     display: flex;
     gap: 6px;
@@ -214,7 +214,7 @@
   }
 
   .slide-counter {
-    font-size: 11px;
+    font-size: clamp(8px, 1.2vw, 11px);
     font-weight: 300;
     color: rgba(255,255,255,0.3);
     letter-spacing: 2px;
@@ -258,81 +258,9 @@
 
   /* Mobile */
   @media (max-width: 768px) {
-    .slide-content {
-      padding: 0 20px 72px;
-      max-width: 100%;
-      justify-content: flex-end;
-    }
-
-    .slide-content.centered {
-      padding: 0 20px 72px;
-      max-width: 100%;
-      justify-content: flex-end;
-    }
-
-    .section-label {
-      bottom: 20px;
-      left: 20px;
-      font-size: 8px;
-      letter-spacing: 2px;
-    }
-
-    .nav {
-      bottom: 18px;
-      right: auto;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .nav .slide-counter {
-      font-size: 8px;
-      letter-spacing: 2px;
-    }
-
-    .nav button {
-      font-size: 10px;
-      width: 20px;
-      height: 20px;
-    }
-
-    .top-logo {
-      top: 16px;
-      left: 20px;
-      height: 22px;
-    }
-
-    .thumb-toggle {
-      top: 16px;
-      right: 20px;
-      font-size: 8px;
-      letter-spacing: 2px;
-    }
-
-    .slide-title {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .slide-text {
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .slide-dialogue {
-      font-size: 14px;
-    }
-
-    .slide-super {
-      font-size: 10px;
-    }
-
     .slide-montage {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr 1fr;
-    }
-
-    .sound-hint {
-      font-size: 20px;
     }
 
     .thumb-grid {
@@ -348,10 +276,10 @@
   /* Thumbnail viewer */
   .thumb-toggle {
     position: fixed;
-    top: 24px;
-    right: 32px;
+    top: clamp(16px, 3vw, 24px);
+    right: clamp(20px, 4vw, 32px);
     z-index: 100;
-    font-size: 10px;
+    font-size: clamp(8px, 1.2vw, 10px);
     letter-spacing: 2px;
     text-transform: uppercase;
     color: rgba(255,255,255,0.35);
