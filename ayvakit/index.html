@@ -752,9 +752,9 @@
     if (e.key === 'Escape') closeThumbs();
   });
 
-  // Click left/right to navigate
+  // Click/tap left/right to navigate
   document.getElementById('slideshow').addEventListener('click', (e) => {
-    if (e.target.closest('.sound-hint') || e.target.closest('.slide-content') || e.target.closest('video')) return;
+    if (e.target.closest('.sound-hint') || e.target.closest('.nav') || e.target.closest('.thumb-toggle') || e.target.closest('.thumb-overlay')) return;
     if (e.clientX < window.innerWidth / 2) {
       goTo(current - 1);
     } else {
