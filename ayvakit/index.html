@@ -259,45 +259,53 @@
   /* Mobile */
   @media (max-width: 768px) {
     .slide-content {
-      padding: 60px 20px 0;
+      padding: 0 20px 72px;
       max-width: 100%;
-      justify-content: center;
-      max-height: calc(100vh - 100px);
-      overflow-y: auto;
+      justify-content: flex-end;
     }
 
     .slide-content.centered {
-      padding: 60px 20px 0;
+      padding: 0 20px 72px;
       max-width: 100%;
-      max-height: calc(100vh - 100px);
+      justify-content: flex-end;
     }
 
     .section-label {
       bottom: 20px;
       left: 20px;
-      right: 120px;
-      font-size: 7px;
+      font-size: 8px;
       letter-spacing: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .nav {
-      bottom: 16px;
-      right: 20px;
+      bottom: 18px;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav .slide-counter {
+      font-size: 8px;
+      letter-spacing: 2px;
+    }
+
+    .nav button {
+      font-size: 10px;
+      width: 20px;
+      height: 20px;
     }
 
     .top-logo {
       top: 16px;
       left: 20px;
-      height: 24px;
+      height: 22px;
     }
 
     .thumb-toggle {
       top: 16px;
       right: 20px;
-      font-size: 9px;
+      font-size: 8px;
+      letter-spacing: 2px;
     }
 
     .slide-title {
