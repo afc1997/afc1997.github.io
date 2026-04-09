@@ -259,21 +259,28 @@
   /* Mobile */
   @media (max-width: 768px) {
     .slide-content {
-      padding: 0 20px 160px;
+      padding: 60px 20px 0;
       max-width: 100%;
+      justify-content: center;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
     }
 
     .slide-content.centered {
-      padding: 0 20px 160px;
+      padding: 60px 20px 0;
       max-width: 100%;
+      max-height: calc(100vh - 100px);
     }
 
     .section-label {
-      bottom: 60px;
+      bottom: 20px;
       left: 20px;
-      right: 20px;
+      right: 120px;
       font-size: 7px;
       letter-spacing: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav {
@@ -752,9 +759,9 @@
     if (e.key === 'Escape') closeThumbs();
   });
 
-  // Click/tap left/right to navigate
-  document.getElementById('slideshow').addEventListener('click', (e) => {
-    if (e.target.closest('.sound-hint') || e.target.closest('.nav') || e.target.closest('.thumb-toggle') || e.target.closest('.thumb-overlay')) return;
+  // Click left/right to navigate (desktop)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.sound-hint') || e.target.closest('.nav') || e.target.closest('.thumb-toggle') || e.target.closest('.thumb-overlay') || e.target.closest('.thumb-close')) return;
     if (e.clientX < window.innerWidth / 2) {
       goTo(current - 1);
     } else {
@@ -762,14 +769,33 @@
     }
   });
 
-  let touchStart = 0;
-  document.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; });
+  // Touch: swipe or tap left/right (mobile)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
   document.addEventListener('touchend', (e) => {
-    const diff = touchStart - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      diff > 0 ? goTo(current + 1) : goTo(current - 1);
+    if (e.target.closest('.sound-hint') || e.target.closest('.nav') || e.target.closest('.thumb-toggle') || e.target.closest('.thumb-overlay') || e.target.closest('.thumb-close')) return;
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    const dt = Date.now() - touchStartTime;
+    // Swipe
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      dx > 0 ? goTo(current + 1) : goTo(current - 1);
+    // Tap (short, small movement)
+    } else if (Math.abs(dx) < 15 && Math.abs(dy) < 15 && dt < 300) {
+      if (touchStartX < window.innerWidth / 2) {
+        goTo(current - 1);
+      } else {
+        goTo(current + 1);
+      }
     }
-  });
+  }, { passive: true });
 
   // Thumbnail viewer
   const thumbOverlay = document.getElementById('thumbOverlay');
