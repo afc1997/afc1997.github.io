@@ -239,8 +239,15 @@
     background-position: center;
   }
 
-  #montage-museum::after {
-    background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.45) 100%);
+  .slide-montage.montage-top {
+    grid-template-rows: 1fr;
+    inset: 0 0 auto 0;
+    height: 45%;
+  }
+
+  .slide-montage.montage-top + .slide-content {
+    justify-content: flex-end;
+    padding-top: 0;
   }
 
   .slide-montage::after {
@@ -248,27 +255,6 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.7) 100%);
-    pointer-events: none;
-  }
-
-  /* Split screen */
-  .slide-split {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .slide-split .split-img {
-    background-size: cover;
-    background-position: center;
-  }
-
-  .slide-split::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
     pointer-events: none;
   }
 
@@ -409,31 +395,21 @@
 <body>
 
 <div class="progress" id="progress"></div>
-<img class="top-logo" src="Ayvakyt%20Logo.png" alt="Ayvakyt">
+<img class="top-logo" src="Ayvakyt%20Logo.jpg" alt="Ayvakyt">
 
 <div class="slideshow" id="slideshow">
 
-  <!-- SLIDE 1: General Thoughts — Paragraph 1a -->
+  <!-- SLIDE 1: General Thoughts — Paragraph 1 -->
   <div class="slide">
     <div class="slide-video-bg">
       <video autoplay muted loop playsinline id="vid1">
-        <source src="trim.mp4" type="video/mp4">
+        <source src="cover.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid1', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title">General Thoughts</div>
-      <p class="slide-text">I want to make the spaces in the flashbacks feel visually different from the main moments. I propose treating them with a bit lower light. Using tighter framing and sound to muffle the surroundings. Have a shallow depth of field so we isolate our protagonists.</p>
-    </div>
-  </div>
-
-  <!-- SLIDE 1b: General Thoughts — Paragraph 1b (Lensing) -->
-  <div class="slide">
-    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_pxc2gvpxc2gvpxc2.png')"></div>
-    <div class="slide-content">
-      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Maybe we could play with different lensing, something like Tilt-shift's that can create a sense of a warped perspective.</p>
+      <p class="slide-text">My general approach is still encapsulated by the north star that this spot should feel like a film. Where every decision is motivated to further understand and connect with our heroes. To celebrate the everyday moments they are able to live thanks to Ayvakit.</p>
     </div>
   </div>
 
@@ -441,45 +417,64 @@
   <div class="slide">
     <div class="slide-video-bg">
       <video autoplay muted loop playsinline id="vid2">
-        <source src="sound.mp4" type="video/mp4">
+        <source src="trim.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid2', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid2', this)" style="font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400;">CLICK FOR SOUND</div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">When going back to the current day, I propose starting with the ticket to make that feel DISTINCT. Have our entire world of sound come back to life. Have the music kick in. Light shines brighter. It's also a powerful cut, going from an anxious face to the ticket that brings in this new reality.</p>
+      <p class="slide-text">When approaching the flashbacks, I would want them to feel visually different from the main moments. I think it's key to helping the audience understand the emotional state of our heroes in this past. To feel what it was like for them. I propose using sound to muffle the surroundings. Treating these moments with indirect light and tighter frames with a shallow depth of field that isolate our protagonists. We could play with different lensing, something like Tilt-shift's that can create a sense of a warped perspective.</p>
     </div>
   </div>
 
   <!-- SLIDE 3: General Thoughts — Paragraph 3 -->
   <div class="slide">
-    <div class="slide-split">
-      <div class="split-img" style="background-image: url('Space%20Sweepers%20-%202021.png')"></div>
-      <div class="split-img" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid3">
+        <source src="sound.mp4" type="video/mp4">
+      </video>
     </div>
+    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid3', this)" style="font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400;">CLICK FOR SOUND</div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter and the past a bit moodier. Let's use dolly, crane shots to move with them fluidly through the space as they turn to camera.</p>
+      <p class="slide-text">But I want to make sure the viewer understands that this was in the past, and I want to create a transition to the present day that feels smooth, and purposeful. What I suggest is going from the troubled expression of our protagonist and cut straight to the ticket that brings in this new reality. In this shot, we feel our entire world of sound come back to life. Have the music kick in. Light shines brighter. And by starting the scene with the ticket we are able to place extra importance on the visual metaphor.</p>
     </div>
   </div>
 
   <!-- SLIDE 4: General Thoughts — Paragraph 4 -->
   <div class="slide">
-    <div class="slide-video-bg">
-      <video autoplay muted loop playsinline id="vid4">
-        <source src="general thoughts.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="sound-hint" onclick="event.stopPropagation(); toggleSound('vid4', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="slide-bg" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Have a second before they begin talking to the camera, to see them with his family going into the museum/natatorium. Connecting this is a big deal for them. Throughout the film since it's just one story, we need to feel the relationship between the family members, glances, smiles, moments where we realize just what a big change this is for the family.</p>
+      <p class="slide-text">When we see our protagonists after the ticket, I want them with a very different expression. Light has come into the world again. Subtle wardrobe shifts too to make the current day feel a bit brighter. Let's spend a bit of time with them before they talk into the camera, to see them take in the space, connect with their families.</p>
     </div>
   </div>
 
-  <!-- SLIDE 5: Sean near bathroom — muffled world -->
+  <!-- SLIDE 5: General Thoughts — Paragraph 5 -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_jferb1jferb1jfer.png')"></div>
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid5">
+        <source src="swim2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Let's use dolly, crane shots to move with them fluidly through the space as they turn to camera and animated supers come to life.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: General Thoughts — Paragraph 6 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Tribit%20-%20Treat%20yourself%20with%20better%20beats.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Since this film is now just one story, we need to feel the relationship between the family members, glances, smiles, moments where we realize just what a big change this is for the family. And to tell it all with a visually exciting system that connects and celebrates our heroes in these environments.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Sean near bathroom — muffled world -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_jferb1jferb1jfer.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title">Interactive Museum</div>
@@ -489,7 +484,7 @@
 
   <!-- SLIDE 7: Camera pushes into Sean's face -->
   <div class="slide">
-    <div class="slide-bg flipped" style="background-image: url('Hazemann &amp; Monnin - Trailer.png')"></div>
+    <div class="slide-bg flipped" style="background-image: url('Hazemann &amp; Monnin - Trailer.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">The camera pushes slowly into his face as we hear the V.O.</p>
@@ -499,19 +494,19 @@
 
   <!-- SLIDE 8: The Ticket — Bright transition -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.png')"></div>
+    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Suddenly the image becomes brighter. The sun soaks the frame. The sound of the world regains its life. We hear a DING! As the ticket is scanned.</p>
+      <p class="slide-text">Suddenly the image becomes brighter. The sun soaks the frame. The sound of the world regains its life. Music kicks in. We hear a DING! As the ticket is scanned.</p>
     </div>
   </div>
 
   <!-- SLIDE 9: Sean enters museum with family -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Tetris - 2023.png')"></div>
+    <div class="slide-bg" style="background-image: url('Tetris - 2023.jpg'); transform: scale(1.4); transform-origin: 30% 20%"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Sean gets the ticket back, and we see him entering the museum with his family. The light feels brighter. As they come in, the camera tracks with Sean as he turns towards the camera.</p>
+      <p class="slide-text">Ticket in hand, Sean enters the sun-drenched museum. The camera dollies with him as he glances tenderly at his family, then turns to face us as if we were a close friend.</p>
       <p class="slide-dialogue">SEAN: "But, AYVAKIT works different! It's my ticket to target the source of ISM, blocking the overproduction of mast cells."</p>
       <p class="slide-super">Supers: TARGET THE CAUSE OF ISM. AYVAKIT&reg; (avapritinib) is a prescription treatment for adults with ISM and not for patients with low platelet counts (less than 50,000 per microliter).</p>
     </div>
@@ -519,7 +514,7 @@
 
   <!-- SLIDE 10: Family at exhibit — excited -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Tabys%20-%20Tabys%20Pro.png')"></div>
+    <div class="slide-bg" style="background-image: url('Tabys%20-%20Tabys%20Pro.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">We cut to a push in where Sean is in the middle of the frame, his family around him, interacting with the exhibit playfully. Sean talks proudly to the camera. After he finishes his line, he returns to be in the moment with his family.</p>
@@ -528,26 +523,45 @@
     </div>
   </div>
 
-  <!-- SLIDE 11: Museum montage — family moments -->
+  <!-- SLIDE 11a: Museum montage 1 -->
   <div class="slide">
-    <div class="slide-montage" id="montage-museum">
-      <div class="montage-img" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.png')"></div>
-      <div class="montage-img" style="background-image: url('Visit%20Music%20City%2034.jpeg')"></div>
-      <div class="montage-img" style="background-image: url('Hugo%20-%202011.png')"></div>
-      <div class="montage-img" style="background-image: url('YPF%20-%20Linea%20deCal.png')"></div>
-      <div class="montage-img" style="background-image: url('Supercell%20Iraq%20-%20Lamma%20w%20Dahkka.png')"></div>
-      <div class="montage-img" style="background-image: url('Publix%20-%20Thanks.png')"></div>
-    </div>
+    <div class="slide-bg" style="background-image: url('Toronto%20-%20Let%20Yourself%20In.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Over the fair use section we see different moments of the kids and Sean and his wife interacting with the museum. Moments with smiles of surprise. Moments where their eyes connect. Enjoyment that contrasts the opening section.</p>
-      <p class="slide-super">Audio (VO/SUPER): AYVAKIT may cause serious side effects including cognitive changes and skin sensitivity to sunlight. Tell your doctor right away if you develop new or worsening forgetfulness, getting lost, drowsiness, trouble staying awake, word finding problems, seeing objects or hearing things not there or changes in mood or behavior. Do not drive or operate heavy machinery if you have confusion or trouble thinking. Avoid exposure to sunlight and ultraviolet radiation. AYVAKIT can cause harm to your unborn baby and may impact fertility. Do not use AYVAKIT when pregnant or breastfeeding. Use effective birth control while taking AYVAKIT.</p>
+      <p class="slide-text">Over the fair use section we see different moments of Sean and his family. The idea is for this sequence to continue telling our story, to see the moments where Sean is able to connect and be present.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11b: Museum montage 2 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Visit%20Music%20City%2034.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">We see a crane shot of Sean and his family walking into a new section of the museum that looks visually stunning.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11c: Museum montage 3 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Hugo%20-%202011.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">On a wide shot that pushes in, Sean interacts with an exhibit next to his wife. He gives her a smile as the kids run in the background.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11d: Museum montage 4 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Publix%20-%20Thanks.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sean and his son pick a grabable item in the museum. They look at it with wonder. Sean looks at his daughter as they play and smile.</p>
     </div>
   </div>
 
   <!-- SLIDE 12: Sean and his son — carousel -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_uwfc5uwfc5uwfc5u.png')"></div>
+    <div class="slide-bg" style="background-image: url('GGB%20-%20Father%27s%20Day.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">We see Sean and his son, close to each other. His son points at the exhibit.</p>
@@ -560,7 +574,7 @@
 
   <!-- SLIDE 13: Family outdoors — evening -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Janet Planet - 2024.png')"></div>
+    <div class="slide-bg" style="background-image: url('Janet Planet - 2024.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Sean sits surrounded by his family. Sun fills the frame, looking right at us he says:</p>
@@ -571,7 +585,7 @@
 
   <!-- SLIDE 14: Museum ending — wide patio -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Kinds of Kindness - 2024.png')"></div>
+    <div class="slide-bg" style="background-image: url('Kinds of Kindness - 2024.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">The final logo comes up on a wide shot as we see Sean and his family in the outside patio of the museum.</p>
@@ -580,7 +594,7 @@
 
   <!-- SLIDE 15: Sienna anxious — exit door -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('AliveCor - Live Heart Healthy.png')"></div>
+    <div class="slide-bg" style="background-image: url('Gemini_Generated_Image_vohnczvohnczvohn.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title">Natatorium</div>
@@ -590,7 +604,7 @@
 
   <!-- SLIDE 17: Camera pushes into Sienna -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Fingernails - 2023.png')"></div>
+    <div class="slide-bg" style="background-image: url('Fingernails - 2023.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">The camera pushes slowly into her face as we hear the V.O.</p>
@@ -600,7 +614,7 @@
 
   <!-- SLIDE 17: Sienna's ticket — bright transition -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.png')"></div>
+    <div class="slide-bg" style="background-image: url('Flavien%20Berger%20-%20D%27ici%20l%C3%A0.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Suddenly the image becomes brighter. The sun soaks the frame. The sound of the world regains its life. We hear a DING! As the ticket is scanned.</p>
@@ -609,10 +623,10 @@
 
   <!-- SLIDE 18: Sienna enters natatorium -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('The Plague - 2026.png')"></div>
+    <div class="slide-bg" style="background-image: url('The Plague - 2026.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
-      <p class="slide-text">Sienna receives her ticket back and walks into the natatorium. She turns to the camera.</p>
+      <p class="slide-text">Sienna receives her ticket back and walks into the natatorium. She turns to the camera as the dolly tracks with her. She looks at us as if we were a close friend.</p>
       <p class="slide-dialogue">SIENNA: "But, AYVAKIT works different! It's my ticket to targeting the source of ISM, blocking the overproduction of mast cells."</p>
       <p class="slide-super">Supers: TARGET THE CAUSE OF ISM.</p>
     </div>
@@ -620,7 +634,7 @@
 
   <!-- SLIDE 19: Sienna seated — bleachers -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Special Olympics Canada - 50 Years.png')"></div>
+    <div class="slide-bg" style="background-image: url('Special Olympics Canada - 50 Years.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Sienna is now seated in the middle of the row. We see people in the bleachers behind her. She looks directly at the lens.</p>
@@ -629,27 +643,62 @@
     </div>
   </div>
 
-  <!-- SLIDE 20: Natatorium montage — swimming & cheering -->
+  <!-- SLIDE 20a: Natatorium montage 1 -->
   <div class="slide">
-    <div class="slide-montage">
-      <div class="montage-img" style="background-image: url('Beautiful%20Boy%20-%202018.png')"></div>
-      <div class="montage-img" style="background-image: url('Campus%20Sursee%20-%20Untitled.png')"></div>
-      <div class="montage-img" style="background-image: url('VALLEY%20STRONG%20CREDIT%20UNION%20-%20ANTHEM%20(1).png')"></div>
-      <div class="montage-img" style="background-image: url('Mermaids%20-%201991.png')"></div>
-      <div class="montage-img" style="background-image: url('Vodafone%20-%20The%20child%20without%20team%20mate.png')"></div>
-      <div class="montage-img" style="background-image: url('Selah%20and%20the%20Spades%20-%202019.png')"></div>
-    </div>
+    <div class="slide-bg" style="background-image: url('Olympikus%20-%20Release%20the%20fun.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Sienna finishes her line and turns to view to her daughter. We see her daughter looking up at Sienna, a smile.</p>
-      <p class="slide-text">Montage of swimming, cheering, taking photos plays over the fair use section.</p>
-      <p class="slide-super">Audio (VO/SUPER): (Safety warnings regarding cognitive changes, skin sensitivity, sunlight exposure, and pregnancy/fertility risks).</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20b: Natatorium montage 2 -->
+  <div class="slide">
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid25">
+        <source src="swim.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Over the fair use section we see the swim meet begin. We see moments where the camera dollies down the lanes.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20c: Natatorium montage 3 -->
+  <div class="slide">
+    <div class="slide-video-bg">
+      <video autoplay muted loop playsinline id="vid26">
+        <source src="jump in.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna takes out her camera and takes pictures. Smiling, laughing and cheering.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20d: Natatorium montage 4 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Karsten%20-%20Unika.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna's daughter finishes, she leans to the edge of the pool and looks up.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 20e: Natatorium montage 5 -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('Passengers%20-%202016.jpg')"></div>
+    <div class="slide-content">
+      <div class="section-label">Alex Fischman Cardenas | Superlative</div>
+      <p class="slide-text">Sienna smiles with pride, we see the moment of connection.</p>
     </div>
   </div>
 
   <!-- SLIDE 20: Sienna on pool deck -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('MCDONALDS - Swimmer.png')"></div>
+    <div class="slide-bg" style="background-image: url('MCDONALDS - Swimmer.jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-text">Sienna is on the pool deck after the race. She delivers her line to the camera and greets her daughter.</p>
@@ -659,7 +708,7 @@
 
   <!-- SLIDE 21: Daughter reunion -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('MCDONALDS%20-%20Swimmer%20(1).png')"></div>
+    <div class="slide-bg" style="background-image: url('MCDONALDS%20-%20Swimmer%20(1).jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-dialogue">DAUGHTER: "Mom, did you see that?"</p>
@@ -670,7 +719,7 @@
 
   <!-- SLIDE 22: Pool b-roll + CTA -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('The Plague - 2026 (1).png')"></div>
+    <div class="slide-bg" style="background-image: url('The Plague - 2026 (1).jpg')"></div>
     <div class="slide-content">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <p class="slide-dialogue">SIENNA: "Ask your doctor about adding a once-daily pill today."</p>
@@ -681,7 +730,7 @@
 
   <!-- SLIDE 23: Closing — mother and daughter -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('Tena - Gemeinsam durch die Wechseljahre.png')"></div>
+    <div class="slide-bg" style="background-image: url('Tena - Gemeinsam durch die Wechseljahre.jpg')"></div>
     <div class="slide-content centered">
       <div class="section-label">Alex Fischman Cardenas | Superlative</div>
       <div class="slide-title" style="font-size: 72px;">Thank You!</div>
@@ -692,7 +741,7 @@
 
 <div class="nav">
   <button id="prev" aria-label="Previous slide">&larr;</button>
-  <div class="slide-counter" id="counter">01 / 24</div>
+  <div class="slide-counter" id="counter">01 / 29</div>
   <button id="next" aria-label="Next slide">&rarr;</button>
 </div>
 
@@ -705,7 +754,7 @@
   const slideshow = document.getElementById('slideshow');
   const counter = document.getElementById('counter');
   const progress = document.getElementById('progress');
-  const totalSlides = 24;
+  const totalSlides = document.querySelectorAll('.slide').length;
   let current = 0;
 
   function goTo(n) {
@@ -725,9 +774,14 @@
   function toggleSound(id, el) {
     const v = document.getElementById(id);
     v.muted = !v.muted;
-    el.innerHTML = v.muted
-      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg>'
-      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
+    const isSpeaker = (id === 'vid2' || id === 'vid3');
+    if (isSpeaker) {
+      el.textContent = v.muted ? 'CLICK FOR SOUND' : 'CLICK TO MUTE';
+    } else {
+      el.innerHTML = v.muted
+        ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><polygon points="8,5 19,12 8,19"/></svg>'
+        : '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.7"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
+    }
   }
 
   document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
