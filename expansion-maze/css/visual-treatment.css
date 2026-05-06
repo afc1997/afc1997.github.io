@@ -96,7 +96,7 @@ a { color: inherit; text-decoration: none; }
 
 .vt-panel {
   position: absolute;
-  top: 160px;
+  top: 110px;
   left: 40px;
   right: 60px;
   opacity: 0;
