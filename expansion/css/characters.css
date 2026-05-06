@@ -1,0 +1,135 @@
+/* ── Characters ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --text: #e8e4dc;
+  --dim:  rgba(232,228,220,0.45);
+  --sans: 'Public Sans', sans-serif;
+}
+
+html {
+  background: #000;
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: none;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+body { overflow: hidden; }
+* { cursor: none !important; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Nav ── */
+.site-nav {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  z-index: 50; font-family: var(--sans); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase; line-height: 1;
+  color: #fff; padding-top: 8px; white-space: nowrap;
+  pointer-events: auto; transition: opacity 0.2s;
+}
+.site-nav:hover { opacity: 0.6; }
+
+/* ── Running heads ── */
+.running-heads {
+  position: fixed; top: 50%; left: 0; right: 0;
+  transform: translateY(-50%); z-index: 50;
+  display: flex; justify-content: space-between; align-items: center; padding: 0 40px;
+  pointer-events: none;
+}
+.rh-left, .rh-logo {
+  height: 28px; width: auto; max-width: 120px; display: block; flex-shrink: 0;
+  opacity: 0.55;
+}
+.rh-right {
+  font-family: var(--sans); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── Vertical chapters (snap) ── */
+.chapter {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex; align-items: stretch;
+}
+
+/* ── Horizontal scroll within each chapter ── */
+.h-scroll {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  width: 100%;
+  scrollbar-width: none;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Cards ── */
+.card {
+  flex: none;
+  width: 55vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px 60px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  scroll-snap-align: start;
+}
+
+.card-img {
+  height: 52vh;
+  display: flex; align-items: flex-end;
+  margin-bottom: 32px;
+}
+.card-img img {
+  max-height: 100%; max-width: 100%;
+  object-fit: contain; object-position: bottom left;
+  display: block; filter: grayscale(15%);
+}
+
+.card-num {
+  font-family: var(--sans); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 8px;
+}
+.card-name {
+  font-family: var(--sans); font-size: clamp(22px, 2.8vw, 38px); font-weight: 300;
+  letter-spacing: 0.03em; line-height: 1.1;
+  color: var(--text); margin-bottom: 18px;
+}
+.card-text {
+  font-family: var(--sans); font-size: clamp(17px, 1.4vw, 20px); font-weight: 300;
+  line-height: 1.8; color: var(--dim); max-width: 40ch;
+  user-select: text; cursor: text !important;
+}
+
+/* ── Music player ── */
+.gmp {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 50; display: flex; align-items: center; gap: 16px;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 40px;
+  padding: 10px 18px; pointer-events: auto; cursor: none;
+}
+.gmp-controls { display: flex; align-items: center; gap: 6px; }
+.gmp-btn {
+  background: none; border: none; font-size: 9px;
+  color: rgba(255,255,255,0.3); transition: color 0.2s;
+  cursor: none; padding: 3px 5px; line-height: 1; letter-spacing: 0.05em;
+}
+.gmp-btn:hover { color: rgba(255,255,255,0.7); }
+.gmp-btn--play { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+/* ── Cursor ── */
+.cursor {
+  position: fixed; top: 0; left: 0; pointer-events: none;
+  z-index: 9999; opacity: 0; transition: opacity 0.2s;
+}
+.cursor.visible { opacity: 1; }
+.cursor::before, .cursor::after { content: ''; position: absolute; background: var(--text); }
+.cursor::before { width: 1px; height: 20px; top: -10px; left: 0; }
+.cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+
+@media (max-width: 768px) {
+  .card { width: 85vw; padding: 80px 32px 60px; }
+}
+@media (max-width: 768px) { .running-heads { display: none !important; } }

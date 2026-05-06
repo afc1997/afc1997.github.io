@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EXPANSION — A Film by Fisherman &amp; Trout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="grain"></div>
+
+  <!-- Title — starts big center, shrinks to top nav on scroll -->
+  <div class="hero-over" id="hero-over">
+    <h1 class="hero-title">EXPANSION</h1>
+    <p class="hero-byline">A Film by Fisherman &amp; Trout</p>
+  </div>
+
+  <!-- Persistent top nav — floats above everything including synopsis iframe -->
+  <a class="site-topnav" id="site-topnav" href="index.html">EXPANSION</a>
+
+  <!-- Global Music Player -->
+  <div class="gmp" id="gmp">
+    <div class="gmp-controls">
+      <button class="gmp-btn" id="gmp-prev">&#8592;</button>
+      <button class="gmp-btn gmp-btn--play" id="gmp-play">&#9654;</button>
+      <button class="gmp-btn" id="gmp-next">&#8594;</button>
+    </div>
+  </div>
+
+  <script>if (window === window.top) { location.replace('shell.html'); }</script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.161.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

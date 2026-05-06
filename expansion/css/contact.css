@@ -1,0 +1,298 @@
+/* ── Contact ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --text: #e8e4dc;
+  --dim:  rgba(232,228,220,0.45);
+  --rule: rgba(232,228,220,0.07);
+  --sans: 'Public Sans', sans-serif;
+}
+
+html {
+  background: #000;
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: none;
+}
+body { overflow-x: hidden; }
+* { cursor: none !important; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Maze canvas — behind content, visible from page load ── */
+.maze-canvas {
+  position: fixed; inset: 0;
+  z-index: 1;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* ── Content sits above maze canvas ── */
+.ct-main, .running-heads, .site-nav, .gmp {
+  position: relative;
+  z-index: 10;
+  transition: opacity 0.6s ease;
+}
+
+/* ── When maze chapter selector activates, fade out all content ── */
+.maze-active .ct-main,
+.maze-active .running-heads,
+.maze-active .site-nav,
+.maze-active .gmp {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Nav ── */
+.site-nav {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  z-index: 50; font-size: 11px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase; line-height: 1;
+  color: #fff; padding-top: 8px; white-space: nowrap;
+  pointer-events: auto; transition: opacity 0.2s;
+}
+.site-nav:hover { opacity: 0.6; }
+
+/* ── Running heads ── */
+.running-heads {
+  position: fixed; top: 50%; left: 0; right: 0;
+  transform: translateY(-50%); z-index: 50;
+  display: flex; justify-content: space-between; align-items: center; padding: 0 40px;
+  pointer-events: none;
+}
+.rh-logo {
+  height: 28px; width: auto; max-width: 120px; display: block; flex-shrink: 0;
+  opacity: 0.55;
+}
+.rh-right {
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── Running head nav ── */
+.rh-nav {
+  position: relative;
+  pointer-events: auto;
+  padding-bottom: 48px;
+  margin-bottom: -48px;
+}
+.rh-left {
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block; transition: color 0.2s;
+}
+.rh-nav:hover .rh-left,
+.rh-nav.is-open .rh-left { color: rgba(255,255,255,0.9); }
+
+.rh-menu {
+  position: absolute; top: calc(100% - 40px); left: 0;
+  padding-top: 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.rh-nav:hover .rh-menu,
+.rh-nav.is-open .rh-menu {
+  opacity: 1; pointer-events: auto;
+}
+.rh-menu-item {
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); white-space: nowrap;
+  transition: color 0.2s; display: block;
+}
+.rh-menu-item:hover { color: rgba(255,255,255,0.9); }
+
+/* ── Main layout ── */
+.ct-main {
+  padding: 80px 60px 120px 180px;
+  max-width: 960px;
+}
+
+/* ── Floor ── */
+.ct-floor {
+  padding: 120px 0 100px;
+}
+
+
+/* ── Section ── */
+.ct-section {
+  padding: 0 0 64px;
+}
+.ct-section:last-child { padding-bottom: 0; }
+
+.ct-label {
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 20px;
+}
+
+.ct-text {
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75;
+  color: var(--text); max-width: 62ch;
+  text-wrap: balance;
+  user-select: text; cursor: text !important;
+}
+
+/* ── Selected work ── */
+.ct-work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.ct-card {
+  cursor: none;
+}
+.ct-card-img {
+  aspect-ratio: 2.35 / 1;
+  overflow: hidden;
+  background: #111;
+  margin-bottom: 12px;
+}
+.ct-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  opacity: 0.85; transition: opacity 0.3s;
+}
+.ct-card:hover .ct-card-img img { opacity: 1; }
+
+.ct-card-title {
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75; color: var(--text);
+  margin-bottom: 4px;
+}
+.ct-card-meta {
+  font-size: 9px; font-weight: 300;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);
+}
+
+/* ── Press ── */
+.ct-press {
+  display: flex; flex-direction: column;
+}
+.ct-press-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 24px;
+  padding: 10px 0;
+  transition: opacity 0.2s;
+}
+.ct-press-row:hover { opacity: 0.6; }
+
+.ct-press-title {
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75; color: var(--text);
+}
+.ct-press-outlet {
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dim); white-space: nowrap; flex-shrink: 0;
+}
+
+/* ── Recognition ── */
+.ct-recog {
+  display: flex; flex-direction: column;
+}
+.ct-recog-row {
+  display: flex; align-items: baseline; gap: 24px;
+  padding: 10px 0;
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75; color: var(--text);
+}
+.ct-recog-yr {
+  font-size: 10px; letter-spacing: 0.1em;
+  color: var(--dim); flex-shrink: 0; width: 36px;
+}
+
+/* ── Contact groups ── */
+.ct-contact {
+  display: flex; flex-direction: column; gap: 32px;
+}
+.ct-contact-group {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ct-contact-org {
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 4px;
+}
+.ct-contact-person {
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75; color: var(--text);
+}
+.ct-contact-person a { transition: opacity 0.2s; }
+.ct-contact-person a:hover { opacity: 0.6; }
+
+.ct-site {
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 300; line-height: 1.75; color: var(--text);
+  display: inline-block; transition: opacity 0.2s;
+}
+.ct-site:hover { opacity: 0.6; }
+
+/* ── Maze labels ── */
+.maze-label {
+  font-family: var(--sans); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #fff; white-space: nowrap; text-align: center;
+  margin-bottom: 12px; pointer-events: none;
+}
+.maze-hint {
+  font-family: var(--sans); font-size: 9px; font-weight: 300;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); text-align: center; pointer-events: none;
+}
+
+/* ── Maze wrap (keeps scroll length) ── */
+.maze-wrap { height: 100vh; }
+
+/* ── Lightbox ── */
+.lightbox {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+  z-index: 200; display: none;
+  align-items: center; justify-content: center;
+}
+.lightbox.is-open { display: flex; }
+.lb-close {
+  position: absolute; top: 24px; right: 32px;
+  background: none; border: none;
+  color: rgba(232,228,220,0.5); font-size: 28px; line-height: 1;
+  transition: color 0.2s;
+}
+.lb-close:hover { color: var(--text); }
+
+/* ── GMP ── */
+.gmp {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 50; display: flex; align-items: center;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 40px;
+  padding: 10px 18px; pointer-events: auto;
+}
+.gmp-controls { display: flex; align-items: center; gap: 6px; }
+.gmp-btn {
+  background: none; border: none; font-size: 9px;
+  color: rgba(255,255,255,0.3); transition: color 0.2s;
+  padding: 3px 5px; line-height: 1; letter-spacing: 0.05em;
+}
+.gmp-btn:hover { color: rgba(255,255,255,0.7); }
+.gmp-btn--play { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+/* ── Cursor ── */
+.cursor {
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  opacity: 0; transition: opacity 0.2s;
+}
+.cursor.visible { opacity: 1; }
+.cursor::before, .cursor::after { content: ''; position: absolute; background: var(--text); }
+.cursor::before { width: 1px; height: 20px; top: -10px; left: 0; }
+.cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+
+@media (max-width: 768px) {
+  .ct-work-grid { grid-template-columns: 1fr; }
+  .ct-press-row { flex-direction: column; gap: 4px; }
+}
+@media (max-width: 768px) { .running-heads { display: none !important; } }
