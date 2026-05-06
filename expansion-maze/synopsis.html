@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Story — EXPANSION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/synopsis.css">
+</head>
+<body>
+
+  <a class="syn-title-nav" href="cover.html" target="_top">EXPANSION</a>
+
+  <div class="running-heads">
+    <div class="rh-nav">
+      <span class="rh-left">Story</span>
+      <nav class="rh-menu">
+        <a href="characters.html" target="_top" class="rh-menu-item">Characters</a>
+        <a href="visual-treatment.html" target="_top" class="rh-menu-item">Visual Treatment</a>
+        <a href="contact.html" target="_top" class="rh-menu-item">Contact</a>
+      </nav>
+    </div>
+    <span class="rh-right">Fisherman &amp; Trout</span>
+  </div>
+
+  <section class="slide">
+    <iframe class="fb-media fb-vimeo" src="https://player.vimeo.com/video/1189928672?h=6478e1e58e&background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <p class="syn-label">Synopsis</p>
+    <p class="syn-text">After his estranged father&#8217;s suicide, Jonathan Cameron inherits a destroyed rural mansion. Jon and his wife Esme move in to restore and sell it.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/Synopsis 3.png" alt="">
+    <p class="syn-text">But their plan slowly unravels when Jon discovers a hidden hallway that shouldn&#8217;t exist.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/Synopsis 4.png" alt="">
+    <p class="syn-text">As Jon delves deeper into the maze, he is attacked by masked intruders, haunted by visions of his past, and slowly alienated from everyone he trusts.</p>
+  </section>
+
+  <section class="slide">
+    <iframe class="fb-media fb-vimeo" src="https://player.vimeo.com/video/1189928720?h=9d7234eabe&background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <p class="syn-text">In the film&#8217;s climax, Jon is forced to navigate the heart of the labyrinth, where he must finally confront the pain he has spent his entire life avoiding.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/A Different Man - 2024.png" alt="">
+    <p class="syn-label">Director's Statement</p>
+    <p class="syn-text">There are things inside us we&#8217;d rather bury than face. Things we hide from ourselves, from our families, from the world. Those things don&#8217;t disappear. They rot.</p>
+  </section>
+
+  <section class="slide">
+    <iframe class="fb-media fb-vimeo" src="https://player.vimeo.com/video/1189928624?h=79713aa3be&background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <p class="syn-text">We want to make a movie about living inside a person consuming themselves. Someone too afraid to look at what&#8217;s hiding within. It should feel like a nightmare designed by an architect: claustrophobic, entrapping, dangerous. As if Jon is being surveilled. As if his father is still pulling the strings.</p>
+  </section>
+
+  <section class="slide" id="maze-section"></section>
+
+  <div class="gmp" id="gmp">
+    <div class="gmp-controls">
+      <button class="gmp-btn" id="gmp-prev">&#8592;</button>
+      <button class="gmp-btn gmp-btn--play" id="gmp-play">&#9654;</button>
+      <button class="gmp-btn" id="gmp-next">&#8594;</button>
+    </div>
+  </div>
+
+  <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.161.0/build/three.module.js" } }</script>
+  <script type="module">
+    import { initCursor, initGMP } from './js/shared.js';
+    import { initMaze } from './js/maze.js';
+
+    if (window === window.top) initGMP();
+    initCursor('.gmp, .syn-title-nav, .rh-nav, .rh-menu-item');
+
+    // Hide nav when inside maze iframe
+    if (window !== window.top) {
+      document.getElementById('gmp')?.style.setProperty('display', 'none');
+    }
+
+    // ── Fixed dissolving backgrounds ──────────────────────────────────────────
+    const bgLayer     = document.createElement('div');
+    bgLayer.className = 'bg-layer';
+    document.body.prepend(bgLayer);
+
+    const mazeSection = document.getElementById('maze-section');
+    const storySlides = [...document.querySelectorAll('.slide')].filter(s => s !== mazeSection);
+
+    const bgSlots = storySlides.map((slide, i) => {
+      const slot  = document.createElement('div');
+      slot.className = 'bg-slot';
+      const media = slide.querySelector('.fb-media');
+      if (media) slot.appendChild(media);
+      bgLayer.appendChild(slot);
+      if (i === 0) slot.classList.add('active');
+      return slot;
+    });
+
+    const activateBg = i => bgSlots.forEach((s, j) => s.classList.toggle('active', j === i));
+
+    const slideObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        const idx = storySlides.indexOf(e.target);
+        const txt = e.target.querySelector('.syn-text');
+        const lbl = e.target.querySelector('.syn-label');
+        if (e.isIntersecting) {
+          if (idx >= 0) activateBg(idx);
+          if (lbl) setTimeout(() => lbl.classList.add('visible'), 80);
+          if (txt) setTimeout(() => txt.classList.add('visible'), 80);
+        } else {
+          if (lbl) lbl.classList.remove('visible');
+          if (txt) txt.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.55 });
+    document.querySelectorAll('.slide').forEach(s => slideObs.observe(s));
+
+    // ── Maze at the bottom — lazy init ───────────────────────────────────────
+    const mazeCanvas = document.createElement('canvas');
+    mazeCanvas.className = 'maze-canvas';
+    document.body.appendChild(mazeCanvas);
+
+    let maze = null, frac = 0, targetFrac = 0, lastT = null;
+
+    function animateDescent(now) {
+      if (lastT !== null && maze) {
+        const step = (now - lastT) / 2400;
+        frac = targetFrac > frac ? Math.min(frac + step, targetFrac) : Math.max(frac - step, targetFrac);
+        maze.setScroll(frac);
+        const opacity = Math.max(0, Math.min((frac - 0.3) / 0.45, 1));
+        mazeCanvas.style.opacity = opacity.toFixed(3);
+        mazeCanvas.style.pointerEvents = 'none';
+      }
+      lastT = now;
+      requestAnimationFrame(animateDescent);
+    }
+    requestAnimationFrame(animateDescent);
+
+    const ric = window.requestIdleCallback || (cb => setTimeout(cb, 100));
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !maze) {
+        ric(() => {
+          maze = initMaze(mazeCanvas, { onNavigate: href => { if (window.frameElement) window.frameElement.src = href; else window.top.location.href = href; }, initialYaw: Math.PI });
+          maze.setScroll(0);
+        }, { timeout: 3000 });
+      }
+    }, { rootMargin: '0px 0px 200% 0px', threshold: 0 }).observe(mazeSection);
+
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { targetFrac = 1; if (maze) maze.show(); }
+      else                  { targetFrac = 0; if (maze) maze.hide(); }
+    }, { threshold: 0.5 }).observe(mazeSection);
+  </script>
+</body>
+</html>

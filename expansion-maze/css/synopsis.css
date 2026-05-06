@@ -1,0 +1,166 @@
+/* ── Synopsis ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --text: #e8e4dc;
+  --sans: 'Public Sans', sans-serif;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  background: #000;
+}
+body {
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: none;
+  overflow: hidden;
+}
+* { cursor: none !important; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Fixed backgrounds ── */
+.bg-layer { position: fixed; inset: 0; z-index: 0; background: #000; }
+.bg-slot  { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+.bg-slot.active { opacity: 1; }
+.bg-slot video,
+.bg-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ── Maze canvas ── */
+.maze-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 5; opacity: 0; pointer-events: none;
+}
+
+/* ── Maze labels (match style.css) ── */
+.maze-label {
+  font-family: var(--sans); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #fff; white-space: nowrap; text-align: center; margin-bottom: 12px;
+  pointer-events: none;
+}
+.maze-hint {
+  font-family: var(--sans); font-size: 9px; font-weight: 300;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); text-align: center; pointer-events: none;
+}
+
+/* ── Nav ── */
+.syn-title-nav {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  z-index: 50; font-family: var(--sans); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase; line-height: 1;
+  color: #fff; padding-top: 8px; white-space: nowrap;
+  pointer-events: auto; transition: opacity 0.2s;
+}
+.syn-title-nav:hover { opacity: 0.6; }
+
+/* ── Running heads ── */
+.running-heads {
+  position: fixed; top: 50%; left: 0; right: 0;
+  transform: translateY(-50%); z-index: 50;
+  display: flex; justify-content: space-between; align-items: center; padding: 0 40px;
+  pointer-events: none;
+}
+.rh-logo {
+  height: 28px; width: auto; max-width: 120px; display: block; flex-shrink: 0;
+  opacity: 0.55;
+}
+.rh-right {
+  font-family: var(--sans); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+}
+
+/* ── Running head nav ── */
+.rh-nav {
+  position: relative;
+  pointer-events: auto;
+  /* padding bridges the gap so hover doesn't drop while moving to the menu */
+  padding-bottom: 48px;
+  margin-bottom: -48px;
+}
+.rh-left {
+  font-family: var(--sans); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+  display: block; transition: color 0.2s;
+}
+.rh-nav:hover .rh-left,
+.rh-nav.is-open .rh-left { color: rgba(255,255,255,0.9); }
+
+.rh-menu {
+  position: absolute; top: calc(100% - 40px); left: 0;
+  padding-top: 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.rh-nav:hover .rh-menu,
+.rh-nav.is-open .rh-menu {
+  opacity: 1; pointer-events: auto;
+}
+.rh-menu-item {
+  font-family: var(--sans); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); white-space: nowrap;
+  transition: color 0.2s; display: block;
+}
+.rh-menu-item:hover { color: rgba(255,255,255,0.9); }
+
+/* ── Music player ── */
+.gmp {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 50; display: flex; align-items: center; gap: 16px;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 40px;
+  padding: 10px 18px; pointer-events: auto; cursor: none;
+}
+.gmp-controls { display: flex; align-items: center; gap: 6px; }
+.gmp-btn {
+  background: none; border: none; font-size: 9px; color: rgba(255,255,255,0.3);
+  transition: color 0.2s; cursor: none; padding: 3px 5px; line-height: 1; letter-spacing: 0.05em;
+}
+.gmp-btn:hover { color: rgba(255,255,255,0.7); }
+.gmp-btn--play { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+/* ── Cursor ── */
+.cursor { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.2s; }
+.cursor.visible { opacity: 1; }
+.cursor::before, .cursor::after { content: ''; position: absolute; background: var(--text); }
+.cursor::before { width: 1px; height: 20px; top: -10px; left: 0; }
+.cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+
+/* ── Slides ── */
+.slide {
+  height: 100vh; scroll-snap-align: start;
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(0,0,0,0.28); pointer-events: none; z-index: 1;
+}
+
+/* ── Text ── */
+.syn-label {
+  position: relative; z-index: 2;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 14px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 1.1s ease, transform 1.1s ease;
+}
+.syn-label.visible { opacity: 1; transform: translateY(0); }
+
+.syn-text {
+  position: relative; z-index: 2;
+  max-width: min(46ch, 80vw); text-align: center;
+  font-size: clamp(17px, 1.4vw, 20px); font-weight: 300;
+  line-height: 1.45; text-wrap: balance; color: var(--text); letter-spacing: 0.01em;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 1.1s ease, transform 1.1s ease;
+  user-select: text; cursor: text !important;
+}
+.syn-text.visible { opacity: 1; transform: translateY(0); }
+@media (max-width: 768px) { .running-heads { display: none !important; } }

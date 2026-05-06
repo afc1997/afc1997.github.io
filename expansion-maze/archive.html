@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXPANSION — Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Public Sans', sans-serif;
+      overflow: hidden;
+      cursor: none;
+      height: 100vh;
+    }
+
+    * { cursor: none !important; }
+
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 20px; height: 20px;
+      pointer-events: none; z-index: 10000;
+      opacity: 0;
+      mix-blend-mode: difference;
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s;
+    }
+    .cursor::before, .cursor::after {
+      content: ''; position: absolute; background: #fff;
+    }
+    .cursor::before { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+    .cursor::after { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+    .cursor.visible { opacity: 1; }
+    .cursor.hover { width: 32px; height: 32px; }
+
+    /* ── EXPANSION nav ── */
+    .site-nav {
+      position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+      z-index: 50; font-family: 'Public Sans', sans-serif; font-size: 11px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase; line-height: 1;
+      color: #fff; padding-top: 8px; white-space: nowrap;
+      pointer-events: auto; transition: opacity 0.2s; text-decoration: none;
+    }
+    .site-nav:hover { opacity: 0.6; }
+
+    /* ── Running heads ── */
+    .running-heads {
+      position: fixed; top: 50%; left: 0; right: 0;
+      transform: translateY(-50%); z-index: 50;
+      display: flex; justify-content: space-between; align-items: center; padding: 0 40px;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) { .running-heads { display: none !important; } }
+    .rh-right {
+      font-family: 'Public Sans', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    .rh-nav {
+      position: relative; pointer-events: auto;
+      padding-bottom: 48px; margin-bottom: -48px;
+    }
+    .rh-left {
+      font-family: 'Public Sans', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+      display: block; transition: color 0.2s;
+    }
+    .rh-nav:hover .rh-left { color: rgba(255,255,255,0.9); }
+    .rh-menu {
+      position: absolute; top: calc(100% - 40px); left: 0; padding-top: 14px;
+      display: flex; flex-direction: column; gap: 12px;
+      opacity: 0; pointer-events: none; transition: opacity 0.18s ease;
+    }
+    .rh-nav:hover .rh-menu { opacity: 1; pointer-events: auto; }
+    .rh-menu-item {
+      font-family: 'Public Sans', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); white-space: nowrap;
+      transition: color 0.2s; display: block; text-decoration: none;
+    }
+    .rh-menu-item:hover { color: rgba(255,255,255,0.9); }
+
+    .cylinder-scene {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1600px;
+      perspective-origin: 50% 42%;
+    }
+    .cylinder-body { transform-style: preserve-3d; position: relative; }
+    .cylinder-row {
+      transform-style: preserve-3d;
+      width: 0; height: 0; position: absolute;
+    }
+
+    .cylinder-item {
+      position: absolute;
+      width: 170px;
+      left: -85px; top: -58px;
+      backface-visibility: visible;
+      cursor: pointer;
+      transition: filter 0.3s;
+    }
+    .cylinder-item:hover { filter: brightness(1.15); }
+
+    .cylinder-item-media {
+      position: relative;
+      width: 100%; height: 96px;
+      overflow: hidden;
+    }
+    .cylinder-item img, .cylinder-item video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    .cylinder-item-name {
+      margin-top: 5px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8px; font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cylinder-item-sub {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 7px; letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .cylinder-item--video .cylinder-item-media::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0; border-style: solid;
+      border-width: 6px 0 6px 11px;
+      border-color: transparent transparent transparent rgba(255,255,255,0.45);
+      transform: translate(-50%, -50%); pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cylinder-item--video:hover .cylinder-item-media::after { opacity: 0; }
+
+    .lb { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
+    .lb.is-open { display: flex; }
+    .lb-close { position: absolute; top: 20px; right: 28px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 201; opacity: 0.6; }
+    .lb-close:hover { opacity: 1; }
+    .lb-content { max-width: 88vw; max-height: 85vh; }
+    .lb-content img, .lb-content video { max-width: 88vw; max-height: 85vh; display: block; }
+    .lb-caption { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,0.45); }
+
+
+    /* GMP */
+    .gmp {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 150; display: flex; align-items: center;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 40px;
+      padding: 10px 18px; pointer-events: auto;
+    }
+    .gmp-controls { display: flex; align-items: center; gap: 6px; }
+    .gmp-btn {
+      background: none; border: none; font-size: 9px;
+      color: rgba(255,255,255,0.3); transition: color 0.2s;
+      padding: 3px 5px; line-height: 1; letter-spacing: 0.05em; cursor: none;
+    }
+    .gmp-btn:hover { color: rgba(255,255,255,0.7); }
+    .gmp-btn--play { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+    @media (max-width: 768px) {
+      body, * { cursor: auto !important; }
+      .cursor { display: none !important; }
+
+      .cylinder-item { width: 120px; left: -60px; }
+      .cylinder-item-media { height: 68px; }
+    }
+
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="site-nav" href="cover.html">EXPANSION</a>
+
+  <div class="running-heads">
+    <div class="rh-nav">
+      <span class="rh-left">Archive</span>
+      <nav class="rh-menu">
+        <a href="synopsis.html" class="rh-menu-item">Story</a>
+        <a href="characters.html" class="rh-menu-item">Characters</a>
+        <a href="visual-treatment.html" class="rh-menu-item">Visual Treatment</a>
+        <a href="contact.html" class="rh-menu-item">Contact</a>
+      </nav>
+    </div>
+    <span class="rh-right">Fisherman &amp; Trout</span>
+  </div>
+
+  <div class="cylinder-scene" id="scene">
+    <div class="cylinder-body" id="cylinder-body"></div>
+  </div>
+
+  <!-- GMP -->
+  <div class="gmp" id="gmp">
+    <div class="gmp-controls">
+      <button class="gmp-btn" id="gmp-prev">&#8592;</button>
+      <button class="gmp-btn gmp-btn--play" id="gmp-play">&#9654;</button>
+      <button class="gmp-btn" id="gmp-next">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="lb" id="lb">
+    <button class="lb-close" id="lb-close">&times;</button>
+    <div class="lb-content" id="lb-content"></div>
+    <p class="lb-caption" id="lb-caption"></p>
+  </div>
+
+  <script type="module">
+  const MEDIA = [
+    { type: 'image', src: 'assets/images/_Aftersun - 2022.png', name: 'Aftersun', sub: '2022' },
+    { type: 'image', src: 'assets/images/A Different Man - 2024.png', name: 'A Different Man', sub: '2024' },
+    { type: 'image', src: 'assets/images/Balming Tiger - Moving Forward.png', name: 'Balming Tiger', sub: 'Moving Forward' },
+    { type: 'image', src: 'assets/images/Beau Is Afraid - 2023 (2).png', name: 'Beau Is Afraid', sub: '2023' },
+    { type: 'image', src: 'assets/images/Beyond the Fog - 2023.png', name: 'Beyond the Fog', sub: '2023' },
+    { type: 'image', src: 'assets/images/Boogeyman - 2005.png', name: 'Boogeyman', sub: '2005' },
+    { type: 'image', src: 'assets/images/Brian-Cox.webp', name: 'Brian Cox', sub: 'Richard' },
+    { type: 'image', src: 'assets/images/Cobra - 1986.png', name: 'Cobra', sub: '1986' },
+    { type: 'image', src: 'assets/images/Deep Red - 1975 (1).png', name: 'Deep Red', sub: '1975' },
+    { type: 'image', src: 'assets/images/Deep Red - 1975 (3).png', name: 'Deep Red', sub: '1975' },
+    { type: 'image', src: 'assets/images/Esme.png', name: 'Esme', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/Free in Deed - 2015.png', name: 'Free in Deed', sub: '2015' },
+    { type: 'image', src: 'assets/images/Harry Potter and the Half-Blood Prince - 2009.png', name: 'Harry Potter', sub: '2009' },
+    { type: 'image', src: 'assets/images/Home Alone 2_ Lost in New York - 1992.png', name: 'Home Alone 2', sub: '1992' },
+    { type: 'image', src: 'assets/images/House 2.jpg', name: 'The House', sub: 'Production Design' },
+    { type: 'image', src: 'assets/images/House 3.png', name: 'The House', sub: 'Production Design' },
+    { type: 'image', src: 'assets/images/House.png', name: 'The House', sub: 'Production Design' },
+    { type: 'image', src: 'assets/images/Incendies - 2010 (1).png', name: 'Incendies', sub: '2010' },
+    { type: 'image', src: 'assets/images/Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles - 1976.png', name: 'Jeanne Dielman', sub: '1976' },
+    { type: 'image', src: 'assets/images/JON 1.png', name: 'Jonathan', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/JON 2.png', name: 'Jonathan', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/JON 3.png', name: 'Jonathan', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/Last Tango in Paris - 1972 (1).png', name: 'Last Tango in Paris', sub: '1972' },
+    { type: 'image', src: 'assets/images/Mandy - 2018.png', name: 'Mandy', sub: '2018' },
+    { type: 'image', src: 'assets/images/Mickey 17 - 2025.png', name: 'Mickey 17', sub: '2025' },
+    { type: 'image', src: 'assets/images/New Parker.png', name: 'Parker', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/New Richard.png', name: 'Richard', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/Nostalghia - 1984 (6).png', name: 'Nostalghia', sub: '1984' },
+    { type: 'image', src: 'assets/images/Nostalghia - 1984.png', name: 'Nostalghia', sub: '1984' },
+    { type: 'image', src: 'assets/images/Parker.png', name: 'Parker', sub: 'Character Reference' },
+    { type: 'image', src: 'assets/images/Red Island - 2023.png', name: 'Red Island', sub: '2023' },
+    { type: 'image', src: 'assets/images/Severance - The You You Are.png', name: 'Severance', sub: 'Tone Reference' },
+    { type: 'image', src: 'assets/images/Short Cuts - 1993.png', name: 'Short Cuts', sub: '1993' },
+    { type: 'image', src: 'assets/images/Synopsis 1.png', name: 'Synopsis', sub: 'Expansion' },
+    { type: 'image', src: 'assets/images/Synopsis 2.png', name: 'Synopsis', sub: 'Expansion' },
+    { type: 'image', src: 'assets/images/Synopsis 3.png', name: 'Synopsis', sub: 'Expansion' },
+    { type: 'image', src: 'assets/images/Synopsis 4.png', name: 'Synopsis', sub: 'Expansion' },
+    { type: 'image', src: 'assets/images/The Fountain - 2006.png', name: 'The Fountain', sub: '2006' },
+    { type: 'image', src: 'assets/images/The King\'s Speech - 2010.png', name: 'The King\'s Speech', sub: '2010' },
+    { type: 'image', src: 'assets/images/The Legend of Ochi - 2025.png', name: 'The Legend of Ochi', sub: '2025' },
+    { type: 'image', src: 'assets/images/The Lovers on the Bridge - 1999.png', name: 'The Lovers on the Bridge', sub: '1999' },
+    { type: 'image', src: 'assets/images/The Needle - 1989.png', name: 'The Needle', sub: '1989' },
+    { type: 'image', src: 'assets/images/The Painted Bird - 2019 (1).png', name: 'The Painted Bird', sub: '2019' },
+    { type: 'image', src: 'assets/images/The Third Generation - 1979.png', name: 'The Third Generation', sub: '1979' },
+    { type: 'image', src: 'assets/images/Tokyo Drifter - 1966.png', name: 'Tokyo Drifter', sub: '1966' },
+    { type: 'image', src: 'assets/images/Tout feu tout flamme - 1982 (1).png', name: 'Tout feu tout flamme', sub: '1982' },
+    { type: 'image', src: 'assets/images/Tout feu tout flamme - 1982 (2).png', name: 'Tout feu tout flamme', sub: '1982' },
+    { type: 'image', src: 'assets/images/Tout feu tout flamme - 1982.png', name: 'Tout feu tout flamme', sub: '1982' },
+    { type: 'image', src: 'assets/images/V_ The Final Battle - Part Two.png', name: 'V: The Final Battle', sub: '' },
+    { type: 'image', src: 'assets/images/Whip It - 2009.png', name: 'Whip It', sub: '2009' },
+    { type: 'image', src: 'assets/images/X - 2022.png', name: 'X', sub: '2022' },
+    { type: 'image', src: 'assets/Visual Treatment/Camera/The Fountain - 2006.png', name: 'The Fountain', sub: 'Camera Reference' },
+    { type: 'image', src: 'assets/Visual Treatment/Directors Statement.png', name: 'Directors Statement', sub: 'Expansion' },
+    { type: 'image', src: 'assets/Visual Treatment/Production Desing/Free in Deed - 2015.png', name: 'Free in Deed', sub: 'Production Design' },
+    { type: 'image', src: 'assets/Visual Treatment/Production Desing/House 3.png', name: 'The House', sub: 'Production Design' },
+    { type: 'image', src: 'assets/Visual Treatment/Production Desing/Tout feu tout flamme - 1982 (1).png', name: 'Tout feu tout flamme', sub: 'Production Design' },
+    { type: 'image', src: 'assets/Visual Treatment/Tone/Nostalghia - 1984 (6).png', name: 'Nostalghia', sub: 'Tone Reference' },
+    { type: 'video', src: 'assets/video/compressed/111_00018854.mp4', hq: 'assets/video/hq/111_00018854.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/111_00105595.mp4', hq: 'assets/video/hq/111_00105595.mp4', name: 'Sound Reference', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/111_00191415.mp4', hq: 'assets/video/hq/111_00191415.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00025470.mp4', hq: 'assets/video/hq/Clips00025470.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00026843.mp4', hq: 'assets/video/hq/Clips00026843.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00052103.mp4', hq: 'assets/video/hq/Clips00052103.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00061980.mp4', hq: 'assets/video/hq/Clips00061980.mp4', name: 'Camera Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/Clips00065684.mp4', hq: 'assets/video/hq/Clips00065684.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00074446.mp4', hq: 'assets/video/hq/Clips00074446.mp4', name: 'Edit Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/Clips00076361.mp4', hq: 'assets/video/hq/Clips00076361.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00076655.mp4', hq: 'assets/video/hq/Clips00076655.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00079497.mp4', hq: 'assets/video/hq/Clips00079497.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00109044.mp4', hq: 'assets/video/hq/Clips00109044.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/Clips00183856.mp4', hq: 'assets/video/hq/Clips00183856.mp4', name: 'Reference Clip', sub: 'Expansion' },
+    { type: 'video', src: 'assets/video/compressed/edit1.mp4', name: 'Edit Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/edit3.mp4', name: 'Edit Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/montagediy.mp4', hq: 'assets/video/hq/montagediy.mp4', name: 'Construction Montage', sub: 'Production Design' },
+    { type: 'video', src: 'assets/video/compressed/safe1_00052058.mp4', hq: 'assets/video/hq/safe1_00052058.mp4', name: 'Safe', sub: 'Tone Reference' },
+    { type: 'video', src: 'assets/video/compressed/safe2_00026057.mp4', hq: 'assets/video/hq/safe2_00026057.mp4', name: 'Safe', sub: 'Camera Reference' },
+    { type: 'video', src: 'assets/video/compressed/Timeline 1 copydiy 1.mp4', hq: 'assets/video/hq/Timeline 1 copydiy 1.mp4', name: 'Construction', sub: 'Production Design' },
+    { type: 'video', src: 'assets/video/compressed/Timeline 1 copydiy 2.mp4', hq: 'assets/video/hq/Timeline 1 copydiy 2.mp4', name: 'Construction', sub: 'Production Design' },
+    { type: 'video', src: 'assets/video/compressed/Timeline 1 copydiy 4.mp4', hq: 'assets/video/hq/Timeline 1 copydiy 4.mp4', name: 'Construction', sub: 'Production Design' },
+    { type: 'video', src: 'assets/video/compressed/tone-new.mp4', hq: 'assets/video/hq/tone-new.mp4', name: 'Tone Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/Tone1.mp4', hq: 'assets/video/hq/Tone1.mp4', name: 'Tone Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/Tone2.mp4', hq: 'assets/video/hq/Tone2.mp4', name: 'Tone Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/Tone3.mp4', hq: 'assets/video/hq/Tone3.mp4', name: 'Tone Reference', sub: 'Visual Treatment' },
+    { type: 'video', src: 'assets/video/compressed/westworld.mp4', hq: 'assets/video/hq/westworld.mp4', name: 'Westworld', sub: 'Tone Reference' },
+    { type: 'video', src: 'assets/video/compressed/safe-convulsion.mp4', hq: 'assets/video/hq/safe-convulsion.mp4', name: 'Safe', sub: 'Convulsion' },
+    { type: 'video', src: 'assets/video/compressed/nostalghia-sartre70486.mp4', hq: 'assets/video/hq/nostalghia-sartre70486.mp4', name: 'Nostalghia', sub: 'Camera Reference' },
+  ];
+
+  function preloadMedia() {}
+
+  // ── Shuffle ──
+  for (let i = MEDIA.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [MEDIA[i], MEDIA[j]] = [MEDIA[j], MEDIA[i]];
+  }
+
+  // ── Cylinder ──
+  // 9 items per row on the cylinder. ~6 visible across, edges curve away.
+  // Small items (150px), tight gaps, large radius = feels like a grid that curves.
+  const PER_ROW = 8;
+  const ANGLE_STEP = 360 / PER_ROW;   // 40°
+  const RADIUS = 410;
+  const ROW_H = 145;
+
+  const cylinderBody = document.getElementById('cylinder-body');
+  const numRows = Math.ceil(MEDIA.length / PER_ROW);
+  const rows = [];
+
+  for (let r = 0; r < numRows; r++) {
+    let slice = MEDIA.slice(r * PER_ROW, (r + 1) * PER_ROW);
+    // Always fill to 8 — wrap from start if needed
+    while (slice.length < PER_ROW) slice.push(MEDIA[slice.length % MEDIA.length]);
+    const rowEl = document.createElement('div');
+    rowEl.className = 'cylinder-row';
+    rowEl.style.top = (r * ROW_H) + 'px';
+
+    const offset = r % 2 === 0 ? 0 : ANGLE_STEP * 0.5;
+
+    slice.forEach((item, j) => {
+      const angle = offset + j * ANGLE_STEP;
+      const el = document.createElement('div');
+      el.className = 'cylinder-item' + (item.type === 'video' ? ' cylinder-item--video' : '');
+      el.style.transform = `rotateY(${angle}deg) translateZ(${RADIUS}px)`;
+
+      const mediaWrap = document.createElement('div');
+      mediaWrap.className = 'cylinder-item-media';
+
+      if (item.type === 'image') {
+        const img = document.createElement('img');
+        img.loading = 'lazy'; img.src = item.src; img.alt = item.name;
+        mediaWrap.appendChild(img);
+      } else {
+        const vid = document.createElement('video');
+        vid.muted = true; vid.loop = true; vid.playsInline = true;
+        vid.preload = 'auto'; vid.src = item.src;
+        vid.autoplay = true;
+        mediaWrap.appendChild(vid);
+        vid.play().catch(() => {});
+      }
+      el.appendChild(mediaWrap);
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'cylinder-item-name';
+      nameEl.textContent = item.name;
+      el.appendChild(nameEl);
+
+      if (item.sub) {
+        const subEl = document.createElement('div');
+        subEl.className = 'cylinder-item-sub';
+        subEl.textContent = item.sub;
+        el.appendChild(subEl);
+      }
+
+      el.addEventListener('click', () => { if (!dragMoved) openLightbox(r * PER_ROW + j); });
+      rowEl.appendChild(el);
+    });
+
+    cylinderBody.appendChild(rowEl);
+    const itemAngles = slice.map((_, j) => offset + j * ANGLE_STEP);
+    const itemEls = Array.from(rowEl.children);
+    rows.push({ el: rowEl, angle: offset, baseAngle: offset, dir: r % 2 === 0 ? 1 : -1, speed: 0.012 + Math.random() * 0.008, itemAngles, itemEls });
+  }
+
+  preloadMedia();
+
+  // ── Scroll moves vertically only. Rows auto-rotate very slowly. ──
+  let scrollTarget = 0;
+  let scrollCurrent = 0;
+  const maxScroll = numRows * ROW_H;
+
+  window.addEventListener('wheel', e => {
+    if (document.querySelector('.lb.is-open')) return;
+    e.preventDefault();
+    const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    scrollTarget = Math.max(0, Math.min(scrollTarget + d * 0.8, maxScroll));
+  }, { passive: false });
+
+  // ── Touch scroll ──
+  let touchStartY = 0, touchScrollStart = 0;
+  window.addEventListener('touchstart', e => {
+    if (document.querySelector('.lb.is-open')) return;
+    touchStartY = e.touches[0].clientY;
+    touchScrollStart = scrollTarget;
+  }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    if (document.querySelector('.lb.is-open')) return;
+    e.preventDefault();
+    const dy = touchStartY - e.touches[0].clientY;
+    scrollTarget = Math.max(0, Math.min(touchScrollStart + dy * 1.2, maxScroll));
+  }, { passive: false });
+
+  // ── Drag to spin ──
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragRow = null;
+  let dragStartAngle = 0;
+  let dragMoved = false;
+
+  cylinderBody.addEventListener('mousedown', e => {
+    if (e.target.closest('.lb')) return;
+    isDragging = true;
+    dragMoved = false;
+    dragStartX = e.clientX;
+    // Find which row was clicked
+    const item = e.target.closest('.cylinder-item');
+    if (item) {
+      const rowEl = item.parentElement;
+      dragRow = rows.find(r => r.el === rowEl) || null;
+    } else {
+      dragRow = null;
+    }
+    if (dragRow) dragStartAngle = dragRow.angle;
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging || !dragRow) return;
+    const dx = e.clientX - dragStartX;
+    if (Math.abs(dx) > 3) dragMoved = true;
+    dragRow.angle = dragStartAngle + dx * 0.3;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    dragRow = null;
+  });
+
+  function animate() {
+    scrollCurrent += (scrollTarget - scrollCurrent) * 0.06;
+
+    rows.forEach(row => {
+      // Skip auto-rotation if this row is being dragged
+      if (!(isDragging && dragRow === row)) {
+        row.angle += row.speed * row.dir;
+      }
+      row.el.style.transform = `rotateY(${row.angle}deg)`;
+
+      // Fade items based on facing: front-facing = full opacity, back-facing = dim + flipped
+      row.itemEls.forEach((el, j) => {
+        const itemAngle = row.itemAngles[j];
+        // Total angle of this item in world space
+        const total = ((row.angle + itemAngle) % 360 + 360) % 360;
+        // cos of angle: 1 = facing camera, -1 = facing away
+        const facing = Math.cos(total * Math.PI / 180);
+        // Front: opacity 1, back: opacity 0.15
+        if (facing > 0) {
+          el.style.opacity = 1;
+        } else {
+          el.style.opacity = 0.12;
+        }
+      });
+    });
+
+    cylinderBody.style.transform = `translateY(${-scrollCurrent}px)`;
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // ── Lightbox ──
+  const lb = document.getElementById('lb');
+  const lbContent = document.getElementById('lb-content');
+  const lbCaption = document.getElementById('lb-caption');
+
+  function openLightbox(idx) {
+    const item = MEDIA[idx];
+    if (!item) return;
+    lbContent.innerHTML = '';
+    if (item.type === 'video') {
+      const vid = document.createElement('video');
+      vid.src = item.hq || item.src;
+      vid.controls = true; vid.autoplay = true; vid.playsInline = true;
+      lbContent.appendChild(vid);
+    } else {
+      const img = document.createElement('img');
+      img.src = item.src;
+      lbContent.appendChild(img);
+    }
+    lbCaption.textContent = item.name + (item.sub ? ' — ' + item.sub : '');
+    lb.classList.add('is-open');
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('is-open');
+    const vid = lbContent.querySelector('video');
+    if (vid) { vid.pause(); vid.src = ''; }
+    lbContent.innerHTML = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox();
+  });
+
+  // ── Audio player ──
+  import { initGMP } from './js/shared.js';
+  if (window !== window.top) {
+    document.getElementById('gmp')?.style.setProperty('display', 'none');
+  } else {
+    initGMP();
+  }
+
+  // ── Cursor ──
+  if (window !== window.top) {
+    document.addEventListener('mousemove', e => {
+      window.parent.postMessage({ type: 'gmp_cursor', x: e.clientX, y: e.clientY }, '*');
+    });
+    document.addEventListener('mouseleave', () => {
+      window.parent.postMessage({ type: 'gmp_cursor_leave' }, '*');
+    });
+    document.addEventListener('click', e => {
+      window.parent.postMessage({ type: 'gmp_interaction' }, '*');
+      const a = e.target.closest('a[target="_top"]');
+      if (a) { e.preventDefault(); window.parent.postMessage({ type: 'navigate', href: a.href }, '*'); }
+    }, true);
+    document.addEventListener('keydown', () => {
+      window.parent.postMessage({ type: 'gmp_interaction' }, '*');
+    }, true);
+  } else {
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor';
+    document.body.appendChild(cursor);
+    let mx = 0, my = 0, cx = 0, cy = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.classList.add('visible'); });
+    document.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
+    document.addEventListener('mouseover', e => { if (e.target.closest('a,button,.cylinder-item')) cursor.classList.add('hover'); });
+    document.addEventListener('mouseout', e => { if (e.target.closest('a,button,.cylinder-item')) cursor.classList.remove('hover'); });
+    (function cursorLoop() {
+      cx += (mx - cx) * 0.1; cy += (my - cy) * 0.1;
+      cursor.style.transform = `translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
+      requestAnimationFrame(cursorLoop);
+    })();
+  }
+  </script>
+</body>
+</html>

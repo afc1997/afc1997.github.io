@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EXPANSION</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; cursor: none; }
+    * { cursor: none !important; }
+
+    #content {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      border: none; z-index: 1;
+    }
+    .nav-frame {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      border: none; z-index: 2;
+      opacity: 0; pointer-events: none;
+    }
+
+    /* ── GMP ── */
+    .gmp {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 9000;
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 40px;
+      padding: 10px 20px;
+      pointer-events: auto;
+    }
+
+    .gmp-controls { display: flex; align-items: center; gap: 6px; }
+
+    .gmp-btn {
+      background: none; border: none; font-size: 9px;
+      color: rgba(255,255,255,0.4); transition: color 0.2s;
+      padding: 3px 5px; line-height: 1; letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .gmp-btn:hover { color: rgba(255,255,255,0.9); }
+    .gmp-btn--play { font-size: 10px; color: rgba(255,255,255,0.8); }
+
+
+    /* ── Cursor ── */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .cursor.visible { opacity: 1; }
+    .cursor::before, .cursor::after {
+      content: ''; position: absolute;
+      background: rgba(232,228,220,0.9);
+    }
+    .cursor::before { width: 1px; height: 20px; top: -10px; left: 0; }
+    .cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+  </style>
+</head>
+<body>
+
+  <iframe id="content" src="cover.html" allowfullscreen allow="autoplay"></iframe>
+
+  <div class="gmp" id="gmp">
+    <div class="gmp-controls">
+      <button class="gmp-btn" id="gmp-prev">&#8592;</button>
+      <button class="gmp-btn gmp-btn--play" id="gmp-play">&#9654;</button>
+      <button class="gmp-btn" id="gmp-next">&#8594;</button>
+    </div>
+  </div>
+
+  <audio id="gmp-audio" preload="auto"></audio>
+
+  <script type="module">
+    import { initGMP, initCursor } from './js/shared.js';
+    initGMP();
+    initCursor('.gmp');
+
+    // ── Shell-level dissolve transition ───────────────────────────────────────
+    let navFrame = null;
+    let pendingFadeDur = 2400;
+
+    window.addEventListener('message', e => {
+      const d = e.data;
+      if (d?.type === 'shell_nav_prepare') {
+        // Start loading destination page behind current content
+        if (navFrame) navFrame.remove();
+        pendingFadeDur = d.fadeDur ?? 2400;
+        navFrame = document.createElement('iframe');
+        navFrame.src = d.href;
+        navFrame.className = 'nav-frame';
+        navFrame.setAttribute('allowfullscreen', '');
+        navFrame.setAttribute('allow', 'autoplay');
+        document.body.appendChild(navFrame);
+      } else if (d?.type === 'shell_nav_fade') {
+        if (navFrame) {
+          navFrame.style.transition = `opacity ${pendingFadeDur / 1000}s ease`;
+          navFrame.style.opacity = '1';
+        }
+      } else if (d?.type === 'navigate') {
+        // Regular link navigation — cancel any in-flight dissolve first
+        if (navFrame) { navFrame.remove(); navFrame = null; }
+        const content = document.getElementById('content');
+        if (content) content.src = d.href;
+      } else if (d?.type === 'shell_nav_done') {
+        if (navFrame) {
+          const old = document.getElementById('content');
+          navFrame.id = 'content';
+          navFrame.className = '';
+          navFrame.style.transition = 'none';
+          navFrame.style.opacity = '1';
+          navFrame.style.pointerEvents = 'auto';
+          navFrame.style.zIndex = '1';
+          old?.remove();
+          navFrame = null;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

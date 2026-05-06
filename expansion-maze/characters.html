@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Characters — EXPANSION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/synopsis.css">
+</head>
+<body>
+
+  <a class="syn-title-nav" href="cover.html" target="_top">EXPANSION</a>
+
+  <div class="running-heads">
+    <div class="rh-nav">
+      <span class="rh-left">Characters</span>
+      <nav class="rh-menu">
+        <a href="synopsis.html" target="_top" class="rh-menu-item">Story</a>
+        <a href="visual-treatment.html" target="_top" class="rh-menu-item">Visual Treatment</a>
+        <a href="contact.html" target="_top" class="rh-menu-item">Contact</a>
+      </nav>
+    </div>
+    <span class="rh-right">Fisherman &amp; Trout</span>
+  </div>
+
+  <section class="slide">
+    <iframe class="fb-media fb-vimeo" src="https://player.vimeo.com/video/1189928667?h=b91f47f19f&background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <p class="syn-text">Jon has spent his entire life running from his past. Smart, loyal, and secretly insecure. When he inherits his father&#8217;s house, there&#8217;s nowhere left to run. Contained, until it isn&#8217;t.</p>
+  </section>
+
+  <section class="slide">
+    <iframe class="fb-media fb-vimeo" src="https://player.vimeo.com/video/1189928638?h=0a3c807618&background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <p class="syn-text">Esme is grounded where Jon is not. She believes everything can be fixed&#8202;&#8212;&#8202;until she can&#8217;t anymore. Warmth and maternal care on the surface, something hidden underneath.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/New Parker.png" alt="">
+    <p class="syn-text">Parker is everything Jon wishes he could be&#8202;&#8212;&#8202;effortlessly charismatic, confident, physically imposing. His golden retriever energy seems friendly, but underneath it might be calculated.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/The Father - 2020.png" alt="">
+    <p class="syn-text">Richard hangs himself in the first scene&#8202;&#8212;&#8202;but his presence never leaves. Brilliant and cruel. To the world, a genius. To Jon, a monster.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/House.png" alt="">
+    <p class="syn-text">The house is an extension of Richard's mind. Monumental, isolated, fully wrecked. A character in its own right, one carrying a secret within its walls.</p>
+  </section>
+
+  <section class="slide">
+    <img class="fb-media" src="pitch-assets/images/Maze.png" alt="">
+    <p class="syn-text">Unlike the house, the maze is always in pristine condition. Its walls plaster white, incredibly tall, endlessly long. We never know what&#8217;s waiting behind a turn.</p>
+  </section>
+
+  <section class="slide" id="maze-section"></section>
+
+  <div class="gmp" id="gmp">
+    <div class="gmp-controls">
+      <button class="gmp-btn" id="gmp-prev">&#8592;</button>
+      <button class="gmp-btn gmp-btn--play" id="gmp-play">&#9654;</button>
+      <button class="gmp-btn" id="gmp-next">&#8594;</button>
+    </div>
+  </div>
+
+  <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.161.0/build/three.module.js" } }</script>
+  <script type="module">
+    import { initCursor, initGMP } from './js/shared.js';
+    import { initMaze } from './js/maze.js';
+
+    if (window === window.top) initGMP();
+    initCursor('.gmp, .syn-title-nav, .rh-nav, .rh-menu-item');
+
+    if (window !== window.top) {
+      document.getElementById('gmp')?.style.setProperty('display', 'none');
+    }
+
+    const bgLayer = document.createElement('div');
+    bgLayer.className = 'bg-layer';
+    document.body.prepend(bgLayer);
+
+    const mazeSection = document.getElementById('maze-section');
+    const storySlides = [...document.querySelectorAll('.slide')].filter(s => s !== mazeSection);
+
+    const bgSlots = storySlides.map((slide, i) => {
+      const slot  = document.createElement('div');
+      slot.className = 'bg-slot';
+      const media = slide.querySelector('.fb-media');
+      if (media) slot.appendChild(media);
+      bgLayer.appendChild(slot);
+      if (i === 0) slot.classList.add('active');
+      return slot;
+    });
+
+    const activateBg = i => bgSlots.forEach((s, j) => s.classList.toggle('active', j === i));
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        const idx = storySlides.indexOf(e.target);
+        const txt = e.target.querySelector('.syn-text');
+        if (e.isIntersecting) {
+          if (idx >= 0) activateBg(idx);
+          if (txt) setTimeout(() => txt.classList.add('visible'), 80);
+        } else {
+          if (txt) txt.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.55 });
+    document.querySelectorAll('.slide').forEach(s => obs.observe(s));
+
+    // ── Maze at the bottom — lazy init ───────────────────────────────────────
+    const mazeCanvas = document.createElement('canvas');
+    mazeCanvas.className = 'maze-canvas';
+    document.body.appendChild(mazeCanvas);
+
+    let maze = null, frac = 0, targetFrac = 0, lastT = null;
+
+    function animateDescent(now) {
+      if (lastT !== null && maze) {
+        const step = (now - lastT) / 2400;
+        frac = targetFrac > frac ? Math.min(frac + step, targetFrac) : Math.max(frac - step, targetFrac);
+        maze.setScroll(frac);
+        const opacity = Math.max(0, Math.min((frac - 0.3) / 0.45, 1));
+        mazeCanvas.style.opacity = opacity.toFixed(3);
+        mazeCanvas.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+      }
+      lastT = now;
+      requestAnimationFrame(animateDescent);
+    }
+    requestAnimationFrame(animateDescent);
+
+    const ric = window.requestIdleCallback || (cb => setTimeout(cb, 100));
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !maze) {
+        ric(() => {
+          maze = initMaze(mazeCanvas, { onNavigate: href => { if (window.frameElement) window.frameElement.src = href; else window.top.location.href = href; }, initialYaw: Math.PI / 2 });
+          maze.setScroll(0);
+        }, { timeout: 3000 });
+      }
+    }, { rootMargin: '0px 0px 200% 0px', threshold: 0 }).observe(mazeSection);
+
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        targetFrac = 1;
+        if (maze) maze.show();
+      } else {
+        targetFrac = 0;
+        if (maze) maze.hide();
+      }
+    }, { threshold: 0.5 }).observe(mazeSection);
+  </script>
+</body>
+</html>
