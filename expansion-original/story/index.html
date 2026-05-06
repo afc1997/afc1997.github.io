@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXPANSION — A Film by Alex Fischman Cárdenas & Trout Cohen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=55" />
+</head>
+<body>
+
+  <div id="spacer"></div>
+  <div class="grain"></div>
+
+
+  <nav class="topnav hidden">
+    <a class="topnav-title" onclick="scrollToPanel(0); return false;" href="#">EXPANSION</a>
+    <div class="topnav-links">
+      <button class="tnav-btn" data-section="project" onclick="scrollToSection('project')">Project</button>
+      <button class="tnav-btn" data-section="characters" onclick="scrollToSection('characters')">Characters</button>
+      <button class="tnav-btn" data-section="visual-treatment" onclick="scrollToSection('visual-treatment')">Visual Treatment</button>
+      <button class="tnav-btn" data-section="about" onclick="scrollToSection('about')">About</button>
+      <a class="tnav-btn" href="demo.html">Demo</a>
+      <a class="tnav-btn" href="archive.html">Archive</a>
+    </div>
+  </nav>
+  <div class="progress-bar" id="progress-bar"></div>
+
+  <!-- ══════════════════════════════════════════════
+       PHASE 1 — HORIZONTAL (Project Description)
+       10 panels: Hero · Intro · S1–S5 · Chars A · Chars B · Statement
+  ══════════════════════════════════════════════ -->
+  <div id="h-track-1">
+
+    <!-- 1. HERO -->
+    <section class="panel panel-hero" data-section="" data-track="1">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto">
+        <source src="/expansion/assets/video/compressed/new-cover.mp4" type="video/mp4">
+      </video>
+      <div class="hero-center">
+        <h1 class="hero-title">EXPANSION</h1>
+        <p class="hero-byline">A Film by Fisherman &amp; Trout</p>
+      </div>
+      <div class="scroll-hint">→</div>
+    </section>
+
+    <!-- 2. SECTION INTRO: Apartamento-style logline -->
+    <div class="panel panel-intro" id="project" data-section="project" data-track="1">
+      <p class="intro-frag--tl">A man inherits his<br>estranged father's mansion</p>
+      <p class="intro-frag--br">and the maze he built<br>just&nbsp;for&nbsp;him.</p>
+      <div class="intro-img-wrap" id="intro-img-wrap">
+        <video muted loop playsinline preload="none">
+          <source data-src="/expansion/assets/video/compressed/111_00191415.mp4" type="video/mp4">
+        </video>
+      </div>
+      <span class="intro-meta">Title: Expansion<br>Written and Directed: Fisherman &amp; Trout<br>Genre: Psychological Horror</span>
+    </div>
+
+    <!-- 3. SYNOPSIS -->
+    <div class="panel panel-synopsis" data-section="project" data-track="1">
+      <div class="synopsis-video-col">
+        <video class="synopsis-video" muted loop playsinline preload="none">
+          <source data-src="/expansion/assets/video/compressed/westworld.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="synopsis-content">
+        <div class="synopsis-text">
+          <p class="dir-statement-title">Synopsis</p>
+          <p class="synopsis-body">After his estranged father's suicide, Jonathan Cameron inherits a destroyed rural mansion. Jon and his wife Esme move in to restore and sell it. But, their plan slowly unravels when Jon discovers a hidden hallway that shouldn't exist. As Jon delves deeper into the maze, he is attacked by masked intruders, haunted by visions of his past, and slowly alienated from everyone he trusts. In the film's climax, Jon's forced to navigate the heart of the labyrinth, where he must finally confront the pain he has spent his entire life avoiding.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DIRECTOR STATEMENT -->
+    <div class="panel panel-dir-statement" data-section="project" data-track="1">
+      <!-- Two floating videos -->
+      <div class="dir-vid dir-vid--tr">
+        <img src="/expansion/assets/Visual Treatment/Directors Statement.png" alt="Directors Statement">
+      </div>
+      <div class="dir-vid dir-vid--bl">
+        <video muted loop playsinline preload="none">
+          <source data-src="/expansion/assets/video/compressed/111_00018854.mp4" type="video/mp4">
+        </video>
+      </div>
+      <!-- Label + quote — left side -->
+      <div class="dir-statement-bl">
+        <p class="dir-statement-title">Theme</p>
+        <p class="dir-statement-quote">There are things inside us we'd rather bury than face. Things we hide from ourselves, from our families, from the world. Those things don't disappear. They rot.</p>
+      </div>
+      <!-- Body text — right side, between the two videos -->
+      <div class="dir-statement-body">
+        <p class="synopsis-body">We want to make a movie about living inside a person who is consuming themselves because they're too afraid to look at what's hiding within them. We want it to feel like a nightmare, one constructed the way an architect might design a torture chamber. Claustrophobic, entrapping, filled with danger hiding behind the walls. We should feel almost like Jon's being surveilled. As if somehow, Richard is still watching over him, still pulling the strings.</p>
+      </div>
+    </div>
+
+
+    <!-- 5. CHARACTERS — full bleed image title -->
+    <div class="panel panel-chars-video" data-section="project" data-track="1">
+      <img class="chars-video" src="/expansion/assets/images/Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles - 1976.png" alt="Characters">
+      <div class="chars-video-overlay"></div>
+      <h2 class="chars-video-title">CHARACTERS</h2>
+    </div>
+
+    <!-- 6. JONATHAN — text top -->
+    <div class="panel panel-character" data-section="project" data-track="1">
+      <div class="char-text-block">
+        <p class="char-panel-name">Jonathan</p>
+        <div class="char-panel-bio">
+          <p class="char-bio-desc">Jon has spent his entire life running from his past. He's smart, loyal and secretly insecure. Jon deals with everything alone, inside his own head. But, when he inherits his father's house, Jon finds there's nowhere left to run. Our ideal actor is deeply charismatic, with a lot of anger underneath. Someone who projects intelligence and restraint while letting resentment leak through in small, dangerous ways. A performance that feels contained, until it isn't.</p>
+        </div>
+      </div>
+      <div class="char-panel-img" style="left: 40%; top: 35%;">
+        <img src="/expansion/assets/images/JON 1.png" alt="Jonathan Cameron">
+      </div>
+    </div>
+
+    <!-- 7. ESME — text bottom -->
+    <div class="panel panel-character" data-section="project" data-track="1">
+      <div class="char-text-block char-text-block--bottom">
+        <p class="char-panel-name">Esme</p>
+        <div class="char-panel-bio">
+          <p class="char-bio-desc">Esme has accepted what her life is going to look like. She will keep renting, she won't have the cash to start a family, she's going to spend the rest of her life with Jon. Esme is connected to her emotions, grounded while Jon goes flying into his mind. She believes everything can be fixed. But as she watches Jon deteriorate, her ability to withstand runs out. Our ideal actress is someone who can portray warmth and maternal care, but also feels like she's carrying a secret. Is that care genuine, or just a ploy to ruin Jon?</p>
+        </div>
+      </div>
+      <div class="char-panel-img" style="left: 40%; top: 12%;">
+        <img src="/expansion/assets/images/Esme.png" alt="Esme">
+      </div>
+    </div>
+
+    <!-- 8. PARKER — text top -->
+    <div class="panel panel-character" data-section="project" data-track="1">
+      <div class="char-text-block">
+        <p class="char-panel-name">Parker</p>
+        <div class="char-panel-bio">
+          <p class="char-bio-desc">Parker is everything Jon wishes he could be. He fills a room effortlessly. He's charismatic, confident and physically imposing. He has a golden retriever energy that appears simply friendly, but underneath the facade, that energy might be something more calculated. Our ideal actor for Parker should be an endearing jock who toes the line between charming and threatening. As an audience, we should always be questioning his motive.</p>
+        </div>
+      </div>
+      <div class="char-panel-img" style="left: 40%; top: 35%;">
+        <img src="/expansion/assets/images/New Parker.png" alt="Parker">
+      </div>
+    </div>
+
+    <!-- 9. RICHARD — text bottom -->
+    <div class="panel panel-character panel-richard" data-section="project" data-track="1">
+      <div class="char-text-block char-text-block--bottom">
+        <p class="char-panel-name">Richard</p>
+        <div class="char-panel-bio">
+          <p class="char-bio-desc">Richard Cameron hangs himself in the first scene of the movie, but his presence lingers long after. Throughout the film we see him in glimpses. He's brilliant, cruel, and the scariest thing in the world to Jon. To everyone else, he was a genius. To Jon, he was a monster. Our ideal actor is someone who can portray a larger than life figure, one filled with evil, magnetism and strength. Someone whose presence seeps into every frame, even when he's not in it.</p>
+        </div>
+      </div>
+      <div class="char-panel-img" style="left: 40%; top: 12%;">
+        <img src="/expansion/assets/images/Brian-Cox.webp" alt="Richard Cameron">
+      </div>
+    </div>
+
+    <!-- 10. THE HOUSE -->
+    <div class="panel panel-house" data-section="project" data-track="1">
+      <div class="house-img">
+        <img src="/expansion/assets/images/House.png" alt="The House">
+      </div>
+      <div class="house-text">
+        <p class="dir-statement-title">The House</p>
+        <p class="synopsis-body">The house is an extension of Richard's mind. Monumental, isolated, fully wrecked. It has to cause shock when first seen. We're drawn to constructivism and parasitic architecture. Something that feels epic but also deeply wrong. We'll spend a lot of time within the house, so the corridors need to feel labyrinthine on their own. Throughout the seasons, the house will change. From destroyed, to in repair, to almost ready, and back to destroyed. The house is expressive of Jon's mental state. It's a character in its own right, one that's carrying a secret within its walls.</p>
+      </div>
+    </div>
+
+    <!-- 11. HOUSE DIPTYCH -->
+    <div class="panel panel-house-diptych" data-section="project" data-track="1">
+      <div class="house-diptych-img">
+        <img src="/expansion/assets/images/House 2.jpg" alt="The House">
+      </div>
+      <div class="house-diptych-img">
+        <video muted loop playsinline preload="none">
+          <source data-src="/expansion/assets/video/compressed/montagediy.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- 12. THE MAZE -->
+    <div class="panel panel-maze" data-section="project" data-track="1">
+      <div class="maze-text--left">
+        <p class="dir-statement-quote">Unlike the house, the maze is always in pristine condition. Its walls are plaster white, incredibly tall, endlessly long.</p>
+      </div>
+      <div class="maze-img">
+        <img src="/expansion/assets/images/Maze.png" alt="The Maze">
+      </div>
+      <div class="maze-text--right">
+        <p class="synopsis-body">The lighting is dim, showing just enough to make us feel there's something hiding. The hallways vary in size, narrowing and widening without logic. What's scariest is that we never know what's waiting behind a turn.</p>
+      </div>
+    </div>
+
+    <!-- 13. VISUAL TREATMENT TITLE CARD -->
+    <div class="panel panel-visual-treatment" data-section="visual-treatment" id="visual-treatment" data-track="1">
+      <img class="vt-bg" src="/expansion/assets/images/Nostalghia - 1984.png" alt="">
+      <div class="vt-overlay"></div>
+      <h2 class="vt-title">Visual Treatment</h2>
+    </div>
+
+    <!-- 14. TONE -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Tone</p>
+        <p class="synopsis-body">We're drawing from the look of <em>Birth</em>, <em>The Shining</em>, <em>Rosemary's Baby</em>, <em>Funny Games</em>, <em>Safe</em>, <em>Taxi Driver</em>. These are films that invite us into the internal minds of their heroes while presenting a bleak, observational, expressive view of an impossible situation. They ground their surrealism and convince us that these are real people simply dealing with something they can't explain. Our goal is to make the audience feel what Jon feels. Trapped, suspicious, unable to trust the people closest to them.</p>
+      </div>
+      <div class="vt-archive-grid">
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/tone-new.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/tone-new.mp4" type="video/mp4"></video><span class="vt-caption">Tone Reference 1</span></div>
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Tone2.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/Tone2.mp4" type="video/mp4"></video><span class="vt-caption">Tone Reference 2</span></div>
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/safe-convulsion.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/safe-convulsion.mp4" type="video/mp4"></video><span class="vt-caption">Safe — Convulsion</span></div>
+      </div>
+    </div>
+
+    <!-- 15. CAMERA -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Camera</p>
+        <p class="synopsis-body">Our camera should feel mechanical. It's always controlled movement or completely static. It never moves handheld. We're isolating Jon from everyone around him, creating a me vs them atmosphere. We imagine a digital camera. No grain. Large depth of field. Infrared for night scenes. This is a movie that takes place largely at night, and we want the darkness to feel real. Like something's lurking in what can't be seen. Jealousy, distrust, fear. Our characters rarely speak their feelings, but they're incredibly present throughout the film. Our camera needs to find those moments and convey them to the audience without words.</p>
+      </div>
+      <div class="vt-archive-grid">
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/nostalghia-sartre70486.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/nostalghia-sartre70486.mp4" type="video/mp4"></video><span class="vt-caption">Nostalghia — 1983</span></div>
+        <div class="vt-thumb"><img src="/expansion/assets/Visual Treatment/Camera/The Fountain - 2006.png" alt="The Fountain (2006)"><span class="vt-caption">The Fountain — 2006</span></div>
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/safe2_00026057.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/safe2_00026057.mp4" type="video/mp4"></video><span class="vt-caption">Camera Reference</span></div>
+      </div>
+    </div>
+
+    <!-- 16. PRODUCTION DESIGN -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Production Design</p>
+        <p class="synopsis-body">We want to lean into the jagged edges, the broken walls, the plastic tarps covering the furniture. This movie wants you to feel uneasy, and the production design of a house under construction should do exactly that. Mess, clutter, boxes, leaking roofs. Richard's presence lives in his objects, the frantic maze drawings, the rifle, the house itself.</p>
+      </div>
+      <div class="vt-archive-grid">
+        <div class="vt-thumb"><img src="/expansion/assets/Visual Treatment/Production Desing/Free in Deed - 2015.png" alt="Free in Deed (2015)"><span class="vt-caption">Free in Deed — 2015</span></div>
+        <div class="vt-thumb"><img src="/expansion/assets/Visual Treatment/Production Desing/House 3.png" alt="House Reference"><span class="vt-caption">House Reference</span></div>
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Timeline 1 copydiy 4.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/Timeline 1 copydiy 4.mp4" type="video/mp4"></video><span class="vt-caption">Construction Reference</span></div>
+        <div class="vt-thumb"><img src="/expansion/assets/Visual Treatment/Production Desing/Tout feu tout flamme - 1982 (1).png" alt="Tout feu tout flamme (1982)"><span class="vt-caption">Tout feu tout flamme — 1982</span></div>
+      </div>
+    </div>
+
+    <!-- 17. MUSIC -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Music</p>
+        <p class="synopsis-body">We want something abrasive and atonal, built from drones and dissonant strings that sit underneath every scene like something is wrong. The music should feel almost industrial. As if it were built from the sounds of construction.</p>
+      </div>
+      <div class="audio-players">
+        <div class="audio-player" data-src="/expansion/assets/audio/zone-of-interest.mp3">
+          <div class="ap-waveform"><canvas></canvas><div class="ap-waveform-progress"></div></div>
+          <div class="ap-controls"><button class="ap-play">&#9654;</button><span class="ap-time">0:00</span></div>
+        </div>
+        <div class="audio-player" data-src="/expansion/assets/audio/under-the-skin.mp3">
+          <div class="ap-waveform"><canvas></canvas><div class="ap-waveform-progress"></div></div>
+          <div class="ap-controls"><button class="ap-play">&#9654;</button><span class="ap-time">0:00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 18. SOUND DESIGN -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Sound Design</p>
+        <p class="synopsis-body">We want the soundscape to have a big dynamic range. We keep things quiet so the loud moments feel violent. An impossibly quiet corridor… completely silent. Then a gunshot so loud it rings through the rest of the scene. When we enter the maze, the soundscape shifts entirely. The outside world disappears. What's left is Jon's breathing, his footsteps, and a liminal droning sound.</p>
+      </div>
+      <div class="vt-archive-grid">
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/111_00105595.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/111_00105595.mp4" type="video/mp4"></video><span class="vt-caption">Sound Reference</span></div>
+        <div class="vt-thumb" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Tone3.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/Tone3.mp4" type="video/mp4"></video><span class="vt-caption">Sound Reference</span></div>
+      </div>
+    </div>
+
+    <!-- 19. EDIT -->
+    <div class="panel panel-vt-archive" data-section="visual-treatment" data-track="1">
+      <div class="vt-archive-text">
+        <p class="dir-statement-title">Edit</p>
+        <p class="synopsis-body">We take our time. Shots linger. Scenes breathe. The audience doesn't get the relief of a cut when they want one. We hold on faces too long. We let silence do the work. When we do cut, the cuts are hard. The edit mirrors Jon's psychology. Early on, the rhythm is steady. As Jon deteriorates, the cuts become disorienting.</p>
+      </div>
+      <div class="vt-archive-grid">
+        <div class="vt-thumb"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/edit1.mp4" type="video/mp4"></video><span class="vt-caption">Edit Reference</span></div>
+        <div class="vt-thumb vt-thumb--crop" data-hq-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Clips00074446.mp4"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/Clips00074446.mp4" type="video/mp4"></video><span class="vt-caption">Edit Reference</span></div>
+        <div class="vt-thumb"><video muted loop playsinline preload="none"><source data-src="/expansion/assets/video/compressed/edit3.mp4" type="video/mp4"></video><span class="vt-caption">Edit Reference</span></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         DIRECTOR PROFILE
+    ══════════════════════════════════════════════ -->
+
+    <!-- 19.5. ABOUT TITLE CARD -->
+    <div class="panel panel-about-title" data-section="about" id="about" data-track="1">
+      <img class="profile-bg" src="/expansion/assets/images/about-photo.jpg" alt="">
+      <div class="profile-bg-overlay"></div>
+      <h2 class="profile-heading">About</h2>
+    </div>
+
+    <!-- 20. ABOUT — indexed catalog style -->
+    <div class="panel panel-about-index" data-section="about" data-track="1">
+      <div class="about-index-scroll">
+        <div class="aix-col">
+          <div class="about-index-bio">
+            <div class="aix-row">
+              <span class="aix-label">Fisherman &amp; Trout</span>
+              <p class="aix-body">Alex Fischman C&aacute;rdenas and Trout Cohen are a writer-director duo who met at a urinal on their first day at NYU. Their work has earned Vimeo Staff Picks and screened at Sundance, Clermont-Ferrand, Sitges, and AFI Fest.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aix-col">
+          <div class="aix-divider">Work Samples</div>
+          <div class="aix-work-grid">
+            <div class="profile-card" data-vimeo="https://player.vimeo.com/video/1034785756?h=6a958389dd&autoplay=1&title=0&byline=0&portrait=0">
+              <div class="profile-card-img"><img src="/expansion/assets/images/Pika Horizontal.jpg" alt="PIKA"></div>
+              <p class="aix-label">&iexcl;PIKA! (The Itch)</p>
+              <p class="aix-meta">2025 &middot; 17 min &middot; Sundance, Sitges</p>
+            </div>
+            <div class="profile-card" data-vimeo="https://player.vimeo.com/video/1101244533?autoplay=1&title=0&byline=0&portrait=0">
+              <div class="profile-card-img"><img src="/expansion/assets/images/Ovejas. Horizontal.png" alt="Ovejas" style="object-position: center top;"></div>
+              <p class="aix-label">Ovejas y Lobos</p>
+              <p class="aix-meta">2024 &middot; 17 min &middot; Clermont-Ferrand, AFI Fest</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aix-col">
+          <div class="aix-divider">Press</div>
+          <div class="aix-press">
+            <a href="https://dailyutahchronicle.com/2026/01/26/the-making-of-pika/" target="_blank" class="aix-press-row"><span class="aix-press-src">Utah Chronicle</span><span class="aix-press-hl">On the making of '&iexcl;PIKA!'</span></a>
+            <a href="https://directorsnotes.com/2026/01/22/sundance2026-best-shorts/" target="_blank" class="aix-press-row"><span class="aix-press-src">Directors Notes</span><span class="aix-press-hl">13 Standout Short Films from Sundance 2026</span></a>
+            <a href="https://www.youtube.com/watch?v=jyfEDCv7kyY" target="_blank" class="aix-press-row"><span class="aix-press-src">Sundance</span><span class="aix-press-hl">Meet the Artist 2026</span></a>
+            <a href="https://lbbonline.com/news/Ovejas-y-Lobos-and-the-Mothers-Who-Never-Stopped-Searching" target="_blank" class="aix-press-row"><span class="aix-press-src">LBB</span><span class="aix-press-hl">'Ovejas y Lobos' and the Mothers Who Never Stopped Searching</span></a>
+            <a href="https://elcomercio.pe/luces/cine/alex-fischman-el-cine-para-mi-es-una-oportunidad-de-sanar-mis-heridas-noticia/" target="_blank" class="aix-press-row"><span class="aix-press-src">El Comercio</span><span class="aix-press-hl">"El cine para m&iacute; es una oportunidad de sanar mis heridas"</span></a>
+            <a href="https://nofilmschool.com/2015/06/17-year-old-director-made-one-best-short-films-you-will-see-year" target="_blank" class="aix-press-row"><span class="aix-press-src">No Film School</span><span class="aix-press-hl">This 17 Year Old Director Made One of the Best Short Films</span></a>
+          </div>
+        </div>
+
+        <div class="aix-col">
+          <div class="aix-divider">Recognition</div>
+          <div class="aix-recog">
+            <p class="aix-recog-row"><span class="aix-recog-yr">2026</span>Sundance Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2025</span>Sitges Fantastic Film Festival of Catalonia &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2025</span>Vimeo Staff Pick</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>Clermont-Ferrand Int'l Short Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>Raindance Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>Palm Springs Int'l Short Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>DokuFest &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>AFI Fest &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>NYU First Run Film Festival &mdash; Best Director &amp; Best Short Film</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>National Board of Review &mdash; Student Grant</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>Lima International Film Festival &mdash; Audience &amp; Special Jury Award</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>Shorts Mexico &mdash; Best Short Film</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2024</span>FCZ, Zaragoza Film Festival &mdash; Best Short Film</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2022</span>Vimeo Staff Pick</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2021</span>Vimeo Staff Pick</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2019</span>Aesthetica Short Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2016</span>Moscow International Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2015</span>Starz Denver Film Festival &mdash; Official Selection</p>
+            <p class="aix-recog-row"><span class="aix-recog-yr">2015</span>Hollyshorts Film Festival &mdash; Official Selection</p>
+          </div>
+        </div>
+
+        <div class="aix-col">
+          <div class="aix-divider">Contact</div>
+          <div class="aix-contact">
+            <div class="aix-contact-block">
+              <p class="aix-contact-org">William Morris Endeavor</p>
+              <p class="aix-contact-person">Marco Alvarez — <a href="mailto:MAlvarez@wmeagency.com">MAlvarez@wmeagency.com</a></p>
+              <p class="aix-contact-person">Jacey Baldovino — <a href="mailto:JBaldovino@wmeagency.com">JBaldovino@wmeagency.com</a></p>
+            </div>
+            <div class="aix-contact-block">
+              <p class="aix-contact-org">Industry Entertainment</p>
+              <p class="aix-contact-person">Rachel Linehan — <a href="mailto:rachel@industryentertainment.com">rachel@industryentertainment.com</a></p>
+              <p class="aix-contact-person">Steve Crawford — <a href="mailto:stephenc@industryentertainment.com">stephenc@industryentertainment.com</a></p>
+            </div>
+            <div class="aix-contact-block">
+              <p class="aix-contact-org">Direct</p>
+              <p class="aix-contact-person">Alex Fischman C&aacute;rdenas — <a href="mailto:alexfischmancardenas@gmail.com">alexfischmancardenas@gmail.com</a></p>
+              <p class="aix-contact-person">Trout Cohen — <a href="mailto:troutcohenfilms@gmail.com">troutcohenfilms@gmail.com</a></p>
+            </div>
+          </div>
+          <a href="https://www.fishermantrout.com" target="_blank" class="aix-site-link">www.fishermantrout.com</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#h-track-1 -->
+
+  <div id="v-track"></div>
+  <div id="h-track-3"></div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">&times;</button>
+    <button class="lightbox-arrow lightbox-arrow--left" id="lightbox-prev">&#8592;</button>
+    <button class="lightbox-arrow lightbox-arrow--right" id="lightbox-next">&#8594;</button>
+    <div class="lightbox-content" id="lightbox-content"></div>
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+
+  <script src="js/main.js?v=41"></script>
+</body>
+</html>
