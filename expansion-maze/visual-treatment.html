@@ -108,7 +108,6 @@
         <div class="vt-ref vt-ref--audio" data-src="pitch-assets/audio/under-the-skin.mp3">
           <canvas class="audio-wave-full"></canvas>
           <div class="audio-bar">
-            <button class="audio-play-btn">Play</button>
             <span class="audio-time">0:00</span>
             <span class="audio-title-inline">Under the Skin — Mica Levi</span>
           </div>
@@ -116,7 +115,6 @@
         <div class="vt-ref vt-ref--audio" data-src="pitch-assets/audio/zone-of-interest.mp3">
           <canvas class="audio-wave-full"></canvas>
           <div class="audio-bar">
-            <button class="audio-play-btn">Play</button>
             <span class="audio-time">0:00</span>
             <span class="audio-title-inline">Zone of Interest — Mica Levi</span>
           </div>
@@ -201,7 +199,16 @@
     document.body.appendChild(mazeCanvas);
 
     const maze = initMaze(mazeCanvas, {
-      onNavigate: href => { if (window.frameElement) window.frameElement.src = href; else window.top.location.href = href; },
+      onNavigate: href => {
+        if (window !== window.top) {
+          // Prepare new page loading behind current, then cross-dissolve
+          window.parent.postMessage({ type: 'shell_nav_prepare', href, fadeDur: 1000 }, '*');
+          setTimeout(() => window.parent.postMessage({ type: 'shell_nav_fade' }, '*'), 300);
+          setTimeout(() => window.parent.postMessage({ type: 'shell_nav_done' }, '*'), 1400);
+        } else {
+          window.location.href = href;
+        }
+      },
       initialYaw: Math.PI,
       buildDollyGallery: true,
       wallHeight: 14,
@@ -375,7 +382,7 @@
     document.querySelectorAll('.vt-ref--audio').forEach(ref => {
       const src = ref.dataset.src;
       const canvas = ref.querySelector('.audio-wave-full');
-      const btn = ref.querySelector('.audio-play-btn');
+      const btn = null;
       const timeEl = ref.querySelector('.audio-time');
       const ctx2d = canvas.getContext('2d');
       let audio = null, waveData = null, rafId = null, playing = false;
@@ -421,7 +428,6 @@
           other._audio.pause();
           other._playing = false;
           other.classList.remove('playing');
-          other.querySelector('.audio-play-btn').textContent = 'Play';
           cancelAnimationFrame(other._rafId);
           other._drawWave && other._drawWave(other._audio.duration ? other._audio.currentTime / other._audio.duration : 0);
         }
@@ -431,7 +437,7 @@
           audio.addEventListener('timeupdate', () => { if (!rafId) timeEl.textContent = fmtTime(audio.currentTime); });
           audio.addEventListener('ended', () => {
             playing = false; ref.classList.remove('playing');
-            btn.textContent = 'Play'; cancelAnimationFrame(rafId); rafId = null;
+            cancelAnimationFrame(rafId); rafId = null;
             drawWave(0); timeEl.textContent = '0:00'; currentRef = null;
           });
           ref._audio = audio; ref._drawWave = drawWave;
@@ -439,11 +445,11 @@
         if (audioCtx.state === 'suspended') await audioCtx.resume();
         if (!playing) {
           audio.play(); playing = true; ref._playing = true; currentRef = ref;
-          ref.classList.add('playing'); btn.textContent = 'Pause';
+          ref.classList.add('playing');
           rafId = requestAnimationFrame(tick); ref._rafId = rafId;
         } else {
           audio.pause(); playing = false; ref._playing = false;
-          ref.classList.remove('playing'); btn.textContent = 'Play';
+          ref.classList.remove('playing');
           cancelAnimationFrame(rafId); rafId = null; currentRef = null;
         }
       }
@@ -457,7 +463,6 @@
         drawWave(frac);
       });
 
-      btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
       ref.addEventListener('click', toggle);
 
       // Redraw on resize

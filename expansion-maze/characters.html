@@ -137,7 +137,7 @@
     new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !maze) {
         ric(() => {
-          maze = initMaze(mazeCanvas, { onNavigate: href => { if (window.frameElement) window.frameElement.src = href; else window.top.location.href = href; }, initialYaw: Math.PI / 2 });
+          maze = initMaze(mazeCanvas, { onNavigate: href => { if (window !== window.top) { window.parent.postMessage({ type: 'shell_nav_prepare', href, fadeDur: 1000 }, '*'); setTimeout(() => window.parent.postMessage({ type: 'shell_nav_fade' }, '*'), 300); setTimeout(() => window.parent.postMessage({ type: 'shell_nav_done' }, '*'), 1400); } else { window.location.href = href; } }, initialYaw: Math.PI / 2 });
           maze.setScroll(0);
         }, { timeout: 3000 });
       }
