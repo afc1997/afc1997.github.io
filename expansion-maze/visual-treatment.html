@@ -277,26 +277,24 @@
 
     const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
-    if (!isMobile) {
-      window.addEventListener('wheel', e => {
-        if (document.getElementById('lightbox').classList.contains('is-open')) return;
-        e.preventDefault();
-        lastInteraction = Date.now();
-        maxScroll = getMax();
-        const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-        targetX = Math.max(0, Math.min(targetX + d * 0.9, maxScroll + 200));
-      }, { passive: false });
+    window.addEventListener('wheel', e => {
+      if (document.getElementById('lightbox').classList.contains('is-open')) return;
+      e.preventDefault();
+      lastInteraction = Date.now();
+      maxScroll = getMax();
+      const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      targetX = Math.max(0, Math.min(targetX + d * 0.9, maxScroll + 200));
+    }, { passive: false });
 
-      let tx0 = 0, ty0 = 0, base = 0;
-      window.addEventListener('touchstart', e => { lastInteraction = Date.now(); tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; base = targetX; }, { passive: true });
-      window.addEventListener('touchmove', e => {
-        if (document.getElementById('lightbox').classList.contains('is-open')) return;
-        const dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
-        if (Math.abs(dy) > Math.abs(dx)) return;
-        e.preventDefault();
-        targetX = Math.max(0, Math.min(base - dx, getMax()));
-      }, { passive: false });
-    }
+    let tx0 = 0, ty0 = 0, base = 0;
+    window.addEventListener('touchstart', e => { lastInteraction = Date.now(); tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; base = targetX; }, { passive: true });
+    window.addEventListener('touchmove', e => {
+      if (document.getElementById('lightbox').classList.contains('is-open')) return;
+      const dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
+      if (Math.abs(dy) > Math.abs(dx)) return;
+      e.preventDefault();
+      targetX = Math.max(0, Math.min(base - dx, getMax()));
+    }, { passive: false });
 
     window.addEventListener('resize', () => { maxScroll = getMax(); });
     requestAnimationFrame(() => { maxScroll = getMax(); });
