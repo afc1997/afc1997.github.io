@@ -20,6 +20,11 @@
 
     * { cursor: none !important; }
 
+    @media (pointer: coarse) {
+      body { overflow-y: auto; height: auto; cursor: auto; }
+      * { cursor: auto !important; }
+    }
+
     .cursor {
       position: fixed; top: 0; left: 0;
       width: 20px; height: 20px;
