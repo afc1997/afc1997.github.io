@@ -956,7 +956,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── mobile ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  html, body { cursor: auto; overflow-y: auto; }
+  html, body { cursor: auto; overflow-y: auto; touch-action: pan-y; }
   * { cursor: auto !important; }
   .cursor { display: none !important; }
 
