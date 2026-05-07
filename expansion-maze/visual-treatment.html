@@ -95,9 +95,6 @@
       <!-- Group 2: Production Design -->
       <div class="vt-group" data-group="2">
         <div class="vt-ref">
-          <img src="pitch-assets/Visual Treatment/Production Desing/Free in Deed - 2015.png" alt="">
-        </div>
-        <div class="vt-ref">
           <img src="pitch-assets/Visual Treatment/Production Desing/House 3.png" alt="">
         </div>
         <div class="vt-ref" data-clickable data-hq="https://player.vimeo.com/video/1189928655?h=70e48cf73b&autoplay=1&title=0&byline=0&portrait=0">
@@ -107,23 +104,21 @@
       </div>
 
       <!-- Group 3: Music — audio players -->
-      <div class="vt-group vt-group--audio" data-group="3">
-        <div class="audio-tracks" id="audio-tracks">
-          <div class="audio-track" data-src="pitch-assets/audio/under-the-skin.mp3">
-            <button class="audio-play-btn">&#9654;</button>
-            <div class="audio-meta">
-              <span class="audio-title">Under the Skin</span>
-              <span class="audio-sub">Mica Levi, 2013</span>
-            </div>
-            <canvas class="audio-wave"></canvas>
+      <div class="vt-group" data-group="3">
+        <div class="vt-ref vt-ref--audio" data-src="pitch-assets/audio/under-the-skin.mp3">
+          <canvas class="audio-wave-full"></canvas>
+          <div class="audio-bar">
+            <button class="audio-play-btn">Play</button>
+            <span class="audio-time">0:00</span>
+            <span class="audio-title-inline">Under the Skin — Mica Levi</span>
           </div>
-          <div class="audio-track" data-src="pitch-assets/audio/zone-of-interest.mp3">
-            <button class="audio-play-btn">&#9654;</button>
-            <div class="audio-meta">
-              <span class="audio-title">Zone of Interest</span>
-              <span class="audio-sub">Mica Levi, 2023</span>
-            </div>
-            <canvas class="audio-wave"></canvas>
+        </div>
+        <div class="vt-ref vt-ref--audio" data-src="pitch-assets/audio/zone-of-interest.mp3">
+          <canvas class="audio-wave-full"></canvas>
+          <div class="audio-bar">
+            <button class="audio-play-btn">Play</button>
+            <span class="audio-time">0:00</span>
+            <span class="audio-title-inline">Zone of Interest — Mica Levi</span>
           </div>
         </div>
       </div>
@@ -148,10 +143,6 @@
         </div>
         <div class="vt-ref" data-clickable data-hq="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Clips00074446.mp4">
           <video muted loop playsinline preload="none"><source data-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Clips00074446.mp4" type="video/mp4"></video>
-          <div class="vt-ref-play">&#9654;</div>
-        </div>
-        <div class="vt-ref" data-clickable data-hq="https://player.vimeo.com/video/1189928698?h=a56fe44961&autoplay=1&title=0&byline=0&portrait=0">
-          <video muted loop playsinline preload="none"><source data-src="https://pub-d43f7e79af9c4ca1bc62cf13a8b6779e.r2.dev/hq/Directors%20statement.mp4" type="video/mp4"></video>
           <div class="vt-ref-play">&#9654;</div>
         </div>
       </div>
@@ -221,8 +212,26 @@
 
     let mazeMode = false;
 
+    let mazeThreshold = null;
+
     function getMazeThreshold() {
-      return getMax();
+      // Compute once after layout: activate when second edit ref's right edge
+      // passes the viewport midpoint (strip-space position - half viewport)
+      if (mazeThreshold === null) {
+        const lastGroup = groups[groups.length - 1];
+        const refs = lastGroup ? [...lastGroup.querySelectorAll('.vt-ref')] : [];
+        const ref = refs[1] || refs[0];
+        if (ref) {
+          // At scrollX=0 the strip is untransformed, so BCR = natural strip position
+          strip.style.transform = 'translateX(0)';
+          const naturalRight = ref.getBoundingClientRect().right;
+          strip.style.transform = `translateX(${-scrollX}px)`;
+          mazeThreshold = Math.max(0, naturalRight - window.innerWidth * 0.5);
+        } else {
+          mazeThreshold = getMax();
+        }
+      }
+      return mazeThreshold;
     }
 
     // ── Main tick ─────────────────────────────────────────────────────────────
@@ -230,7 +239,8 @@
       // Auto-scroll
       const idle = Date.now() - lastInteraction > AUTOSCROLL_DELAY;
       if (idle && !document.getElementById('lightbox').classList.contains('is-open')) {
-        targetX = Math.min(targetX + AUTOSCROLL_SPEED, maxScroll + 200);
+        const cap = Math.max(maxScroll, getMazeThreshold()) + 200;
+        targetX = Math.min(targetX + AUTOSCROLL_SPEED, cap);
       }
 
       const diff = targetX - scrollX;
@@ -283,7 +293,8 @@
       lastInteraction = Date.now();
       maxScroll = getMax();
       const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      targetX = Math.max(0, Math.min(targetX + d * 0.9, maxScroll + 200));
+      const wCap = Math.max(maxScroll, getMazeThreshold()) + 200;
+      targetX = Math.max(0, Math.min(targetX + d * 0.9, wCap));
     }, { passive: false });
 
     let tx0 = 0, ty0 = 0, base = 0;
@@ -293,7 +304,7 @@
       const dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
       if (Math.abs(dy) > Math.abs(dx)) return;
       e.preventDefault();
-      targetX = Math.max(0, Math.min(base - dx, getMax()));
+      targetX = Math.max(0, Math.min(base - dx, Math.max(getMax(), getMazeThreshold()) + 200));
     }, { passive: false });
 
     window.addEventListener('resize', () => { maxScroll = getMax(); });
@@ -354,55 +365,103 @@
 
     // ── Audio waveform players ────────────────────────────────────────────────
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let currentAudio = null;
+    let currentRef = null;
 
-    document.querySelectorAll('.audio-track').forEach(track => {
-      const src = track.dataset.src, btn = track.querySelector('.audio-play-btn');
-      const canvas = track.querySelector('.audio-wave'), ctx2d = canvas.getContext('2d');
-      canvas.width = 180; canvas.height = 32;
-      let audio = null, analyser = null, rafId = null, playing = false;
+    function fmtTime(s) {
+      const m = Math.floor(s / 60), ss = Math.floor(s % 60);
+      return m + ':' + String(ss).padStart(2, '0');
+    }
 
-      function drawIdle() {
-        ctx2d.clearRect(0, 0, 180, 32); ctx2d.fillStyle = 'rgba(232,228,220,0.15)';
-        for (let i = 0; i < 36; i++) { const h = 2 + Math.random() * 3; ctx2d.fillRect(i * 5, (32-h)/2, 3, h); }
-      }
-      function drawActive() {
-        rafId = requestAnimationFrame(drawActive);
-        const data = new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(data);
-        ctx2d.clearRect(0, 0, 180, 32);
-        for (let i = 0; i < 36; i++) {
-          const v = data[Math.floor(i * data.length / 72)] / 255;
-          const h = Math.max(2, v * 30), a = (0.35 + v * 0.65).toFixed(2);
-          ctx2d.fillStyle = `rgba(232,228,220,${a})`; ctx2d.fillRect(i * 5, (32-h)/2, 3, h);
+    document.querySelectorAll('.vt-ref--audio').forEach(ref => {
+      const src = ref.dataset.src;
+      const canvas = ref.querySelector('.audio-wave-full');
+      const btn = ref.querySelector('.audio-play-btn');
+      const timeEl = ref.querySelector('.audio-time');
+      const ctx2d = canvas.getContext('2d');
+      let audio = null, waveData = null, rafId = null, playing = false;
+
+      // Decode audio and draw full waveform
+      fetch(src).then(r => r.arrayBuffer()).then(buf => audioCtx.decodeAudioData(buf)).then(decoded => {
+        const raw = decoded.getChannelData(0);
+        waveData = raw;
+        drawWave(0);
+      }).catch(() => drawWave(0));
+
+      function drawWave(progress) {
+        const W = canvas.offsetWidth || 600, H = canvas.offsetHeight || 200;
+        canvas.width = W; canvas.height = H;
+        ctx2d.clearRect(0, 0, W, H);
+        if (!waveData) return;
+        const bars = Math.floor(W / 3), gap = 1;
+        const barW = (W - (bars - 1) * gap) / bars;
+        const step = Math.floor(waveData.length / bars);
+        const playedBars = Math.floor(progress * bars);
+        for (let i = 0; i < bars; i++) {
+          let max = 0;
+          for (let j = 0; j < step; j++) max = Math.max(max, Math.abs(waveData[i * step + j] || 0));
+          const h = Math.max(2, max * H * 0.9);
+          const x = i * (barW + gap);
+          ctx2d.fillStyle = i < playedBars ? 'rgba(232,228,220,0.7)' : 'rgba(232,228,220,0.18)';
+          ctx2d.fillRect(x, (H - h) / 2, barW, h);
         }
       }
-      drawIdle();
+
+      function tick() {
+        if (!audio || !playing) return;
+        const progress = audio.duration ? audio.currentTime / audio.duration : 0;
+        drawWave(progress);
+        timeEl.textContent = fmtTime(audio.currentTime);
+        rafId = requestAnimationFrame(tick);
+      }
 
       async function toggle() {
-        if (currentAudio && currentAudio !== audio) {
-          currentAudio.pause(); currentAudio.currentTime = 0;
-          const prev = document.querySelector('.audio-track.playing');
-          if (prev) { prev.classList.remove('playing'); prev.querySelector('.audio-play-btn').innerHTML = '&#9654;'; cancelAnimationFrame(prev._rafId); }
+        // Stop any other playing ref
+        if (currentRef && currentRef !== ref) {
+          const other = currentRef;
+          other._audio.pause();
+          other._playing = false;
+          other.classList.remove('playing');
+          other.querySelector('.audio-play-btn').textContent = 'Play';
+          cancelAnimationFrame(other._rafId);
+          other._drawWave && other._drawWave(other._audio.duration ? other._audio.currentTime / other._audio.duration : 0);
         }
         if (!audio) {
           if (audioCtx.state === 'suspended') await audioCtx.resume();
           audio = new Audio(src); audio.crossOrigin = 'anonymous';
-          const src_ = audioCtx.createMediaElementSource(audio);
-          analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
-          src_.connect(analyser); analyser.connect(audioCtx.destination);
-          audio.addEventListener('ended', () => { playing = false; track.classList.remove('playing'); btn.innerHTML = '&#9654;'; cancelAnimationFrame(rafId); drawIdle(); currentAudio = null; });
+          audio.addEventListener('timeupdate', () => { if (!rafId) timeEl.textContent = fmtTime(audio.currentTime); });
+          audio.addEventListener('ended', () => {
+            playing = false; ref.classList.remove('playing');
+            btn.textContent = 'Play'; cancelAnimationFrame(rafId); rafId = null;
+            drawWave(0); timeEl.textContent = '0:00'; currentRef = null;
+          });
+          ref._audio = audio; ref._drawWave = drawWave;
         }
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
         if (!playing) {
-          if (audioCtx.state === 'suspended') await audioCtx.resume();
-          audio.play(); playing = true; currentAudio = audio; track._rafId = rafId;
-          track.classList.add('playing'); btn.innerHTML = '&#9646;&#9646;'; drawActive();
+          audio.play(); playing = true; ref._playing = true; currentRef = ref;
+          ref.classList.add('playing'); btn.textContent = 'Pause';
+          rafId = requestAnimationFrame(tick); ref._rafId = rafId;
         } else {
-          audio.pause(); playing = false; track.classList.remove('playing');
-          btn.innerHTML = '&#9654;'; cancelAnimationFrame(rafId); drawIdle(); currentAudio = null;
+          audio.pause(); playing = false; ref._playing = false;
+          ref.classList.remove('playing'); btn.textContent = 'Play';
+          cancelAnimationFrame(rafId); rafId = null; currentRef = null;
         }
       }
-      btn.addEventListener('click', toggle);
-      track.addEventListener('click', e => { if (e.target !== btn) toggle(); });
+
+      canvas.addEventListener('click', e => {
+        e.stopPropagation();
+        if (!audio || !audio.duration) { toggle(); return; }
+        const frac = e.offsetX / canvas.offsetWidth;
+        audio.currentTime = frac * audio.duration;
+        timeEl.textContent = fmtTime(audio.currentTime);
+        drawWave(frac);
+      });
+
+      btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+      ref.addEventListener('click', toggle);
+
+      // Redraw on resize
+      new ResizeObserver(() => { if (waveData) drawWave(audio && audio.duration ? audio.currentTime / audio.duration : 0); }).observe(canvas);
     });
   </script>
 </body>
