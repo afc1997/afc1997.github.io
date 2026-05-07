@@ -292,7 +292,19 @@ a { color: inherit; text-decoration: none; }
 .cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
 
 @media (max-width: 768px) {
+  .ct-main { padding: 80px 24px 80px; }
+  .ct-floor { padding: 60px 0 60px; }
   .ct-work-grid { grid-template-columns: 1fr; }
   .ct-press-row { flex-direction: column; gap: 4px; }
+  .ct-label,
+  .ct-text,
+  .ct-contact,
+  .ct-contact-group,
+  .ct-contact-org,
+  .ct-contact-person,
+  .ct-site,
+  .ct-press,
+  .ct-recog { text-align: left; }
+  .ct-recog-row { justify-content: flex-start; gap: 16px; }
 }
 @media (max-width: 768px) { .running-heads { display: none !important; } }

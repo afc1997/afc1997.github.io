@@ -1,6 +1,19 @@
 // shared.js — cursor + persistent music player
 
 export function initCursor(hoverSelector = '.gmp, .hub-item, [data-clickable]') {
+  // Skip cursor entirely on touch devices
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    // Still wire up navigation relay for iframe context
+    if (window !== window.top) {
+      document.addEventListener('click', e => {
+        window.parent.postMessage({ type: 'gmp_interaction' }, '*');
+        const a = e.target.closest('a[target="_top"]');
+        if (a) { e.preventDefault(); window.parent.postMessage({ type: 'navigate', href: a.href }, '*'); }
+      }, true);
+    }
+    return;
+  }
+
   // When inside the shell iframe: relay mouse + interaction events to shell
   if (window !== window.top) {
     document.addEventListener('mousemove', e => {
