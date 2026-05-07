@@ -5,8 +5,6 @@
   --text: #e8e4dc;
   --dim:  rgba(232,228,220,0.45);
   --sans: 'Public Sans', sans-serif;
-  --mid:  58vh;
-  --rh:   50vh;
 }
 
 html {
@@ -84,32 +82,6 @@ a { color: inherit; text-decoration: none; }
 }
 .rh-menu-item:hover { color: rgba(255,255,255,0.9); }
 
-/* ── Top half — text panels ── */
-.vt-top {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--rh);
-  z-index: 30;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.vt-panel {
-  position: absolute;
-  top: 110px;
-  left: 40px;
-  right: 60px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-  pointer-events: none;
-}
-.vt-panel.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
 .vt-label {
   font-size: 9px; font-weight: 400;
   letter-spacing: 0.22em; text-transform: uppercase;
@@ -122,17 +94,11 @@ a { color: inherit; text-decoration: none; }
   font-weight: 300;
   line-height: 1.7;
   color: var(--text);
-  max-width: 58ch;
+  max-width: 38ch;
   margin-bottom: 10px;
   user-select: text; cursor: text !important;
 }
 .vt-text:last-child { margin-bottom: 0; }
-
-/* ── Audio group in bottom strip ── */
-.vt-group--audio {
-  align-items: center;
-  margin-right: 80px;
-}
 
 /* ── Audio tracks ── */
 .audio-tracks {
@@ -193,33 +159,48 @@ a { color: inherit; text-decoration: none; }
 }
 .audio-track.playing .audio-wave { opacity: 1; }
 
-/* ── Bottom half — horizontal image strip ── */
+/* ── Full-height horizontal strip ── */
 .vt-bottom {
   position: fixed;
-  top: var(--rh);
-  left: 0; right: 0; bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   overflow: hidden;
   z-index: 30;
 }
 
 .vt-strip {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   height: 100%;
-  padding: 18px 40px 28px;
-  gap: 12px;
+  padding: 0;
+  gap: 0;
   will-change: transform;
 }
 
 .vt-group {
   display: flex;
-  align-items: stretch;
-  gap: 12px;
+  flex-direction: column;
   flex-shrink: 0;
   margin-right: 80px;
   height: 100%;
+  padding-top: 48px;
 }
+.vt-group:first-child { padding-left: 40px; }
 .vt-group:last-child { margin-right: 40vw; }
+
+.vt-group-header {
+  padding: 56px 0 28px;
+  max-width: 34ch;
+  flex-shrink: 0;
+}
+
+.vt-group-refs {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  padding-bottom: 28px;
+}
 
 .vt-ref {
   position: relative;
@@ -276,10 +257,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── Content fade when maze takes over ── */
-.vt-top, .vt-bottom, .running-heads, .site-nav, .gmp {
+.vt-bottom, .running-heads, .site-nav, .gmp {
   transition: opacity 0.6s ease;
 }
-.maze-active .vt-top,
 .maze-active .vt-bottom,
 .maze-active .running-heads,
 .maze-active .site-nav,
@@ -349,21 +329,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 768px) {
   .running-heads { display: none !important; }
 
-  /* Stack layout vertically */
-  .vt-top {
-    position: relative;
-    height: auto;
-    padding: 44px 24px 32px;
-  }
-
-  .vt-panel {
-    position: relative;
-    top: auto; left: auto; right: auto;
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-  }
-
   .vt-bottom {
     position: relative;
     top: auto; left: auto; right: auto; bottom: auto;
@@ -372,19 +337,32 @@ a { color: inherit; text-decoration: none; }
 
   .vt-strip {
     flex-direction: column;
-    padding: 0 24px 80px;
-    gap: 48px;
+    align-items: stretch;
+    padding: 44px 24px 80px;
+    gap: 0;
     will-change: unset;
     transform: none !important;
   }
 
   .vt-group {
-    flex-direction: column;
     height: auto;
     margin-right: 0;
-    gap: 12px;
+    padding-top: 0;
+    padding-bottom: 48px;
   }
+  .vt-group:first-child { padding-left: 0; }
   .vt-group:last-child { margin-right: 0; }
+
+  .vt-group-header {
+    padding: 0 0 20px;
+    max-width: 100%;
+  }
+
+  .vt-group-refs {
+    flex-direction: column;
+    flex: unset;
+    padding-bottom: 0;
+  }
 
   .vt-ref {
     height: auto;
@@ -392,8 +370,6 @@ a { color: inherit; text-decoration: none; }
     width: 100%;
   }
 
-  .vt-group-label { position: relative; top: auto; left: auto; padding-top: 0; margin-bottom: 8px; }
-
   /* Disable JS-driven horizontal scroll */
-  body.vt-page { overflow-y: auto !important; overflow-x: hidden; }
+  html, body { overflow-y: auto !important; overflow-x: hidden; }
 }
