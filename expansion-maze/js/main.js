@@ -2,8 +2,8 @@ import { initMaze } from './maze.js';
 
 // ── Scroll state ──────────────────────────────────────────────────────────
 const DESCENT_PX   = innerHeight;        // one viewport scroll = full descent
-const autoSpeed    = 28;                 // px/s during autoscroll
-const lerpAmount   = 0.075;
+const autoSpeed    = 60;                 // px/s during autoscroll
+const lerpAmount   = 0.12;
 const cursorIdleMs = 3000;
 
 let targetY        = 0;
@@ -44,6 +44,12 @@ addEventListener('keydown', e => {
 // ── DOM refs ──────────────────────────────────────────────────────────────
 const heroOver  = document.getElementById('hero-over');
 const heroBylne = document.querySelector('.hero-byline');
+const lookHint  = document.getElementById('look-hint');
+
+// Fade hint in after 1s, stays visible
+if (lookHint) {
+  setTimeout(() => lookHint.classList.add('visible'), 2000);
+}
 
 // ── Custom cursor ─────────────────────────────────────────────────────────
 function initCursor() {
@@ -164,7 +170,7 @@ window.addEventListener('load', () => {
   }
   maze = initMaze(mazeCanvas, {
     fov: 100,
-    onNavigate: href => { if (window.frameElement) window.frameElement.src = href; else window.top.location.href = href; },
+    onNavigate: href => { /* shell dissolve already handled via shell_nav_prepare/fade/done — nothing to do here */ },
   });
   maze.show();
   requestAnimationFrame(tick);

@@ -45,21 +45,21 @@
 
 
     /* ── Cursor ── */
-    .cursor {
-      position: fixed; top: 0; left: 0;
-      pointer-events: none; z-index: 9999;
-      opacity: 0; transition: opacity 0.2s;
+    #shell-cur {
+      position: fixed; top: -100px; left: -100px;
+      pointer-events: none; z-index: 99999;
     }
-    .cursor.visible { opacity: 1; }
-    .cursor::before, .cursor::after {
-      content: ''; position: absolute;
-      background: rgba(232,228,220,0.9);
+    #shell-cur::before, #shell-cur::after {
+      content: ''; position: absolute; background: #fff;
     }
-    .cursor::before { width: 1px; height: 20px; top: -10px; left: 0; }
-    .cursor::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+    #shell-cur::before { width: 1px; height: 20px; top: -10px; left: 0; }
+    #shell-cur::after  { width: 20px; height: 1px; top: 0; left: -10px; }
+    .cursor { display: none !important; }
   </style>
 </head>
 <body>
+
+  <div id="shell-cur"></div>
 
   <iframe id="content" src="index.html" allowfullscreen allow="autoplay"></iframe>
 
@@ -72,6 +72,34 @@
   </div>
 
   <audio id="gmp-audio" preload="auto"></audio>
+
+  <script>
+    (function() {
+      var cur = document.getElementById('shell-cur');
+      function moveCursor(x, y) { cur.style.left = x + 'px'; cur.style.top = y + 'px'; }
+      function attachToDoc(doc) {
+        try { doc.addEventListener('mousemove', function(e) { moveCursor(e.clientX, e.clientY); }); } catch(e) {}
+      }
+      window._attachToFrame = function attachToFrame(frame) {
+        try {
+          attachToDoc(frame.contentDocument);
+          frame.contentDocument.querySelectorAll('iframe').forEach(function(f) {
+            f.addEventListener('load', function() { attachToFrame(f); });
+            attachToFrame(f);
+          });
+          frame.contentDocument.addEventListener('load', function(e) {
+            if (e.target.tagName === 'IFRAME') attachToFrame(e.target);
+          }, true);
+        } catch(e) {}
+      };
+      document.addEventListener('mousemove', function(e) { moveCursor(e.clientX, e.clientY); });
+      var content = document.getElementById('content');
+      content.addEventListener('load', function() { window._attachToFrame(content); });
+      if (content.contentDocument && content.contentDocument.readyState !== 'loading') {
+        window._attachToFrame(content);
+      }
+    })();
+  </script>
 
   <script type="module">
     import { initGMP, initCursor } from './js/shared.js';
@@ -100,10 +128,37 @@
           navFrame.style.opacity = '1';
         }
       } else if (d?.type === 'navigate') {
-        // Regular link navigation — cancel any in-flight dissolve first
-        if (navFrame) { navFrame.remove(); navFrame = null; }
-        const content = document.getElementById('content');
-        if (content) content.src = d.href;
+        if (navFrame) navFrame.remove();
+        const FADE = 900;
+        navFrame = document.createElement('iframe');
+        navFrame.src = d.href;
+        navFrame.className = 'nav-frame';
+        navFrame.setAttribute('allowfullscreen', '');
+        navFrame.setAttribute('allow', 'autoplay');
+        document.body.appendChild(navFrame);
+        // Fade in after load (or after 1s max) then swap
+        let faded = false;
+        function doFade() {
+          if (faded || !navFrame) return;
+          faded = true;
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            if (!navFrame) return;
+            navFrame.style.transition = `opacity ${FADE / 1000}s ease`;
+            navFrame.style.opacity = '1';
+            setTimeout(() => {
+              if (!navFrame) return;
+              const old = document.getElementById('content');
+              navFrame.id = 'content';
+              navFrame.className = '';
+              navFrame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:none;z-index:1;opacity:1;pointer-events:auto;';
+              old?.remove();
+              window._attachToFrame(navFrame);
+              navFrame = null;
+            }, FADE + 100);
+          }));
+        }
+        navFrame.addEventListener('load', doFade, { once: true });
+        setTimeout(doFade, 1000); // fallback if load takes too long
       } else if (d?.type === 'shell_nav_done') {
         if (navFrame) {
           const old = document.getElementById('content');

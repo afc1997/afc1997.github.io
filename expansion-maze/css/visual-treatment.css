@@ -16,8 +16,9 @@ html {
   cursor: none;
   overflow: hidden;
   height: 100%;
+  touch-action: none;
 }
-body { overflow: hidden; height: 100%; }
+body { overflow: hidden; height: 100%; touch-action: none; }
 * { cursor: none !important; }
 a { color: inherit; text-decoration: none; }
 
@@ -84,30 +85,11 @@ a { color: inherit; text-decoration: none; }
 }
 .rh-menu-item:hover { color: rgba(255,255,255,0.9); }
 
-/* ── Top half — text panels ── */
-.vt-top {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--rh);
-  z-index: 30;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.vt-panel {
-  position: absolute;
-  top: 110px;
-  left: 40px;
-  right: 60px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-  pointer-events: none;
-}
-.vt-panel.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+/* ── Group text header (above images) ── */
+.vt-group-text {
+  flex-shrink: 0;
+  padding-bottom: 20px;
+  max-width: 52ch;
 }
 
 .vt-label {
@@ -125,6 +107,7 @@ a { color: inherit; text-decoration: none; }
   max-width: 58ch;
   margin-bottom: 10px;
   user-select: text; cursor: text !important;
+  orphans: 3; widows: 3;
 }
 .vt-text:last-child { margin-bottom: 0; }
 
@@ -182,33 +165,58 @@ a { color: inherit; text-decoration: none; }
   text-overflow: ellipsis;
 }
 
-/* ── Bottom half — horizontal image strip ── */
+/* ── Horizontal image strip ── */
 .vt-bottom {
   position: fixed;
-  top: var(--rh);
+  top: 90px;
   left: 0; right: 0; bottom: 0;
   overflow: hidden;
   z-index: 30;
+  touch-action: pan-x;
 }
 
 .vt-strip {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   height: 100%;
-  padding: 18px 40px 28px;
+  padding: 8px 40px 28px;
   gap: 12px;
   will-change: transform;
 }
 
 .vt-group {
   display: flex;
-  align-items: stretch;
-  gap: 12px;
+  flex-direction: column;
   flex-shrink: 0;
   margin-right: 80px;
   height: 100%;
+  padding-bottom: 60px;
 }
+.vt-group:first-child { margin-left: 120px; }
 .vt-group:last-child { margin-right: 90vw; }
+
+.vt-group-images {
+  display: flex;
+  gap: 12px;
+  height: calc(50vh - 118px);
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* Alternating: even groups flip — images top, text flush below */
+.vt-group:nth-child(even) {
+  flex-direction: column;
+}
+.vt-group:nth-child(even) .vt-group-images {
+  order: -1;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: calc(50vh - 118px);
+}
+.vt-group:nth-child(even) .vt-group-text {
+  margin-top: auto;
+  padding-bottom: 0;
+}
 
 .vt-ref {
   position: relative;
@@ -231,6 +239,11 @@ a { color: inherit; text-decoration: none; }
 }
 .vt-ref:hover img,
 .vt-ref:hover video { opacity: 1; }
+
+/* Edit group — second ref has letterboxed video, needs extra zoom */
+.vt-group:last-child .vt-group-images .vt-ref:last-child video {
+  transform: scale(1.8);
+}
 
 
 /* ── Maze labels ── */
@@ -257,10 +270,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── Content fade when maze takes over ── */
-.vt-top, .vt-bottom, .running-heads, .site-nav, .gmp {
+.vt-bottom, .running-heads, .site-nav, .gmp {
   transition: opacity 0.6s ease;
 }
-.maze-active .vt-top,
 .maze-active .vt-bottom,
 .maze-active .running-heads,
 .maze-active .site-nav,

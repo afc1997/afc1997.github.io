@@ -570,7 +570,7 @@ export function initMaze(canvas, opts = {}) {
   }
 
   // ── Scroll-driven camera descent ─────────────────────────────────────────
-  const CAM_HIGH = 7.0;
+  const CAM_HIGH = 5.5;
   const CAM_EYE  = opts.eyeHeight !== undefined ? opts.eyeHeight : 1.65;
   let scrollFrac = 0;     // 0 = top of descent, 1 = eye level
 

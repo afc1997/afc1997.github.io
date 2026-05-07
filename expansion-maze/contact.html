@@ -243,6 +243,25 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     onScroll();
+
+    // ── Autoscroll after idle ─────────────────────────────────────────────────
+    const AUTO_SPEED   = 60;   // px/s — matches cover
+    const IDLE_MS      = 3000;
+    let lastMove       = performance.now();
+    const resetIdle    = () => { lastMove = performance.now(); };
+    window.addEventListener('mousemove',  resetIdle);
+    window.addEventListener('touchstart', resetIdle, { passive: true });
+    window.addEventListener('wheel',      resetIdle, { passive: true });
+    window.addEventListener('keydown',    resetIdle);
+    let autoLast = performance.now();
+    (function autoTick(now) {
+      const dt = now - autoLast; autoLast = now;
+      const maxY = document.body.scrollHeight - window.innerHeight;
+      if ((now - lastMove) > IDLE_MS && window.scrollY < maxY) {
+        window.scrollBy(0, AUTO_SPEED * dt / 1000);
+      }
+      requestAnimationFrame(autoTick);
+    })(performance.now());
   </script>
 </body>
 </html>
