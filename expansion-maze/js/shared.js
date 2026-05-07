@@ -67,12 +67,9 @@ export function initCursor(hoverSelector = '.gmp, .hub-item, [data-clickable]') 
 }
 
 const TRACKS = [
-  'pitch-assets/audio/2. under-the-skin.mp3',
-  'pitch-assets/audio/3. 7.mp3',
-  'pitch-assets/audio/1. zone of interest.mov',
-  'pitch-assets/audio/4. Auld Lang Syne.mp3',
-  'pitch-assets/audio/5. zone-of-interest.mp3',
-  'pitch-assets/audio/6. Cannock Chase.mp3',
+  'pitch-assets/audio/under-the-skin.mp3',
+  'pitch-assets/audio/zone-of-interest-full.mp3',
+  'pitch-assets/audio/zone-of-interest.mp3',
 ];
 
 const STORAGE_KEY = 'gmp_state';
