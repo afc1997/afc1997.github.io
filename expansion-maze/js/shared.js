@@ -135,21 +135,24 @@ export function initGMP() {
   if (firstVisit) {
     sessionStorage.setItem('gmp_started', '1');
     loadTrack(0, false, 0);
-    audio.addEventListener('canplay', () => {
-      audio.play().catch(() => {
-        // Browser blocked autoplay — start on first interaction anywhere (shell or iframe)
-        const start = () => {
-          tryPlay();
-          document.removeEventListener('click', start, true);
-          document.removeEventListener('keydown', start, true);
-          window.removeEventListener('message', onMsg);
-        };
-        const onMsg = e => { if (e.data?.type === 'gmp_interaction') start(); };
-        document.addEventListener('click', start, true);
-        document.addEventListener('keydown', start, true);
-        window.addEventListener('message', onMsg);
-      });
-    }, { once: true });
+
+    // Start on first interaction — set up BEFORE trying autoplay so we never miss it
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      tryPlay();
+      document.removeEventListener('click', start, true);
+      document.removeEventListener('keydown', start, true);
+      window.removeEventListener('message', onMsg);
+    };
+    const onMsg = e => { if (e.data?.type === 'gmp_interaction') start(); };
+    document.addEventListener('click', start, true);
+    document.addEventListener('keydown', start, true);
+    window.addEventListener('message', onMsg);
+
+    // Also try immediate autoplay (works if browser allows it)
+    audio.addEventListener('canplay', () => { audio.play().then(() => { started = true; }).catch(() => {}); }, { once: true });
   } else {
     loadTrack(saved?.track ?? 0, saved?.playing ?? false, saved?.time ?? 0);
   }

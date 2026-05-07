@@ -65,7 +65,7 @@
     }
     .rh-nav {
       position: relative; pointer-events: auto;
-      padding-bottom: 48px; margin-bottom: -48px;
+      padding-bottom: 120px; margin-bottom: -120px;
     }
     .rh-left {
       font-family: 'Public Sans', sans-serif; font-size: 9px; font-weight: 400;
@@ -153,6 +153,27 @@
     .lb-content { max-width: 88vw; max-height: 85vh; }
     .lb-content img, .lb-content video { max-width: 88vw; max-height: 85vh; display: block; }
     .lb-caption { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,0.45); }
+    .lb-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: rgba(255,255,255,0.35);
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 20px 28px; transition: color 0.2s; z-index: 201;
+    }
+    .lb-arrow:hover { color: rgba(255,255,255,0.9); }
+    .lb-arrow--l { left: 0; }
+    .lb-arrow--r { right: 0; }
+
+    /* ── Return home ── */
+    .return-home {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 100;
+      font-size: 9px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0); text-decoration: none;
+      transition: color 0.4s ease, opacity 0.4s ease;
+      white-space: nowrap; pointer-events: none;
+    }
+    .return-home.visible { color: rgba(255,255,255,0.45); pointer-events: auto; }
+    .return-home:hover { color: rgba(255,255,255,0.9) !important; }
 
 
     /* GMP */
@@ -217,9 +238,13 @@
     </div>
   </div>
 
+  <a class="return-home" id="return-home" href="cover.html" target="_top">← Return Home</a>
+
   <div class="lb" id="lb">
     <button class="lb-close" id="lb-close">&times;</button>
+    <button class="lb-arrow lb-arrow--l" id="lb-prev">&#8592;</button>
     <div class="lb-content" id="lb-content"></div>
+    <button class="lb-arrow lb-arrow--r" id="lb-next">&#8594;</button>
     <p class="lb-caption" id="lb-caption"></p>
   </div>
 
@@ -452,8 +477,20 @@
     dragRow = null;
   });
 
+  const returnHome = document.getElementById('return-home');
+  returnHome.addEventListener('click', e => {
+    if (window !== window.top) {
+      e.preventDefault();
+      window.parent.postMessage({ type: 'navigate', href: 'cover.html' }, '*');
+    }
+  });
+
   function animate() {
     scrollCurrent += (scrollTarget - scrollCurrent) * 0.06;
+
+    // Show "Return Home" when near the bottom of the scroll
+    const atEnd = scrollTarget >= maxScroll - 20;
+    returnHome.classList.toggle('visible', atEnd);
 
     rows.forEach(row => {
       // Skip auto-rotation if this row is being dragged
@@ -487,9 +524,11 @@
   const lb = document.getElementById('lb');
   const lbContent = document.getElementById('lb-content');
   const lbCaption = document.getElementById('lb-caption');
+  let currentLbIdx = 0;
 
   function openLightbox(idx) {
-    const item = MEDIA[idx];
+    currentLbIdx = ((idx % MEDIA.length) + MEDIA.length) % MEDIA.length;
+    const item = MEDIA[currentLbIdx];
     if (!item) return;
     lbContent.innerHTML = '';
     if (item.type === 'video') {
@@ -514,9 +553,14 @@
   }
 
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => openLightbox(currentLbIdx - 1));
+  document.getElementById('lb-next').addEventListener('click', () => openLightbox(currentLbIdx + 1));
   lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox();
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); openLightbox(currentLbIdx - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); openLightbox(currentLbIdx + 1); }
   });
 
   // ── Audio player ──

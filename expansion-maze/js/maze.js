@@ -262,7 +262,7 @@ export function initMaze(canvas, opts = {}) {
       label:     'Visual Treatment',
       href:      'visual-treatment.html',
       transType: 'fade',
-      transSrc:  'pitch-assets/images/Nostalghia - 1984.png',
+      transSrc:  'pitch-assets/images/Nostalghia - 1984 (6).png',
       yaw:        Math.PI,
       dir:        new THREE.Vector3(0, 0, 1),
     },
