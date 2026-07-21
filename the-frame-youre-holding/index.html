@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Frame You’re Holding — Andrea Mato</title>
+<meta name="description" content="The Frame You’re Holding, a thesis book by Andrea Mato. Turn it in three dimensions, then read it spread by spread.">
+<meta property="og:title" content="The Frame You’re Holding">
+<meta property="og:description" content="A thesis book by Andrea Mato.">
+<meta property="og:image" content="media/s01.webp">
+<style>
+/* ============================================================
+   THE FRAME YOU'RE HOLDING — Andrea Mato
+   Two views on one light-gray page:
+     .shelf  a real 3-D book you can turn in your hands
+     .stage  the flipping-leaf reader, one PDF spread per slide
+   No design system: the pages are the PDF, untouched. The only
+   furniture is a pair of arrows, a counter, and a contents grid.
+   ============================================================ */
+:root{
+  --paper:#d7d6d3;         /* the light gray the book sits on */
+  --paper-deep:#c9c8c4;
+  --ink:#6d6c68;
+  --ink-strong:#3a3936;
+  --font:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --book:1.41421;          /* two A4 pages side by side */
+  --depth:.0433;           /* spine width ÷ cover width, measured off the cover scan */
+  --stage-x:clamp(3rem,7vw,7.5rem);
+  --stage-y:clamp(1.6rem,6vh,3.6rem);   /* enough room under the book for the bar */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(130% 110% at 50% 38%,var(--paper) 0%,var(--paper) 45%,var(--paper-deep) 100%);
+  font-family:var(--font);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+img{display:block}
+::selection{background:var(--ink-strong);color:var(--paper)}
+
+/* the open book's footprint, shared by both views so the covers line up exactly */
+body{
+  --w-open:min(calc(100vw - 2 * var(--stage-x)), calc((100svh - 2 * var(--stage-y)) * var(--book)));
+  --h-open:min(calc(100svh - 2 * var(--stage-y)), calc((100vw - 2 * var(--stage-x)) / var(--book)));
+  --pw:calc(var(--w-open) / 2);            /* one page */
+  --bd:calc(var(--pw) * var(--depth));     /* the spine, in the same units */
+}
+
+/* small caps-ish furniture, the only type on the site */
+.meta{
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:var(--ink);
+}
+
+/* ============================================================
+   1 · THE SHELF — the shut book, turnable
+   ============================================================ */
+.shelf{
+  position:fixed;inset:0;z-index:20;
+  display:grid;place-items:center;
+  perspective:3000px;perspective-origin:50% 50%;
+  cursor:grab;touch-action:none;
+  transition:opacity .5s ease;
+  /* Without this, a drag across the book selects the cover images and paints
+     them with the ::selection colour — the book visibly darkens as you turn it. */
+  user-select:none;-webkit-user-select:none;
+}
+.shelf img{-webkit-user-drag:none;user-drag:none}
+.shelf.is-grabbing{cursor:grabbing}
+.shelf.is-gone{opacity:0;pointer-events:none}
+
+/* Shut, the book is drawn at the exact size of the shut deck, then held back a
+   little so it reads as an object on a page rather than a full-bleed image.
+   Opening releases that scale to 1, and the front cover lands precisely on the
+   deck's cover — which is what makes the hand-off invisible. */
+.book3d{
+  position:relative;z-index:1;              /* must stay above .shadow3d */
+  width:var(--pw);height:var(--h-open);
+  transform-style:preserve-3d;
+  transform:translateX(var(--ox,0px))
+            rotateX(var(--rx,6deg)) rotateY(var(--ry,-30deg))
+            scale(var(--bs,.76));
+}
+.book3d.is-easing{transition:transform .85s cubic-bezier(.38,0,.24,1)}
+.face3d{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;backface-visibility:hidden}
+.face3d img{width:100%;height:100%;object-fit:fill}
+/* The three narrow faces are only --bd across. They must still be centred in the
+   book before they rotate, or each one swings about its own middle and the box
+   comes apart. */
+.f-spine,.f-fore{left:50%;margin-left:calc(var(--bd) / -2)}
+.f-top,.f-bot{top:50%;margin-top:calc(var(--bd) / -2)}
+
+/* the two covers */
+.f-front{transform:translateZ(calc(var(--bd) / 2))}
+.f-back {transform:rotateY(180deg) translateZ(calc(var(--bd) / 2))}
+/* a faint gloss so the covers read as stock, not as a flat picture */
+.f-front::after,.f-back::after{
+  content:"";position:absolute;inset:0;
+  /* Kept to the edges. A ramp that reaches into the middle of the sheet reads
+     as a stain on the artwork rather than as light on paper. */
+  background:linear-gradient(105deg,
+    rgba(255,255,255,.16),rgba(255,255,255,0) 30%,
+    rgba(0,0,0,0) 76%,rgba(0,0,0,.07) 100%);
+}
+/* the printed spine, scanned off the jacket */
+.f-spine{
+  width:var(--bd);
+  transform:rotateY(-90deg) translateZ(calc(var(--pw) / 2));
+}
+.f-spine img{object-fit:cover}
+
+/* the three cut edges: a stack of leaves, not a solid block */
+.f-fore,.f-top,.f-bot{background:#efece5}
+.f-fore{
+  width:var(--bd);
+  transform:rotateY(90deg) translateZ(calc(var(--pw) / 2));
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.30),rgba(0,0,0,0) 22%,rgba(0,0,0,0) 78%,rgba(0,0,0,.14)),
+    repeating-linear-gradient(90deg,#f4f1ea 0 .6px,#dcd8ce .6px 1.2px);
+}
+.f-top,.f-bot{height:var(--bd)}
+.f-top{transform:rotateX(90deg) translateZ(calc(var(--h-open) / 2))}
+.f-bot{transform:rotateX(-90deg) translateZ(calc(var(--h-open) / 2))}
+.f-top,.f-bot{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.26),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 74%,rgba(0,0,0,.16)),
+    repeating-linear-gradient(180deg,#f4f1ea 0 .6px,#dcd8ce .6px 1.2px);
+}
+
+/* Ambient shadow. It sits flat behind the book rather than on a floor plane —
+   the camera is free to go under the book, and a cast shadow would give away
+   that there is no floor there. */
+.shadow3d{
+  position:absolute;left:50%;top:54%;z-index:0;
+  /* Sized to the book as it is actually drawn (--bs), a touch smaller, so the
+     blur is what spreads past the edges. It reads only as a halo — the book
+     itself covers the middle of it. */
+  width:calc(var(--pw) * .64);height:calc(var(--h-open) * .70);
+  transform:translate(-50%,-50%) scaleX(var(--sh,1));
+  background:rgba(58,57,54,.38);
+  filter:blur(38px);opacity:var(--sho,.9);pointer-events:none;
+}
+
+.hint{
+  position:fixed;left:50%;bottom:clamp(1.4rem,5vh,3rem);transform:translateX(-50%);
+  z-index:24;text-align:center;line-height:1.9;
+  transition:opacity .5s ease;pointer-events:none;
+}
+.hint.is-gone{opacity:0}
+.hint b{display:block;font-size:.72rem;letter-spacing:.2em;color:var(--ink-strong);font-weight:600}
+
+/* ============================================================
+   2 · THE STAGE — the flipping book
+   Lifted from the Chiaraje engine. Five things hold it together;
+   they are called out where they live.
+   ============================================================ */
+.stage{
+  position:fixed;inset:0;z-index:10;
+  display:grid;place-items:center;padding:var(--stage-y) var(--stage-x);
+  opacity:0;pointer-events:none;transition:opacity .45s ease;
+}
+.stage.is-live{opacity:1;pointer-events:auto}
+.deck{
+  position:relative;
+  width:var(--w-open);height:var(--h-open);
+  /* (2) the deck must keep clipping, or the spread pinned behind a swinging
+     cover spills out of the shut book and you see the next page early */
+  overflow:hidden;perspective:2600px;background:#fff;
+  user-select:none;-webkit-user-select:none;
+  box-shadow:0 26px 70px rgba(50,48,44,.34), 0 3px 12px rgba(50,48,44,.20);
+  transition:width .95s cubic-bezier(.38,0,.24,1), transform .95s cubic-bezier(.38,0,.24,1);
+}
+/* (5) shut, the book is one page wide and sits half a page off centre, so the
+   spine is already where it will be once the book is open */
+.deck.is-closed{width:var(--pw)}
+.deck.is-closed.at-front{transform:translateX(50%)}
+.deck.is-closed.at-back {transform:translateX(-50%)}
+.deck.no-anim{transition:none}
+/* (3) a swinging cover travels outside the book, so it lives on the stage */
+.leaf--free{z-index:32}
+
+.slide{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#fff;display:none}
+.slide.is-on{display:block;z-index:10}
+.slide.is-under{display:block;z-index:5}
+/* one PDF page per slide, exactly as it is: A3 spread, or A4 for the two covers */
+.spread{position:absolute;inset:0;background:#fff}
+.sheet{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}
+
+/* the turning leaf */
+.leaf{
+  position:absolute;top:0;height:100%;width:50%;z-index:30;
+  transform-style:preserve-3d;will-change:transform;pointer-events:none;
+}
+.leaf .face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;background:#fff}
+.leaf .face--back{transform:rotateY(180deg)}
+.leaf .clip{position:absolute;top:0;left:0;height:100%;width:200%}
+.leaf .shade{position:absolute;inset:0;z-index:9;pointer-events:none}
+.underlay{position:absolute;top:0;height:100%;width:50%;z-index:20;overflow:hidden;background:#fff}
+.underlay .clip{position:absolute;top:0;left:0;height:100%;width:200%}
+@keyframes leafFwd  {from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes leafBack {from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes leafShade{0%{opacity:0}18%{opacity:.22}48%{opacity:.4}100%{opacity:0}}
+/* The gutter: two pages meeting at the spine, lit rather than modelled.
+   (1) Never put a 3-D tilt on a page — it promotes the page to its own
+   compositing layer and, with the spreads stacked, some browsers drop it
+   and the page renders blank.
+   The fold lives inside the spread, not in the deck. Anchored at the spread's
+   own centre it is always exactly on the spine — it does not drift as the deck
+   animates open or shut, and it needs no fade, because it is simply part of the
+   sheet. The two covers are single pages with no fold, so they never get one. */
+.gutter{
+  position:absolute;top:0;left:50%;width:11%;height:100%;
+  transform:translateX(-50%);z-index:12;pointer-events:none;
+  background:linear-gradient(90deg,
+    rgba(0,0,0,0) 0%,rgba(0,0,0,.018) 22%,rgba(0,0,0,.055) 40%,
+    rgba(0,0,0,.085) 49%,rgba(0,0,0,.085) 51%,rgba(0,0,0,.055) 60%,
+    rgba(0,0,0,.018) 78%,rgba(0,0,0,0) 100%);
+}
+
+/* The shadow a lifting leaf throws onto the page it uncovers. At the start of
+   a turn the leaf is lying flat on that page, so the page is fully in shade;
+   as the leaf rises the shade retreats into the fold and thins out. Anchored
+   at the spine, so it collapses towards the binding rather than sliding. */
+.cast{position:absolute;inset:0;z-index:9;pointer-events:none;will-change:transform,opacity}
+@keyframes castOut{
+  0%  {opacity:1;   transform:scaleX(1)}
+  55% {opacity:.62; transform:scaleX(.52)}
+  100%{opacity:0;   transform:scaleX(.13)}
+}
+
+/* ============================================================
+   3 · FURNITURE — arrows, counter, contents
+   ============================================================ */
+.turn{
+  position:fixed;top:50%;z-index:42;transform:translateY(-50%);
+  width:clamp(2.4rem,4.4vw,3.6rem);height:clamp(2.4rem,4.4vw,3.6rem);
+  display:grid;place-items:center;cursor:pointer;
+  background:none;border:0;color:var(--ink);
+  opacity:0;pointer-events:none;transition:opacity .35s,color .2s,transform .25s;
+}
+.is-reading .turn{opacity:1;pointer-events:auto}
+.turn svg{width:60%;height:60%;fill:none;stroke:currentColor;stroke-width:1.4}
+.turn:hover{color:var(--ink-strong)}
+.turn--l{left:clamp(.3rem,1.4vw,1.4rem)}
+.turn--r{right:clamp(.3rem,1.4vw,1.4rem)}
+.turn--l:hover{transform:translate(-3px,-50%)}
+.turn--r:hover{transform:translate(3px,-50%)}
+/* a disabled arrow is dimmed, but only while reading — on the shelf both
+   arrows stay fully hidden */
+.turn[disabled]{pointer-events:none}
+.is-reading .turn[disabled]{opacity:.16}
+
+.bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:44;
+  display:flex;align-items:center;justify-content:center;gap:clamp(1rem,3vw,2.4rem);
+  padding:.85rem 1rem;opacity:0;pointer-events:none;transition:opacity .35s;
+}
+.is-reading .bar{opacity:1;pointer-events:auto}
+.bar button{
+  background:none;border:0;padding:.2rem .1rem;cursor:pointer;
+  color:var(--ink);font:inherit;
+  border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
+}
+.bar button:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+#counter{min-width:6.5em;text-align:center;color:var(--ink-strong)}
+
+/* the contents sheet: every spread at once */
+.contents{
+  position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;
+  background:var(--paper);
+  padding:clamp(3.4rem,7vh,5rem) clamp(1.2rem,4vw,3.4rem) clamp(3rem,8vh,5rem);
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
+}
+.contents.is-open{opacity:1;pointer-events:auto}
+.contents h2{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--ink-strong)}
+.contents .lede{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:clamp(1.4rem,4vh,2.4rem)}
+.thumbs{
+  display:grid;gap:clamp(.9rem,2vw,1.8rem);
+  grid-template-columns:repeat(auto-fill,minmax(clamp(190px,20vw,300px),1fr));
+}
+.thumb{
+  border:0;padding:0;background:none;cursor:pointer;display:block;text-align:left;
+  transition:transform .18s ease;
+}
+.thumb:hover{transform:translateY(-3px)}
+.thumb .sh{
+  background:#fff;box-shadow:0 3px 12px rgba(50,48,44,.20);
+  aspect-ratio:var(--book);overflow:hidden;position:relative;
+}
+.thumb .sh img{width:100%;height:100%;object-fit:fill;background:#fff}
+/* the covers are single pages, so they sit half-width in the same cell —
+   the grid then reads as the book does, one leaf at each end */
+.thumb--cover .sh{display:grid;place-items:center;background:none;box-shadow:none;overflow:visible}
+.thumb--cover .sh img{width:50%;box-shadow:0 3px 12px rgba(50,48,44,.20)}
+.thumb figcaption{margin-top:.5rem;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink)}
+.thumb[aria-current="true"] figcaption{color:var(--ink-strong);font-weight:600}
+.thumb[aria-current="true"] .sh{outline:1px solid var(--ink-strong);outline-offset:4px}
+.thumb--cover[aria-current="true"] .sh{outline:0}
+.thumb--cover[aria-current="true"] .sh img{outline:1px solid var(--ink-strong);outline-offset:4px}
+.close-x{
+  position:fixed;top:clamp(.9rem,2.5vh,1.6rem);right:clamp(1rem,3vw,2.4rem);z-index:62;
+  background:none;border:0;cursor:pointer;color:var(--ink);font:inherit;padding:.4rem;
+}
+.close-x:hover{color:var(--ink-strong)}
+
+/* ============================================================
+   4 · SMALL SCREENS — the spread reader needs width, the book does not
+   ============================================================ */
+.narrow{display:none}
+@media(max-width:860px),(orientation:portrait) and (max-width:1024px){
+  body{overflow:auto}
+  .shelf,.stage,.turn,.bar,.hint,.contents,.close-x{display:none!important}
+  .narrow{
+    display:block;min-height:100%;
+    padding:clamp(2rem,8vw,3.5rem) clamp(1rem,5vw,2rem) 4rem;
+  }
+  .narrow .lede{margin-bottom:2rem;text-align:center}
+  .narrow h1{font-size:1.05rem;letter-spacing:.02em;font-weight:600;color:var(--ink-strong);line-height:1.4}
+  .narrow p{margin-top:.7rem;font-size:.72rem;line-height:1.8;max-width:34ch;margin-inline:auto}
+  .narrow .thumbs{grid-template-columns:1fr;gap:1.4rem}
+  .narrow .thumb .sh{box-shadow:0 2px 10px rgba(50,48,44,.20)}
+}
+@media(prefers-reduced-motion:reduce){
+  .book3d.is-easing,.deck,.stage,.shelf{transition-duration:.01ms}
+}
+</style>
+</head>
+<body>
+
+<!-- ---------- the shut book, turnable ---------- -->
+<div class="shelf" id="shelf">
+  <div class="shadow3d" id="shadow3d"></div>
+  <div class="book3d" id="book3d" role="button" tabindex="0" aria-label="The Frame You’re Holding — open the book">
+    <div class="face3d f-back"><img src="media/s91.webp" alt="Back cover"></div>
+    <div class="face3d f-spine"><img src="media/spine.webp" alt=""></div>
+    <div class="face3d f-fore"></div>
+    <div class="face3d f-top"></div>
+    <div class="face3d f-bot"></div>
+    <div class="face3d f-front"><img src="media/s01.webp" alt="The Frame You’re Holding, front cover"></div>
+  </div>
+</div>
+<div class="hint meta" id="hint">
+  <b>The Frame You’re Holding</b>
+  Andrea Mato&emsp;·&emsp;Drag to turn&emsp;·&emsp;Click to open
+</div>
+
+<!-- ---------- the flipping book ---------- -->
+<div class="stage" id="stage">
+  <main class="deck is-closed at-front no-anim" id="deck"></main>
+</div>
+
+<button class="turn turn--l" id="prev" aria-label="Previous spread">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
+</button>
+<button class="turn turn--r" id="next" aria-label="Next spread">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 L17 12 L9 20"/></svg>
+</button>
+
+<div class="bar meta">
+  <button id="btn-contents" type="button">Contents</button>
+  <span id="counter">01 / 91</span>
+  <button id="btn-shut" type="button">Close book</button>
+</div>
+
+<!-- ---------- every spread at once ---------- -->
+<section class="contents" id="contents" aria-label="All spreads">
+  <div class="lede">
+    <h2>The Frame You’re Holding &nbsp;·&nbsp; Andrea Mato</h2>
+    <span class="meta">89 spreads &amp; two covers</span>
+  </div>
+  <div class="thumbs" id="thumbs"></div>
+</section>
+<button class="close-x meta" id="btn-close-contents" type="button" style="display:none">Close</button>
+
+<!-- ---------- phones ---------- -->
+<section class="narrow">
+  <div class="lede">
+    <h1>The Frame You’re Holding</h1>
+    <p class="meta" style="letter-spacing:.16em">Andrea Mato</p>
+    <p>The book is laid out as a two-page spread and turns properly on a wider screen. Here it is spread by spread.</p>
+  </div>
+  <div class="thumbs" id="thumbs-narrow"></div>
+</section>
+
+<script>
+(function(){
+  var N=91;                                  // PDF pages: 1 front cover, 2–90 spreads, 91 back cover
+  var pad=function(n){return (n<10?'0':'')+n;};
+  var src=function(n){return 'media/s'+pad(n)+'.webp';};
+  var thumbSrc=function(n){return 'media/t'+pad(n)+'.webp';};
+  var isCover=function(i){return i===0||i===N-1;};
+
+  var deck=document.getElementById('deck');
+  var stage=document.getElementById('stage');
+  var shelf=document.getElementById('shelf');
+  var book3d=document.getElementById('book3d');
+  var hint=document.getElementById('hint');
+  var counter=document.getElementById('counter');
+  var prevBtn=document.getElementById('prev');
+  var nextBtn=document.getElementById('next');
+  var contents=document.getElementById('contents');
+  var closeX=document.getElementById('btn-close-contents');
+  var current=0;
+
+  /* ---------- build the deck, shut, before the first paint ----------
+     The book must already be shut in the DOM or it paints open for one
+     frame and visibly snaps closed on load. */
+  var frag=document.createDocumentFragment();
+  for(var i=0;i<N;i++){
+    var s=document.createElement('section');
+    s.className='slide'+(isCover(i)?' slide--cover':'')+(i===0?' is-on':'');
+    var sp=document.createElement('div');
+    sp.className='spread';
+    var img=document.createElement('img');
+    img.className='sheet';
+    img.alt = i===0 ? 'Front cover' : (i===N-1 ? 'Back cover' : 'Spread '+(i+1));
+    img.decoding='async';
+    if(i<=2) img.src=src(i+1); else img.dataset.src=src(i+1);
+    sp.appendChild(img);
+    s.appendChild(sp);
+    if(!isCover(i)){                          // a cover is one page: no fold
+      var g=document.createElement('div');
+      g.className='gutter';
+      g.setAttribute('aria-hidden','true');
+      s.appendChild(g);
+    }
+    frag.appendChild(s);
+  }
+  deck.appendChild(frag);
+  var slides=[].slice.call(deck.querySelectorAll('.slide'));
+  var LAST=slides.length-1;
+
+  /* ---------- images arrive before the leaf that needs them ---------- */
+  function load(i){
+    if(i<0||i>LAST) return null;
+    var img=slides[i].querySelector('.sheet');
+    if(!img.src && img.dataset.src){ img.src=img.dataset.src; }
+    return img;
+  }
+  function ready(i){                          // resolves once slide i can be shown
+    var img=load(i);
+    if(!img||img.complete) return Promise.resolve();
+    return new Promise(function(res){
+      var done=function(){res();};
+      img.addEventListener('load',done,{once:true});
+      img.addEventListener('error',done,{once:true});
+      setTimeout(done,1400);                  // never hold a turn hostage to the network
+    });
+  }
+  function around(i){ for(var d=-2;d<=3;d++) load(i+d); }
+  /* once the reader is open, quietly pull the rest of the book in order */
+  var creeping=false;
+  function creep(){
+    if(creeping) return; creeping=true;
+    var n=0;
+    (function step(){
+      while(n<=LAST && slides[n].querySelector('.sheet').src) n++;
+      if(n>LAST) return;
+      var img=load(n);
+      img.addEventListener('load',function(){setTimeout(step,60);},{once:true});
+      img.addEventListener('error',function(){setTimeout(step,60);},{once:true});
+    })();
+  }
+
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TURN=760, COVER=1020;
+  var busy=false;
+
+  /* ---------- the leaf ----------
+     halfOf clones a whole spread into a 200%-wide clip inside a 50%-wide
+     window, offset so you get exactly the left or the right half. It works
+     for two-page spreads and single-page covers alike. */
+  function halfOf(slide, side){
+    var clip=document.createElement('div');
+    clip.className='clip';
+    /* The sheet is stretched to fill the clip; the fold keeps its own geometry,
+       so it lands on the spine of the copy exactly as it does on the original.
+       A cast shadow is per-turn and must never be copied onto a leaf face. */
+    [].forEach.call(slide.children, function(ch){
+      if(ch.classList.contains('cast')) return;
+      var inner=ch.cloneNode(true);
+      if(ch.classList.contains('spread')){
+        inner.style.position='absolute';
+        inner.style.top='0';inner.style.left='0';
+        inner.style.width='100%';inner.style.height='100%';
+      }
+      clip.appendChild(inner);
+    });
+    clip.style.left = (side==='right') ? '-100%' : '0';
+    return clip;
+  }
+  function face(slide, side, back){
+    var f=document.createElement('div');
+    f.className='face'+(back?' face--back':'');
+    f.appendChild(halfOf(slide, side));
+    return f;
+  }
+  /* The shade a lifting leaf leaves on the page beneath it. `spine` is the edge
+     it collapses towards; `back` runs it in reverse, for a leaf coming down. */
+  function cast(spine, ms, back){
+    var c=document.createElement('div');
+    c.className='cast';
+    c.style.transformOrigin = spine+' center';
+    c.style.background = 'linear-gradient('+(spine==='left'?'90deg':'270deg')+
+      ',rgba(0,0,0,.5),rgba(0,0,0,.16) 38%,rgba(0,0,0,.04) 72%,rgba(0,0,0,0) 100%)';
+    c.style.animation='castOut '+ms+'ms cubic-bezier(.38,0,.24,1) both';
+    if(back) c.style.animationDirection='reverse';
+    return c;
+  }
+
+  function flip(from, to, forward, done, ms){
+    ms = ms || TURN;
+    var leaf=document.createElement('div');
+    leaf.className='leaf';
+    leaf.style.left = forward ? '50%' : '0';
+    leaf.style.transformOrigin = forward ? 'left center' : 'right center';
+    leaf.appendChild(face(slides[from], forward?'right':'left', false));
+    leaf.appendChild(face(slides[to],   forward?'left':'right', true));
+
+    var shade=document.createElement('div');
+    shade.className='shade';
+    shade.style.background = forward
+      ? 'linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 55%)'
+      : 'linear-gradient(270deg,rgba(0,0,0,.55),rgba(0,0,0,0) 55%)';
+    shade.style.animation='leafShade '+ms+'ms ease-in-out both';
+    leaf.appendChild(shade);
+
+    var under=document.createElement('div');
+    under.className='underlay';
+    under.style.left = forward ? '50%' : '0';
+    under.appendChild(halfOf(slides[to], forward?'right':'left'));
+    /* Turning forward, the uncovered page is the right half and the spine is
+       its left edge — so the cast collapses leftwards, and the other way round
+       coming back. */
+    under.appendChild(cast(forward?'left':'right', ms, false));
+
+    deck.appendChild(under);
+    deck.appendChild(leaf);
+    slides[from].classList.add('is-under');    // still supplies the other page
+    leaf.style.animation='leaf'+(forward?'Fwd':'Back')+' '+ms+'ms cubic-bezier(.38,0,.24,1) both';
+
+    var finished=false;
+    function finish(){
+      if(finished) return; finished=true;
+      slides.forEach(function(sl,n){
+        sl.classList.toggle('is-on', n===to);
+        sl.classList.remove('is-under');
+      });
+      leaf.remove(); under.remove();
+      done && done();
+    }
+    leaf.addEventListener('animationend', finish);
+    setTimeout(finish, ms+120);                // never strand a page mid-turn
+  }
+
+  /* ---------- opening and shutting ----------
+     (4) the book's width is read off the cover's rotation, not a parallel
+     timer: coverage = max(0,-cos θ). It stays one page wide until the cover
+     passes 90°, then widens exactly under it. */
+  function openWidth(){
+    return deck.classList.contains('is-closed') ? deck.clientWidth*2 : deck.clientWidth;
+  }
+  function coverTurn(coverIdx, spreadIdx, shutting, done){
+    var ms=COVER;
+    var openW=openWidth(), pageW=openW/2, H=deck.clientHeight;
+    var front=(coverIdx===0);
+    var angle=front ? -180 : 180;
+
+    var sp=slides[spreadIdx];
+    sp.style.width=openW+'px';
+    sp.style.left = front ? 'auto' : '0';
+    sp.style.right= front ? '0' : 'auto';
+    slides.forEach(function(sl,n){ sl.classList.toggle('is-on', n===spreadIdx); });
+
+    /* the cover lying on the page it is about to uncover, then lifting off it */
+    var cst=cast(front?'right':'left', ms, shutting);
+    cst.style.left = front ? '0' : '50%';
+    cst.style.right='auto';
+    cst.style.width='50%';
+    cst.style.zIndex='14';
+    sp.appendChild(cst);
+
+    var leaf=document.createElement('div');
+    leaf.className='leaf leaf--free';
+    leaf.style.width=pageW+'px';
+    leaf.style.height=H+'px';
+    leaf.style.transformOrigin = front ? 'left center' : 'right center';
+
+    var f=document.createElement('div'); f.className='face';
+    var coverPage=slides[coverIdx].querySelector('.spread').cloneNode(true);
+    coverPage.style.position='absolute';coverPage.style.inset='0';
+    coverPage.style.width='100%';coverPage.style.height='100%';
+    f.appendChild(coverPage);
+    leaf.appendChild(f);
+
+    var back=document.createElement('div'); back.className='face face--back';
+    back.appendChild(halfOf(slides[spreadIdx], front?'left':'right'));
+    leaf.appendChild(back);
+
+    var shade=document.createElement('div');
+    shade.className='shade';
+    shade.style.background = front
+      ? 'linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,0) 60%)'
+      : 'linear-gradient(270deg,rgba(0,0,0,.5),rgba(0,0,0,0) 60%)';
+    shade.style.animation='leafShade '+ms+'ms ease-in-out both';
+    leaf.appendChild(shade);
+
+    /* the cover swings on the stage, outside the book's footprint; its hinge
+       never moves, so its box is fixed for the whole turn */
+    stage.appendChild(leaf);
+    deck.classList.add('no-anim');
+    var st=stage.getBoundingClientRect();
+    var dr0=deck.getBoundingClientRect();
+    var spineX=st.width/2;
+    var edgeFixed = front ? spineX+pageW : spineX-pageW;
+    leaf.style.top=(dr0.top-st.top)+'px';
+    leaf.style.left=(front ? spineX : spineX-pageW)+'px';
+
+    var anim=leaf.animate(
+      shutting ? [{transform:'rotateY('+angle+'deg)'},{transform:'rotateY(0deg)'}]
+               : [{transform:'rotateY(0deg)'},{transform:'rotateY('+angle+'deg)'}],
+      {duration:ms, easing:'cubic-bezier(.38,0,.24,1)', fill:'forwards'}
+    );
+
+    var t0=performance.now(), raf=0;
+    (function track(){
+      var pr=anim.effect.getComputedTiming().progress;
+      if(pr==null) pr=Math.min(1,(performance.now()-t0)/ms);
+      var rot=(shutting ? angle*(1-pr) : angle*pr) * Math.PI/180;
+      var coverage=Math.max(0, -Math.cos(rot));
+      var w=pageW*(1+coverage);
+      deck.style.width=w+'px';
+      deck.style.transform='translateX('+((front ? edgeFixed-w/2 : edgeFixed+w/2)-st.width/2)+'px)';
+      raf=requestAnimationFrame(track);
+    })();
+
+    setTimeout(function(){
+      cancelAnimationFrame(raf);
+      cst.remove();
+      sp.style.width='';sp.style.left='';sp.style.right='';
+      deck.style.width='';deck.style.transform='';
+      deck.classList.toggle('at-front', front);
+      deck.classList.toggle('at-back', !front);
+      deck.classList.toggle('is-closed', shutting);
+      slides.forEach(function(sl,n){ sl.classList.toggle('is-on', n===(shutting?coverIdx:spreadIdx)); });
+      leaf.remove();
+      void deck.offsetWidth;                   // land the geometry, then re-arm transitions
+      deck.classList.remove('no-anim');
+      done && done();
+    }, ms+60);
+  }
+
+  function setActive(i){
+    current=i;
+    counter.textContent=pad(i+1)+' / '+N;
+    prevBtn.disabled=(i===0);
+    nextBtn.disabled=(i===LAST);
+    if(thumbEls) thumbEls.forEach(function(t,n){t.setAttribute('aria-current',n===i?'true':'false');});
+  }
+
+  function go(i){
+    i=Math.max(0,Math.min(LAST,i));
+    if(i===current||busy) return;
+    var from=current, forward=i>from;
+    busy=true;
+    around(i);
+    ready(i).then(function(){
+      setActive(i);
+      var release=function(){busy=false;};
+      if(reduce||Math.abs(i-from)>1){          // jumps land straight away
+        deck.classList.add('no-anim');
+        deck.classList.toggle('at-front', i!==LAST);
+        deck.classList.toggle('at-back', i===LAST);
+        deck.classList.toggle('is-closed', i===0||i===LAST);
+        slides.forEach(function(sl,n){sl.classList.toggle('is-on',n===i);sl.classList.remove('is-under');});
+        /* land the new geometry with a forced reflow, then re-arm transitions.
+           This must not wait on requestAnimationFrame: rAF is suspended in a
+           background tab, and the lock below would never be released — jump to
+           a spread, switch tabs, and the book would come back frozen. */
+        void deck.offsetWidth;
+        deck.classList.remove('no-anim');
+        release();
+        return;
+      }
+      if(from===0)         coverTurn(0, i, false, release);
+      else if(i===0)       coverTurn(0, from, true, release);
+      else if(from===LAST) coverTurn(LAST, i, false, release);
+      else if(i===LAST)    coverTurn(LAST, from, true, release);
+      else                 flip(from, i, forward, release, TURN);
+    });
+  }
+  deck.classList.add('no-anim','is-closed','at-front');
+  void deck.offsetWidth;                       // shut in the markup, shut on the first paint
+  deck.classList.remove('no-anim');
+  setActive(0);
+
+  /* ============================================================
+     THE 3-D BOOK
+     ============================================================ */
+  var shadow3d=document.getElementById('shadow3d');
+  var rx=8, ry=-32, vx=0, vy=0, spin=true, dragging=false;
+  var px0=0, py0=0, moved=0, downAt=0, raf3=0;
+  function paint(){
+    var clamped=Math.max(-72,Math.min(72,rx));
+    book3d.style.setProperty('--rx',clamped+'deg');
+    book3d.style.setProperty('--ry',ry+'deg');
+    /* the shadow narrows as the book turns edge-on, and thins as it tips away */
+    var r=ry*Math.PI/180;
+    shadow3d.style.setProperty('--sh',(Math.abs(Math.cos(r))*0.78+0.24).toFixed(3));
+    shadow3d.style.setProperty('--sho',(0.95-Math.abs(clamped)/150).toFixed(3));
+  }
+  function tick(){
+    if(!dragging){
+      if(spin) ry-=0.14;                       // a slow idle turn until you touch it
+      else{
+        ry+=vy; rx+=vx; vy*=0.94; vx*=0.94;
+        if(Math.abs(vy)<0.01) vy=0;
+        if(Math.abs(vx)<0.01) vx=0;
+      }
+      rx=Math.max(-72,Math.min(72,rx));
+      paint();
+    }
+    raf3=requestAnimationFrame(tick);
+  }
+  paint(); tick();
+
+  shelf.addEventListener('pointerdown',function(e){
+    if(e.button!==undefined && e.button!==0) return;
+    dragging=true; spin=false; moved=0; downAt=Date.now();
+    px0=e.clientX; py0=e.clientY; vx=vy=0;
+    book3d.classList.remove('is-easing');
+    shelf.classList.add('is-grabbing');
+    shelf.setPointerCapture(e.pointerId);
+  });
+  shelf.addEventListener('pointermove',function(e){
+    if(!dragging) return;
+    var dx=e.clientX-px0, dy=e.clientY-py0;
+    px0=e.clientX; py0=e.clientY;
+    moved+=Math.abs(dx)+Math.abs(dy);
+    ry+=dx*0.42; rx-=dy*0.30;
+    rx=Math.max(-72,Math.min(72,rx));
+    vy=dx*0.42; vx=-dy*0.30;
+    paint();
+  });
+  function endDrag(e){
+    if(!dragging) return;
+    dragging=false;
+    shelf.classList.remove('is-grabbing');
+    if(moved<6 && Date.now()-downAt<600) openBook();
+  }
+  shelf.addEventListener('pointerup',endDrag);
+  shelf.addEventListener('pointercancel',function(){dragging=false;shelf.classList.remove('is-grabbing');});
+  book3d.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openBook();}
+  });
+
+  /* ---------- shelf → reader ----------
+     The 3-D book squares up and slides half a page right, so its front cover
+     lands exactly on the shut deck's cover; then the two are swapped. */
+  var opening=false;
+  function openBook(){
+    if(opening||document.body.classList.contains('is-reading')) return;
+    opening=true; spin=false; vx=vy=0;
+    load(1); load(2);
+    book3d.classList.add('is-easing');
+    rx=0; ry=0; paint();
+    book3d.style.setProperty('--ox','calc(var(--pw) / 2)');
+    book3d.style.setProperty('--bs','1');      // square up at the shut deck's exact size
+    shadow3d.style.opacity='0';
+    hint.classList.add('is-gone');
+    setTimeout(function(){
+      stage.classList.add('is-live');
+      shelf.classList.add('is-gone');
+      document.body.classList.add('is-reading');
+      setTimeout(function(){ opening=false; go(1); creep(); }, 260);
+    }, 880);
+  }
+  /* ---------- reader → shelf ----------
+     However the book was shut — mid-spread, or already closed on the back
+     cover — the deck has to come to rest on the front cover, because that is
+     the face the 3-D book hands back and the one the next open() turns from.
+     The snap happens behind the crossfade, so it is never seen. */
+  function land(){
+    deck.classList.add('no-anim');
+    deck.classList.add('is-closed','at-front');
+    deck.classList.remove('at-back');
+    slides.forEach(function(sl,n){sl.classList.toggle('is-on',n===0);sl.classList.remove('is-under');});
+    void deck.offsetWidth;
+    deck.classList.remove('no-anim');
+    setActive(0);
+  }
+  function toShelf(){
+    stage.classList.remove('is-live');
+    document.body.classList.remove('is-reading');
+    shelf.classList.remove('is-gone');
+    hint.classList.remove('is-gone');
+    book3d.classList.add('is-easing');
+    book3d.style.setProperty('--ox','0px');
+    book3d.style.setProperty('--bs','.76');
+    shadow3d.style.opacity='';
+    rx=8; ry=-32; paint();
+    setTimeout(function(){book3d.classList.remove('is-easing');},900);
+    setTimeout(land, 520);                     // once the stage has faded out
+  }
+  function shutBook(){
+    if(busy) return;
+    if(current===0||current===LAST){ toShelf(); return; }
+    busy=true;
+    coverTurn(0, current, true, function(){ busy=false; setActive(0); toShelf(); });
+  }
+
+  /* ============================================================
+     CONTENTS
+     ============================================================ */
+  var thumbEls=null;
+  function buildThumbs(host, jump){
+    var f=document.createDocumentFragment();
+    for(var i=0;i<N;i++){
+      (function(i){
+        var b=document.createElement('figure');
+        b.className='thumb'+(isCover(i)?' thumb--cover':'');
+        var sh=document.createElement('div'); sh.className='sh';
+        var im=document.createElement('img');
+        im.loading='lazy'; im.decoding='async'; im.src=thumbSrc(i+1);
+        im.alt = i===0?'Front cover':(i===N-1?'Back cover':'Spread '+(i+1));
+        sh.appendChild(im);
+        var cap=document.createElement('figcaption');
+        cap.textContent = i===0?'Front cover':(i===N-1?'Back cover':pad(i+1));
+        b.appendChild(sh); b.appendChild(cap);
+        if(jump){
+          b.setAttribute('role','button'); b.tabIndex=0;
+          var act=function(){closeContents(); go(i);};
+          b.addEventListener('click',act);
+          b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
+        }
+        f.appendChild(b);
+      })(i);
+    }
+    host.appendChild(f);
+    return [].slice.call(host.children);
+  }
+  function openContents(){
+    if(!thumbEls) thumbEls=buildThumbs(document.getElementById('thumbs'), true);
+    thumbEls.forEach(function(t,n){t.setAttribute('aria-current',n===current?'true':'false');});
+    contents.classList.add('is-open');
+    closeX.style.display='';
+    var cur=thumbEls[current];
+    if(cur) cur.scrollIntoView({block:'center'});
+  }
+  function closeContents(){
+    contents.classList.remove('is-open');
+    closeX.style.display='none';
+  }
+  document.getElementById('btn-contents').addEventListener('click',openContents);
+  document.getElementById('btn-shut').addEventListener('click',shutBook);
+  closeX.addEventListener('click',closeContents);
+
+  /* the phone list, built once if that is the view in play */
+  if(matchMedia('(max-width:860px), (orientation:portrait) and (max-width:1024px)').matches){
+    buildThumbs(document.getElementById('thumbs-narrow'), false);
+  }
+
+  /* ============================================================
+     INPUT
+     ============================================================ */
+  prevBtn.addEventListener('click',function(e){e.stopPropagation();go(current-1);});
+  nextBtn.addEventListener('click',function(e){e.stopPropagation();go(current+1);});
+
+  deck.addEventListener('click',function(e){
+    if(e.target.closest('a,button')) return;
+    var r=deck.getBoundingClientRect();
+    go(e.clientX > r.left + r.width/2 ? current+1 : current-1);
+  });
+
+  var wheelLock=false;
+  deck.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var d=Math.abs(e.deltaY)>Math.abs(e.deltaX)?e.deltaY:e.deltaX;
+    if(wheelLock||Math.abs(d)<8) return;
+    wheelLock=true;
+    go(d>0?current+1:current-1);
+    setTimeout(function(){wheelLock=false;},TURN+80);
+  },{passive:false});
+
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    var k=e.key;
+    if(contents.classList.contains('is-open')){
+      if(k==='Escape'){e.preventDefault();closeContents();}
+      return;
+    }
+    if(!document.body.classList.contains('is-reading')){
+      if(k==='Enter'||k===' '){e.preventDefault();openBook();}
+      else if(k==='ArrowLeft'){ry+=12;spin=false;paint();}
+      else if(k==='ArrowRight'){ry-=12;spin=false;paint();}
+      return;
+    }
+    if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '){e.preventDefault();go(current+1);}
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'){e.preventDefault();go(current-1);}
+    else if(k==='Home'){e.preventDefault();go(0);}
+    else if(k==='End'){e.preventDefault();go(LAST);}
+    else if(k==='c'||k==='C'){e.preventDefault();openContents();}
+    else if(k==='Escape'){e.preventDefault();shutBook();}
+  });
+})();
+</script>
+</body>
+</html>
