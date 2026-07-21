@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Battle of Chiaraje — Alex Fischman Cárdenas</title>
+<meta name="description" content="After the birth of his first child, a veteran warrior returns to the Battle of Chiaraje, torn between the tradition that defines him and the family he could leave behind.">
+<meta property="og:title" content="The Battle of Chiaraje">
+<meta property="og:description" content="A documentary by Alex Fischman Cárdenas.">
+<meta property="og:image" content="media/cover-front.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE BATTLE OF CHIARAJE — pitch deck
+   Black throughout, gray type, condensed mono.
+   Three type styles: .title / .head / .body
+   ============================================================ */
+:root{
+  --black:#000;
+  --title:#8f8f8f;       /* the film's own intertitle gray */
+  --body:#8a8a8a;
+  --head:#5f5f5f;
+  --line:rgba(143,143,143,.28);
+  --font:"Martian Mono","Courier New",ui-monospace,monospace;
+  --pad:clamp(1.1rem,2.4vw,2.4rem);
+  --ratio:1.85;          /* every frame in the deck, without exception */
+  --gutter:clamp(1.1rem,2.4vw,2.4rem);  /* = --pad, so right-page images align with their captions */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#000;font-family:var(--font);color:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block}
+::selection{background:#8f8f8f;color:#000}
+
+/* ---------- THE THREE STYLES ---------- */
+.title{
+  font-weight:700;font-stretch:75%;text-transform:uppercase;color:var(--title);
+  font-size:clamp(1rem,2.1vw,1.9rem);
+  line-height:1.2;letter-spacing:-.035em;
+}
+.title em{font-style:normal;display:inline-block;transform:skewX(-11deg)}
+.head{
+  font-weight:600;font-stretch:87.5%;text-transform:uppercase;color:var(--head);
+  font-size:clamp(.5rem,.62vw,.62rem);
+  line-height:1.65;letter-spacing:.08em;
+  text-wrap:pretty;
+}
+.body{
+  font-weight:400;font-stretch:87.5%;color:var(--body);
+  font-size:clamp(.56rem,.7vw,.72rem);
+  line-height:2;letter-spacing:-.01em;
+  max-width:58ch;
+  text-wrap:pretty;
+}
+.body + .body{margin-top:1.6em}
+/* size + case modifiers of the same three styles */
+.title--cover{font-size:clamp(1.6rem,4.4vw,3.6rem);line-height:1.3;letter-spacing:0;word-spacing:.55em;text-align:left;color:#c9c6c1}
+/* the title turned on its side, reading upward from the bottom-left corner */
+.title--vert{
+  position:absolute;left:var(--pad);bottom:var(--pad);z-index:4;
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-size:clamp(1.5rem,3.9vw,3.3rem);line-height:1.3;word-spacing:.45em;
+  max-height:calc(100% - var(--pad) * 2);
+}
+.title--sm{font-size:clamp(.85rem,1.4vw,1.25rem);line-height:1.3}
+.title--xs{font-size:clamp(.68rem,.95vw,.88rem);line-height:1.55;letter-spacing:-.02em}
+.head--bright{color:var(--title)}
+.cap{text-transform:none;letter-spacing:0}
+.i1{display:block;padding-left:2ch}
+.i2{display:block;padding-left:4ch}
+.i0{display:block}
+
+/* ---------- the book, sitting on the page ---------- */
+.stage{
+  --stage-x:clamp(2.6rem,6vw,6rem);
+  --stage-y:clamp(.8rem,3.5vh,2.6rem);
+  --book:1.56;                       /* two portrait pages side by side */
+  position:fixed;inset:0;display:grid;place-items:center;
+  padding:var(--stage-y) var(--stage-x);
+  background:
+    radial-gradient(120% 100% at 50% 40%,#141312 0%,#0a0a09 55%,#050505 100%);
+}
+.stage{
+  --w-open:min(calc(100vw - 2 * var(--stage-x)), calc((100svh - 2 * var(--stage-y)) * var(--book)));
+  --h-open:min(calc(100svh - 2 * var(--stage-y)), calc((100vw - 2 * var(--stage-x)) / var(--book)));
+}
+.deck{
+  position:relative;
+  width:var(--w-open);height:var(--h-open);
+  overflow:hidden;perspective:2600px;
+  box-shadow:0 30px 90px rgba(0,0,0,.85), 0 2px 0 rgba(255,255,255,.05);
+  transition:width .95s cubic-bezier(.38,0,.24,1), transform .95s cubic-bezier(.38,0,.24,1);
+}
+/* Shut, the book is one page wide — and it sits half a page off centre so that the
+   spine lands exactly where it will be once the book is open. The cover then swings
+   on a hinge that never moves, and the book grows in one direction only. */
+.deck.is-closed{width:calc(var(--w-open) / 2)}
+.deck.is-closed.at-front{transform:translateX(50%)}
+.deck.is-closed.at-back {transform:translateX(-50%)}
+.deck.no-anim{transition:none}
+/* A swinging cover travels outside the book's footprint, so it lives on the stage
+   rather than in the deck — the deck must keep clipping, or the spread underneath
+   spills out of the shut book. */
+.leaf--free{z-index:32}
+/* spreads are stacked; the leaf turning between them is the transition */
+.slide{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#000;display:none}
+.slide.is-on{display:block;z-index:10}
+.slide.is-under{display:block;z-index:5}
+
+/* the turning leaf */
+.leaf{
+  position:absolute;top:0;height:100%;width:50%;z-index:30;
+  transform-style:preserve-3d;will-change:transform;pointer-events:none;
+}
+.leaf .face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;background:#000}
+.leaf .face--back{transform:rotateY(180deg)}
+.leaf .clip{position:absolute;top:0;left:0;height:100%;width:200%}
+.leaf .shade{position:absolute;inset:0;z-index:9;pointer-events:none}
+.underlay{position:absolute;top:0;height:100%;width:50%;z-index:20;overflow:hidden;background:#000}
+.underlay .clip{position:absolute;top:0;left:0;height:100%;width:200%}
+@keyframes leafFwd  {from{transform:rotateY(0)}     to{transform:rotateY(-180deg)}}
+@keyframes leafBack {from{transform:rotateY(0)}     to{transform:rotateY(180deg)}}
+@keyframes leafShade{0%{opacity:0}45%{opacity:.75}100%{opacity:0}}
+
+
+/* spread = two booklet pages, bound at the spine */
+.spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#000}
+
+/* Shut, the book is a single page: the cover fills the narrowed deck, and opening
+   widens it to a spread while the cover swings off the spine. */
+.slide--cover .spread{grid-template-columns:1fr}
+.page{position:relative;overflow:hidden;background:#000;padding:var(--pad)}
+.page--photo{padding:var(--pad) 0;display:grid;align-content:center;gap:.5rem}
+.page--bottom{align-content:end;padding-bottom:calc(var(--pad) * 2.6)}
+.page--top{align-content:start;padding-top:calc(var(--pad) * 2.6)}
+
+/* the sheet itself: paper tooth */
+.page::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23p)' opacity='.6'/></svg>");
+  opacity:.055;mix-blend-mode:screen;
+}
+/* No shading at the spine — the pages meet flat, and the only 3D is the leaf that
+   turns. Do not put a tilt on .page either: it promotes the page to its own 3D
+   layer and, with the spreads stacked, some compositors drop it and the page goes
+   blank. */
+.page--bleed{padding:0;display:block}
+.page--full{grid-column:1/-1}
+/* a still at its native 1.9:1 — the letterbox bars in the source PNGs are cropped off */
+.shot{position:relative;width:100%;aspect-ratio:var(--ratio);overflow:hidden;background:#0c0c0c;min-height:0;max-height:100%}
+.shot img,.shot video{width:100%;height:100%;object-fit:cover}
+/* images bleed to the outer edges but never touch the spine */
+.spread > .page:first-child .shot{width:calc(100% - var(--gutter))}
+.spread > .page:last-child .shot{width:calc(100% - var(--gutter));margin-left:var(--gutter)}
+.spread > .page--full .shot{width:100%;margin-left:0}
+.page--photo .cap{padding:0 var(--pad)}
+
+/* trailer billing, running down the top right of the cover */
+.billing{
+  position:absolute;top:var(--pad);right:var(--pad);z-index:4;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  max-height:50%;                       /* long enough to hold sound design and the directing credit together */
+  font-size:clamp(.44rem,.56vw,.58rem);letter-spacing:.045em;line-height:1.7;
+  color:rgba(236,233,228,.72);text-shadow:0 1px 12px rgba(0,0,0,.9);
+  text-align:start;                     /* not justified — no stretched spaces */
+  text-wrap:wrap;
+}
+.billing .role{font-size:.72em;letter-spacing:.12em;color:rgba(236,233,228,.55)}
+
+/* page furniture */
+.label{position:absolute;top:var(--pad);left:var(--pad);z-index:4}
+.folio{position:absolute;bottom:var(--pad);left:var(--pad);z-index:4}
+.folio--r{left:auto;right:var(--pad)}
+
+/* content placement inside a page */
+.grid{position:absolute;inset:0;display:grid;padding:calc(var(--pad) * 2.6) var(--pad);z-index:3}
+.at-tl{align-self:start;justify-self:start}
+.at-cl{align-self:center;justify-self:start}
+.at-c{align-self:center;justify-self:center}
+.at-bl{align-self:end;justify-self:start}
+.at-br{align-self:end;justify-self:end}
+/* one statement per page of the spread */
+.grid--split{
+  grid-template-columns:1fr 1fr;align-items:center;
+  column-gap:calc(var(--pad) * 2);
+  padding-left:calc(var(--pad) * 2);padding-right:calc(var(--pad) * 2);
+}
+.grid--split > *:last-child{justify-self:start;padding-left:calc(var(--pad) * 1.5)}
+@media(max-width:820px){
+  .grid--split{grid-template-columns:1fr;align-content:center;row-gap:2.2em;padding-left:var(--pad);padding-right:var(--pad)}
+  .grid--split > *:last-child{padding-left:0}
+}
+.stack > * + *{margin-top:clamp(.55rem,1.5vh,1.1rem)}
+.m-s{max-width:30ch}.m-m{max-width:40ch}
+.title.m-t{max-width:30ch}
+
+.plate{position:absolute;overflow:hidden;z-index:1;background:#0c0c0c}
+.plate img{width:100%;height:100%;object-fit:cover}
+.num{position:absolute;bottom:.35rem;right:.5rem;z-index:3;color:#fff;mix-blend-mode:difference}
+.veil{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,0) 55%)}
+
+/* credits — fixed label column, so both pages start their names at the same point */
+.credits{
+  display:grid;grid-template-columns:clamp(7rem,11vw,10.5rem) 1fr;
+  column-gap:clamp(1rem,2.2vw,2rem);row-gap:clamp(.9rem,2.2vh,1.6rem);
+  width:100%;
+}
+.credits .head{padding-top:.18rem}   /* optical baseline match with the names */
+
+/* filmography */
+.films{width:100%;display:grid;row-gap:clamp(.8rem,2vh,1.4rem)}
+.film{display:grid;grid-template-columns:1fr auto;gap:.1rem 1rem;align-items:baseline}
+.film .sub{grid-column:1/-1;max-width:62ch}
+
+/* endnotes */
+.notes{display:grid;grid-template-columns:minmax(72px,auto) 1fr;gap:.5rem 1.2rem;align-items:baseline;width:100%}
+
+/* clip sound */
+.sound{position:absolute;top:var(--pad);left:var(--pad);z-index:6;padding:.32rem .5rem;border:1px solid var(--line);background:rgba(0,0,0,.3);cursor:pointer;color:var(--title)}
+.sound:hover{border-color:var(--title)}
+
+/* ---------- scanned-print treatment ---------- */
+/* images read like a scan: slightly warm, a touch flatter, a touch grainier */
+.shot img,.shot video,.plate img,.page--bleed img,.page--bleed video{
+  filter:contrast(1.05) saturate(.88) sepia(.08) brightness(.98);
+}
+.scan{position:fixed;inset:0;z-index:35;pointer-events:none}
+.scan::before{   /* paper grain */
+  content:"";position:absolute;inset:-50%;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.55'/></svg>");
+  opacity:.07;mix-blend-mode:overlay;
+  animation:grain 1.1s steps(3) infinite;
+}
+.scan::after{   /* the light falls off at the edges, as a flatbed does */
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.42) 100%),
+    linear-gradient(96deg,rgba(255,238,214,.035),rgba(214,232,255,.02) 60%,rgba(255,238,214,.03));
+}
+@keyframes grain{
+  0%{transform:translate(0,0)}33%{transform:translate(-2%,1.5%)}66%{transform:translate(1.5%,-2%)}100%{transform:translate(0,0)}
+}
+@media(prefers-reduced-motion:reduce){.scan::before{animation:none}}
+
+/* turn buttons, sitting on the page either side of the book */
+.turn{
+  position:fixed;top:50%;transform:translateY(-50%);z-index:42;
+  width:clamp(2rem,4vw,3.2rem);height:clamp(2rem,4vw,3.2rem);
+  display:grid;place-items:center;cursor:pointer;
+  background:none;border:0;color:#6a6a6a;font-family:var(--font);font-size:1.1rem;
+  transition:color .25s,transform .25s;
+}
+.turn:hover{color:#d8d5d0}
+.turn--l{left:clamp(.4rem,1.6vw,1.6rem)}
+.turn--r{right:clamp(.4rem,1.6vw,1.6rem)}
+.turn:hover.turn--l{transform:translate(-3px,-50%)}
+.turn:hover.turn--r{transform:translate(3px,-50%)}
+.turn[disabled]{opacity:.18;pointer-events:none}
+
+/* chrome */
+.chrome{position:fixed;z-index:40;pointer-events:none;color:#fff;mix-blend-mode:difference}
+.chrome--tr{top:var(--pad);right:var(--pad)}
+.ticks{bottom:.7rem;left:50%;transform:translateX(-50%);display:flex;gap:5px;pointer-events:auto;mix-blend-mode:difference}
+.ticks button{width:13px;height:2px;border:0;padding:0;background:rgba(255,255,255,.32);cursor:pointer;transition:background .25s}
+.ticks button:hover,.ticks button[aria-current="true"]{background:#fff}
+
+/* ---------- small screens: the booklet is not made for them ---------- */
+.gate{display:none}
+@media(max-width:860px),(orientation:portrait) and (max-width:1100px){
+  .stage,.chrome,.turn,.scan{display:none!important}
+  .gate{
+    display:grid;place-content:center;gap:1.6rem;
+    position:fixed;inset:0;padding:2.5rem;text-align:center;background:#000;
+  }
+  .gate .title{font-size:clamp(1.1rem,6vw,1.7rem);line-height:1.3;letter-spacing:0;word-spacing:.5em}
+  .gate .body{max-width:34ch;margin-inline:auto}
+}
+a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+</style>
+</head>
+<body>
+
+<section class="gate">
+  <p class="title">The Battle<br>of Chiaraje</p>
+  <p class="body">This booklet is laid out as a two-page spread and needs a wider screen. Please open it on a desktop.</p>
+  <p class="head">Alex Fischman Cárdenas<br><a href="mailto:alexfischmancardenas@gmail.com">alexfischmancardenas@gmail.com</a></p>
+</section>
+
+<div class="scan" aria-hidden="true"></div>
+<div class="chrome chrome--tr"><span class="head" id="counter">01 / 12</span></div>
+<nav class="chrome ticks" id="ticks" aria-label="Spreads"></nav>
+<button class="turn turn--l" id="prev" aria-label="Previous page">‹</button>
+<button class="turn turn--r" id="next" aria-label="Next page">›</button>
+
+<div class="stage">
+<main class="deck is-closed at-front no-anim" id="deck">
+
+<!-- 01 · front cover — sits in the right-hand page position, hinged at the spine -->
+<section class="slide slide--cover is-on">
+  <div class="spread">
+    <div class="page page--photo page--bleed">
+      <img src="media/cover-front.jpg" alt="Warriors advancing up the ridge"
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div class="veil" style="background:rgba(0,0,0,.18)"></div>
+      <div class="grid" style="text-shadow:0 2px 28px rgba(0,0,0,.7)">
+        <div class="at-bl">
+          <h1 class="title title--cover title--vert">The Battle<br>of Chiaraje</h1>
+        </div>
+      </div>
+      <p class="billing head"><span class="role">Produced&nbsp;by</span> Fisherman&nbsp;&&nbsp;Trout, Anibal&nbsp;Lozano&nbsp;Herrera, Elard&nbsp;Velasco, Etienne&nbsp;Talbot&#8195;&#8195;<span class="role">Director&nbsp;of&nbsp;Photography</span> Julio&nbsp;Gonzales&#8195;&#8195;<span class="role">Edited&nbsp;by</span> Alex&nbsp;Fischman&nbsp;Cárdenas, Dominik&nbsp;Braz&nbsp;Bittrich&#8195;&#8195;<span class="role">Color&nbsp;by</span> Connor&nbsp;Baily&#8195;&#8195;<span class="role">Sound&nbsp;Design&nbsp;by</span> Nicolas&nbsp;Svetliza&#8195;&#8195;<span class="role">Directed&nbsp;by</span>&nbsp;Alex&nbsp;Fischman&nbsp;Cárdenas</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- 02 · logline -->
+<section class="slide">
+  <div class="spread">
+    <div class="page">
+      <p class="label head">Logline</p>
+      <div class="grid">
+        <p class="at-cl title m-t">After the birth of his first child, a veteran warrior <em>returns</em> to the Battle of Chiaraje, torn between the tradition that defines him and the family he could leave behind.</p>
+      </div>
+      <span class="folio head">02</span>
+    </div>
+    <div class="page page--photo">
+      <div class="shot">
+        <img src="media/elard-baby.jpg" alt="Elard Velasco with his son">
+        <span class="num head">(01)</span>
+      </div>
+      <p class="head cap">(01) Elard Velasco with his son.</p>
+      <span class="folio folio--r head">03</span>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · the battle -->
+<section class="slide">
+  <div class="spread">
+    <div class="page page--photo page--bottom">
+      <div class="shot">
+        <img src="media/warrior-line.jpg" alt="Warriors of Canas with slings and whips">
+        <span class="num head">(02)</span>
+      </div>
+      <p class="head cap">(02) Warriors of Canas, with slings and whips.</p>
+      <span class="folio head">04</span>
+    </div>
+    <div class="page">
+      <p class="label head">The Battle</p>
+      <div class="plate" style="top:0;right:0;width:72%;aspect-ratio:1.85">
+        <img src="media/shovels.jpg" alt="Digging on the mountain">
+      </div>
+      <div class="grid">
+        <div class="at-cl stack" style="margin-top:16%">
+          <p class="body">The Battle of Chiaraje is an annual ritual that still takes place high in the mountains of Cusco, Peru. Every year two towns — more than a thousand people — meet on the summit of Chiaraje mountain, 4,500 meters above sea level, to recreate an ancient battle. They arm themselves with slingshots, whips, rocks, and horses. It is a war that serves no purpose beyond the act of war itself, fought willingly, even eagerly.</p>
+        </div>
+      </div>
+      <span class="folio folio--r head">05</span>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · display over the community, full bleed -->
+<section class="slide">
+  <div class="spread">
+    <div class="page page--photo page--bleed page--full">
+      <img src="media/crowd.jpg" alt="The community before the battle"
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div class="veil" style="background:rgba(0,0,0,.42)"></div>
+      <div class="grid grid--split" style="text-shadow:0 2px 28px rgba(0,0,0,.75)">
+        <p class="title" style="color:#c9c6c1">
+          <span class="i0">Injuries are</span>
+          <span class="i1"><em>frequent.</em></span>
+          <span class="i0">Death is rare.</span>
+        </p>
+        <p class="title" style="color:#c9c6c1">
+          <span class="i0">There are <em>no</em></span>
+          <span class="i1">legal consequences</span>
+          <span class="i0">for killing someone</span>
+          <span class="i2">during battle.</span>
+        </p>
+      </div>
+      <span class="folio folio--r head">06</span>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · the characters -->
+<section class="slide">
+  <div class="spread">
+    <div class="page page--photo">
+      <div class="shot">
+        <img src="media/elard-window.jpg" alt="Elard Velasco">
+        <span class="num head">(03)</span>
+      </div>
+      <p class="head cap">(03) Elard Velasco.</p>
+      <span class="folio head">07</span>
+    </div>
+    <div class="page">
+      <p class="label head">The Characters</p>
+      <div class="plate" style="top:0;right:0;width:72%;aspect-ratio:1.85">
+        <img src="media/whip-snow.jpg" alt="A whip cracked on the mountain">
+        <span class="num head">(04)</span>
+      </div>
+      <div class="grid">
+        <div class="at-cl stack" style="margin-top:16%">
+          <p class="body">The film follows Elard Velasco, a twenty-year veteran of the battle. The birth of his first son has put his future in it in question. Travelling back to Canas in the days before, he asks whether to keep fighting or stay on the sidelines.</p>
+          <p class="head cap">(04) A whip, cracked on the mountain.</p>
+        </div>
+      </div>
+      <span class="folio folio--r head">08</span>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · the community -->
+<section class="slide">
+  <div class="spread">
+    <div class="page">
+      <p class="label head">The Community</p>
+      <div class="plate" style="bottom:0;left:0;width:calc(100% - var(--gutter));aspect-ratio:1.85">
+        <img src="media/cross.jpg" alt="The community at the cross">
+        <span class="num head">(05)</span>
+      </div>
+      <div class="grid">
+        <div class="at-tl stack" style="margin-top:1rem">
+          <p class="body">The film also follows the people around him: his father, who prays for him to be safe; veterans who will never stop going; children who practice with water bottles on sticks. We see how the community prepares in the days before.</p>
+          <p class="head cap">(05) The community at the cross.<br>(06) His father, who prays for him to be safe.</p>
+        </div>
+      </div>
+      <span class="folio head">09</span>
+    </div>
+    <div class="page">
+      <div class="plate" style="bottom:0;left:0;width:calc(100% - var(--gutter));aspect-ratio:1.85">
+        <img src="media/father-face.jpg" alt="Elard's father">
+        <span class="num head">(06)</span>
+      </div>
+      <span class="folio folio--r head">10</span>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · statement I -->
+<section class="slide">
+  <div class="spread">
+    <div class="page page--photo page--top">
+      <div class="shot">
+        <img src="media/father-whistle.jpg" alt="At home in Canas">
+        <span class="num head">(07)</span>
+      </div>
+      <p class="head cap">(07) At home in Canas, the days before.</p>
+      <span class="folio head">11</span>
+    </div>
+    <div class="page">
+      <p class="label head">Director's Statement</p>
+      <div class="grid">
+        <div class="at-cl stack">
+          <p class="body">As a Peruvian outsider to the battle, my first reaction was disbelief — why would someone willingly do this? That question became the starting point for this film.</p>
+          <p class="body">When I began interviewing participants, the answer was both simple and profound: they love the battle. For some it is the adrenaline. For others, belonging to something greater than themselves. For others still, a way to channel rage in a manner that is socially accepted, even celebrated.</p>
+        </div>
+      </div>
+      <span class="folio folio--r head">12</span>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · quote -->
+<section class="slide">
+  <div class="spread">
+    <div class="page page--photo page--bleed page--full">
+      <img src="media/hillside.jpg" alt="Climbing the hill"
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div class="veil" style="background:rgba(0,0,0,.4)"></div>
+      <div class="grid" style="text-shadow:0 2px 28px rgba(0,0,0,.75)">
+        <p class="at-c title" style="color:#c9c6c1;text-align:center;font-size:clamp(1.3rem,3.1vw,2.7rem);line-height:1.34;max-width:22ch">
+          “In Chiaraje,<br>life is worth <em>nothing.</em>”
+        </p>
+      </div>
+      <span class="folio folio--r head">13</span>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · statement II -->
+<section class="slide">
+  <div class="spread">
+    <div class="page">
+      <p class="label head">Director's Statement</p>
+      <div class="grid">
+        <div class="at-cl stack">
+          <p class="body">The deeper I went, the clearer it became that we all have our own version of this battle. The unexamined behaviour, the self-destructive tendencies that from the outside are obviously dangerous, but that we cannot see in ourselves when we stand too close to them.</p>
+          <p class="body">That is why my goal was never to judge this behaviour, only to observe it — and why the film carries no music. It weaves together the perspectives of the young, the seasoned, and the ones who have lost, to give us a portrait of a community and its tradition.</p>
+        </div>
+      </div>
+      <span class="folio head">14</span>
+    </div>
+    <div class="page page--photo">
+      <div class="shot">
+        <img src="media/abra-sign.jpg" alt="The pass at Chiaraje">
+        <span class="num head">(08)</span>
+      </div>
+      <p class="head cap">(08) The pass at Chiaraje.</p>
+      <span class="folio folio--r head">15</span>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · director + filmography -->
+<section class="slide slide--tall">
+  <div class="spread">
+    <div class="page">
+      <p class="label head">Selected Filmography</p>
+      <div class="grid">
+        <div class="at-cl" style="width:100%">
+          <div class="films">
+            <div class="film">
+              <p class="head head--bright">The Battle of Chiaraje</p><p class="head">(2026)</p>
+              <p class="head cap sub">Documentary · In production</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">¡PIKA!</p><p class="head">(2025)</p>
+              <p class="head cap sub">Sundance · MIFF · Sitges · Palm Springs ShortFest · Vimeo Staff Pick</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">Ovejas y Lobos</p><p class="head">(2024)</p>
+              <p class="head cap sub">Vimeo Staff Pick · Clermont-Ferrand · Raindance · ShortFest Palm Springs · DokuFest · Lima (Audience &amp; Jury Award) · Shorts México (Best Short Film) · AFI Fest · Zaragoza (Best Short Film) · Gibara (Youth Jury Award) · Odense</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">Starr</p><p class="head">(2022)</p>
+              <p class="head cap sub">Vimeo Staff Pick</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">Teeth</p><p class="head">(2021)</p>
+              <p class="head cap sub">Vimeo Staff Pick</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">Alienación</p><p class="head">(2019)</p>
+              <p class="head cap sub">Aesthetica · Rhode Island International Film Festival</p>
+            </div>
+            <div class="film">
+              <p class="head head--bright">La Vieja Quinta</p><p class="head">(2015)</p>
+              <p class="head cap sub">Hollyshorts · Moscow International Film Festival · Lima International Film Festival</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="folio head">16</span>
+    </div>
+    <div class="page">
+      <p class="label head">Director</p>
+      <div class="grid">
+        <div class="at-cl stack m-m">
+          <p class="title title--sm">Alex Fischman<br>Cárdenas</p>
+          <p class="body">A Peruvian writer, director and producer. His short films have premiered at Sundance, Clermont-Ferrand and Sitges, and earned Vimeo Staff Pick recognition. He is represented by WME and Industry Entertainment.</p>
+          <p class="head head--bright"><a href="mailto:alexfischmancardenas@gmail.com">alexfischmancardenas@gmail.com</a></p>
+        </div>
+      </div>
+      <span class="folio folio--r head">17</span>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · credits -->
+<section class="slide slide--tall">
+  <div class="spread">
+    <div class="page">
+      <p class="label head">Credits</p>
+      <div class="grid">
+        <div class="at-cl credits">
+          <p class="head">Directed by</p>
+          <p class="title title--xs">Alex Fischman Cárdenas</p>
+
+          <p class="head">Produced by</p>
+          <p class="title title--xs">Alex Fischman Cárdenas<br>Trout Cohen<br>Anibal Lozano Herrera<br>Elard Velasco<br>Etienne Talbot</p>
+
+          <p class="head">Director of Photography</p>
+          <p class="title title--xs">Julio Gonzales</p>
+
+          <p class="head">Camera Assistant</p>
+          <p class="title title--xs">Anibal Lozano Herrera</p>
+
+          <p class="head">Edited by</p>
+          <p class="title title--xs">Alex Fischman Cárdenas<br>Dominik Braz Bittrich</p>
+
+          <p class="head">Color by</p>
+          <p class="title title--xs">Connor Baily</p>
+
+          <p class="head">Sound Design by</p>
+          <p class="title title--xs">Nicolas Svetliza</p>
+        </div>
+      </div>
+      <span class="folio head">18</span>
+    </div>
+    <div class="page">
+      <div class="grid">
+        <div class="at-cl credits">
+          <p class="head">Starring</p>
+          <p class="title title--xs">Elard Velasco<br>Vasco Velasco<br>Papá Aurelio<br>Mamá Epifania<br>Efraín Laucata Alvarez<br>Abel Laucata Alvarez<br>Mario Choque Gutiérrez<br>Yuri Arizapana<br>Fredy Gutierrez Puma<br>Yosman Gutiérrez Puma<br>Joel Gutierrez Puma<br>Erlinda Gutiérrez Puma<br>Vilma Gutierrez Puma</p>
+        </div>
+      </div>
+      <span class="folio folio--r head">19</span>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · back cover — the other half of the jacket, left-hand page position, no text -->
+<section class="slide slide--cover">
+  <div class="spread">
+    <div class="page page--photo page--bleed">
+      <img src="media/cover-back.jpg" alt=""
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div class="veil" style="background:rgba(0,0,0,.18)"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var stage=document.querySelector('.stage');
+  var slides=[].slice.call(deck.querySelectorAll('.slide'));
+  var vids=[].slice.call(deck.querySelectorAll('video'));
+  var counter=document.getElementById('counter');
+  var ticks=document.getElementById('ticks');
+  var prevBtn=document.getElementById('prev');
+  var nextBtn=document.getElementById('next');
+  var current=0;
+  var pad=function(n){return (n<10?'0':'')+n;};
+
+  slides.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.setAttribute('aria-label','Spread '+(i+1));
+    b.addEventListener('click',function(e){e.stopPropagation();go(i);});
+    ticks.appendChild(b);
+  });
+  var tickEls=[].slice.call(ticks.children);
+  counter.textContent='01 / '+pad(slides.length);
+  tickEls[0].setAttribute('aria-current','true');
+
+  /* no orphans: bind the last two words of every paragraph, caption and display line */
+  deck.querySelectorAll('.body,.cap,.title').forEach(function(el){
+    el.innerHTML=el.innerHTML.replace(/([^\s>])\s+([^\s<]+)(\s*)$/,'$1 $2$3');
+  });
+
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TURN=760;                 // ms, one leaf
+  var busy=false;
+
+  slides.forEach(function(sl,i){ sl.classList.toggle('is-on', i===0); });
+
+  /* ---------- the leaf ----------
+     Turning forward: the right page lifts, swings left and lands.
+     Its front is the page you were reading, its back is the next left page,
+     and the next right page is revealed underneath as it goes.            */
+  function halfOf(slide, side){                 // a clipped copy of half a spread
+    var clip=document.createElement('div');
+    clip.className='clip';
+    var inner=slide.firstElementChild.cloneNode(true);
+    inner.style.position='absolute';
+    inner.style.top='0';
+    inner.style.left='0';
+    inner.style.width='100%';
+    inner.style.height='100%';
+    clip.appendChild(inner);
+    clip.style.left = (side==='right') ? '-100%' : '0';
+    return clip;
+  }
+  function face(slide, side, back){
+    var f=document.createElement('div');
+    f.className='face'+(back?' face--back':'');
+    f.appendChild(halfOf(slide, side));
+    return f;
+  }
+
+  function flip(from, to, forward, done, ms){
+    ms = ms || TURN;
+    var leaf=document.createElement('div');
+    leaf.className='leaf';
+    leaf.style.left = forward ? '50%' : '0';
+    leaf.style.transformOrigin = forward ? 'left center' : 'right center';
+
+    leaf.appendChild(face(slides[from], forward?'right':'left', false));
+    leaf.appendChild(face(slides[to],   forward?'left':'right', true));
+
+    var shade=document.createElement('div');
+    shade.className='shade';
+    shade.style.background = forward
+      ? 'linear-gradient(90deg,rgba(0,0,0,.65),rgba(0,0,0,0) 55%)'
+      : 'linear-gradient(270deg,rgba(0,0,0,.65),rgba(0,0,0,0) 55%)';
+    shade.style.animation='leafShade '+ms+'ms ease-in-out both';
+    leaf.appendChild(shade);
+
+    /* what sits under the leaf while it travels */
+    var under=document.createElement('div');
+    under.className='underlay';
+    under.style.left = forward ? '50%' : '0';
+    under.appendChild(halfOf(slides[to], forward?'right':'left'));
+
+    deck.appendChild(under);
+    deck.appendChild(leaf);
+    slides[from].classList.add('is-under');       // still supplies the other page
+
+    leaf.style.animation='leaf'+(forward?'Fwd':'Back')+' '+ms+'ms cubic-bezier(.38,0,.24,1) both';
+
+    var finished=false;
+    function finish(){
+      if(finished) return; finished=true;
+      slides.forEach(function(sl,i){
+        sl.classList.toggle('is-on', i===to);
+        sl.classList.remove('is-under');
+      });
+      leaf.remove(); under.remove();
+      done && done();
+    }
+    leaf.addEventListener('animationend', finish);
+    setTimeout(finish, ms+120);                   // never strand a page mid-turn
+  }
+
+  /* ---------- opening and shutting the book ----------
+     Shut, the deck is one page wide and the cover fills it. Opening widens the deck
+     to a spread while the cover swings off the spine; shutting runs it backwards. */
+  var LAST=slides.length-1;
+  function openWidth(){
+    return deck.classList.contains('is-closed') ? deck.clientWidth*2 : deck.clientWidth;
+  }
+  function coverTurn(coverIdx, spreadIdx, shutting, done){
+    var ms=1020;
+    var openW=openWidth(), pageW=openW/2, H=deck.clientHeight;
+    var front = (coverIdx===0);                 // front cover hinges on its left
+    var angle = front ? -180 : 180;
+
+    /* the spread is pinned at full width against the spine side, so it does not
+       reflow while the book opens — it is simply uncovered */
+    var sp=slides[spreadIdx];
+    sp.style.width=openW+'px';
+    sp.style.left = front ? 'auto' : '0';
+    sp.style.right= front ? '0' : 'auto';
+    slides.forEach(function(sl,i){ sl.classList.toggle('is-on', i===spreadIdx); });
+
+    var leaf=document.createElement('div');
+    leaf.className='leaf leaf--free';
+    leaf.style.width=pageW+'px';
+    leaf.style.height=H+'px';
+    leaf.style.transformOrigin = front ? 'left center' : 'right center';
+
+    var f=document.createElement('div'); f.className='face';
+    var coverPage=slides[coverIdx].querySelector('.page').cloneNode(true);
+    coverPage.style.position='absolute';coverPage.style.inset='0';
+    coverPage.style.width='100%';coverPage.style.height='100%';
+    f.appendChild(coverPage);
+    leaf.appendChild(f);
+
+    var back=document.createElement('div'); back.className='face face--back';
+    back.appendChild(halfOf(slides[spreadIdx], front?'left':'right'));
+    leaf.appendChild(back);
+
+    var shade=document.createElement('div');
+    shade.className='shade';
+    shade.style.background = front
+      ? 'linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 60%)'
+      : 'linear-gradient(270deg,rgba(0,0,0,.6),rgba(0,0,0,0) 60%)';
+    shade.style.animation='leafShade '+ms+'ms ease-in-out both';
+    leaf.appendChild(shade);
+
+    /* The cover swings on the stage, not in the deck — it travels outside the book's
+       footprint. Its hinge never moves, so its box is fixed for the whole turn, and
+       the book's own width is driven from the cover's rotation: the page is uncovered
+       only as the cover comes down over it, so no empty half opens up ahead of it. */
+    stage.appendChild(leaf);
+    deck.classList.add('no-anim');
+    var st=stage.getBoundingClientRect();
+    var dr0=deck.getBoundingClientRect();
+    var spineX=st.width/2;                       // the open book is centred on the stage
+    var edgeFixed = front ? spineX+pageW : spineX-pageW;
+    leaf.style.top=(dr0.top-st.top)+'px';
+    leaf.style.left=(front ? spineX : spineX-pageW)+'px';
+
+    var anim=leaf.animate(
+      shutting ? [{transform:'rotateY('+angle+'deg)'},{transform:'rotateY(0deg)'}]
+               : [{transform:'rotateY(0deg)'},{transform:'rotateY('+angle+'deg)'}],
+      {duration:ms, easing:'cubic-bezier(.38,0,.24,1)', fill:'forwards'}
+    );
+
+    var t0=performance.now();
+    var track=function(){
+      var pr=anim.effect.getComputedTiming().progress;
+      if(pr==null) pr=Math.min(1,(performance.now()-t0)/ms);   // if the timing is not exposed
+      var rot=(shutting ? angle*(1-pr) : angle*pr) * Math.PI/180;
+      var coverage=Math.max(0, -Math.cos(rot));  // nothing until 90°, one page at 180°
+      var w=pageW*(1+coverage);
+      deck.style.width=w+'px';
+      deck.style.transform='translateX('+((front ? edgeFixed-w/2 : edgeFixed+w/2)-st.width/2)+'px)';
+      raf=requestAnimationFrame(track);
+    };
+    var raf=0; track();                       // place the first frame straight away
+
+    setTimeout(function(){
+      cancelAnimationFrame(raf);
+      sp.style.width='';sp.style.left='';sp.style.right='';
+      deck.style.width='';deck.style.transform='';
+      deck.classList.toggle('at-front', front);
+      deck.classList.toggle('at-back', !front);
+      deck.classList.toggle('is-closed', shutting);
+      slides.forEach(function(sl,i){ sl.classList.toggle('is-on', i===(shutting?coverIdx:spreadIdx)); });
+      leaf.remove();
+      void deck.offsetWidth;                  // land the new geometry, then re-arm transitions
+      deck.classList.remove('no-anim');
+      done && done();
+    }, ms+60);
+  }
+
+  function setActive(i){
+    current=i;
+    counter.textContent=pad(i+1)+' / '+pad(slides.length);
+    tickEls.forEach(function(t,n){t.setAttribute('aria-current',n===i?'true':'false');});
+    prevBtn.disabled=(i===0);
+    nextBtn.disabled=(i===slides.length-1);
+  }
+
+  function go(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    if(i===current||busy) return;
+    var forward=i>current, from=current;
+
+    if(reduce||Math.abs(i-from)>1){              // jumps land straight away
+      deck.classList.add('no-anim');
+      deck.classList.toggle('at-front', i!==LAST);
+      deck.classList.toggle('at-back', i===LAST);
+      deck.classList.toggle('is-closed', i===0||i===LAST);
+      slides.forEach(function(sl,n){sl.classList.toggle('is-on',n===i);sl.classList.remove('is-under');});
+      requestAnimationFrame(function(){deck.classList.remove('no-anim');});
+      setActive(i); return;
+    }
+    busy=true;
+    setActive(i);
+    var release=function(){busy=false;};
+    if(from===0)          coverTurn(0, i, false, release);        // opening the book
+    else if(i===0)        coverTurn(0, from, true, release);      // shutting it
+    else if(from===LAST)  coverTurn(LAST, i, false, release);     // opening from the back
+    else if(i===LAST)     coverTurn(LAST, from, true, release);   // shutting at the back
+    else                  flip(from,i,forward,release,TURN);
+  }
+  deck.classList.add('no-anim','is-closed','at-front');
+  requestAnimationFrame(function(){deck.classList.remove('no-anim');});
+  setActive(0);
+
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '){e.preventDefault();go(current+1);}
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'){e.preventDefault();go(current-1);}
+    else if(k==='Home'){e.preventDefault();go(0);}
+    else if(k==='End'){e.preventDefault();go(slides.length-1);}
+  });
+
+  prevBtn.addEventListener('click',function(e){e.stopPropagation();go(current-1);});
+  nextBtn.addEventListener('click',function(e){e.stopPropagation();go(current+1);});
+
+  deck.addEventListener('click',function(e){
+    if(e.target.closest('a,button')) return;
+    var r=deck.getBoundingClientRect();
+    go(e.clientX > r.left + r.width/2 ? current+1 : current-1);
+  });
+
+  /* a wheel or trackpad swipe turns the page */
+  var wheelLock=false;
+  deck.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var d=Math.abs(e.deltaY)>Math.abs(e.deltaX)?e.deltaY:e.deltaX;
+    if(wheelLock||Math.abs(d)<8) return;
+    wheelLock=true;
+    go(d>0?current+1:current-1);
+    setTimeout(function(){wheelLock=false;},TURN+80);
+  },{passive:false});
+})();
+</script>
+</body>
+</html>
